@@ -52,5 +52,10 @@ namespace StarWars
         {
             paneldata.Controls.Clear();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            abrirformulario(new planetas());
+        }
     }
 }
