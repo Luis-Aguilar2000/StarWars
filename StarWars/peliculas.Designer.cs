@@ -45,7 +45,7 @@
             panel2.Controls.Add(dataGridView1);
             panel2.Location = new Point(-1, 71);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1083, 630);
+            panel2.Size = new Size(1083, 632);
             panel2.TabIndex = 6;
             // 
             // dataGridView1

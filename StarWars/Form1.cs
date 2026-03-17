@@ -67,5 +67,10 @@ namespace StarWars
         {
             abrirformulario(new peliculas());
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            abrirformulario(new vehiculos());
+        }
     }
 }
