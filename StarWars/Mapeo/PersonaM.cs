@@ -21,11 +21,11 @@ namespace StarWars.Mapeo
                 Cumpleaños = api.birth_year,
                 Genero = api.gender,
 
-                // Guardas URLs porque no usas tablas intermedias
+                
                 UrlPeliculas = api.films != null ? string.Join(",", api.films) : null,
                 UrlTransportes = api.vehicles != null ? string.Join(",", api.vehicles) : null
 
-                // ⚠️ IdPlaneta e IdEspecie se asignan después
+               
             };
         }
     }
