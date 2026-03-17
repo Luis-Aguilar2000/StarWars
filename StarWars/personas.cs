@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using StarWars.Services;
+using StarWars.Models;
 
 namespace StarWars
 {
     public partial class personas : Form
     {
+        private readonly StarWarsService _service = new StarWarsService();
+
         public personas()
         {
             InitializeComponent();
@@ -31,14 +32,26 @@ namespace StarWars
             panel2.BackColor = Color.FromArgb(28, 100, 100, 100);
         }
 
-        private void personas_Load(object sender, EventArgs e)
+        private async void personas_Load(object sender, EventArgs e)
         {
             colorpanel();
+
+            try
+            {
+                var lista = await _service.GetPersonajesAsync();
+
+                dtgpersona.DataSource = null;
+                dtgpersona.DataSource = lista;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar datos ❌\n" + ex.Message);
+            }
         }
 
-        private void btbuscar_Click(object sender, EventArgs e)
+        private async void btbuscar_Click(object sender, EventArgs e)
         {
-
+           
         }
 
         private void label5_Click(object sender, EventArgs e)

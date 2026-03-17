@@ -34,6 +34,10 @@
             textBuscar = new TextBox();
             lblbuscar = new Label();
             panel2 = new Panel();
+            btnprueba = new Button();
+            gbimage = new GroupBox();
+            btnimagen = new Button();
+            pictureBox1 = new PictureBox();
             comboBox4 = new ComboBox();
             comboBox5 = new ComboBox();
             comboBox6 = new ComboBox();
@@ -59,15 +63,12 @@
             lblaltura = new Label();
             txtnombre = new TextBox();
             lblnombre = new Label();
-            dataGridView1 = new DataGridView();
-            gbimage = new GroupBox();
-            pictureBox1 = new PictureBox();
-            btnimagen = new Button();
+            dtgpersona = new DataGridView();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             gbimage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dtgpersona).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -114,6 +115,7 @@
             // 
             // panel2
             // 
+            panel2.Controls.Add(btnprueba);
             panel2.Controls.Add(gbimage);
             panel2.Controls.Add(comboBox4);
             panel2.Controls.Add(comboBox5);
@@ -140,11 +142,50 @@
             panel2.Controls.Add(lblaltura);
             panel2.Controls.Add(txtnombre);
             panel2.Controls.Add(lblnombre);
-            panel2.Controls.Add(dataGridView1);
+            panel2.Controls.Add(dtgpersona);
             panel2.Location = new Point(1, 71);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1392, 878);
+            panel2.Size = new Size(1392, 810);
             panel2.TabIndex = 2;
+            // 
+            // btnprueba
+            // 
+            btnprueba.Location = new Point(1217, 468);
+            btnprueba.Name = "btnprueba";
+            btnprueba.Size = new Size(94, 29);
+            btnprueba.TabIndex = 36;
+            btnprueba.Text = "btnprueba";
+            btnprueba.UseVisualStyleBackColor = true;
+            // 
+            // gbimage
+            // 
+            gbimage.Controls.Add(btnimagen);
+            gbimage.Controls.Add(pictureBox1);
+            gbimage.Location = new Point(912, 363);
+            gbimage.Name = "gbimage";
+            gbimage.Size = new Size(242, 317);
+            gbimage.TabIndex = 35;
+            gbimage.TabStop = false;
+            gbimage.Text = "Imagen";
+            // 
+            // btnimagen
+            // 
+            btnimagen.Image = (Image)resources.GetObject("btnimagen.Image");
+            btnimagen.ImageAlign = ContentAlignment.MiddleLeft;
+            btnimagen.Location = new Point(39, 259);
+            btnimagen.Name = "btnimagen";
+            btnimagen.Size = new Size(168, 37);
+            btnimagen.TabIndex = 1;
+            btnimagen.Text = "Subir Archivo";
+            btnimagen.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(39, 39);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(168, 200);
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
             // 
             // comboBox4
             // 
@@ -400,44 +441,14 @@
             lblnombre.TabIndex = 3;
             lblnombre.Text = "Nombre:";
             // 
-            // dataGridView1
+            // dtgpersona
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(11, 11);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(1366, 319);
-            dataGridView1.TabIndex = 0;
-            // 
-            // gbimage
-            // 
-            gbimage.Controls.Add(btnimagen);
-            gbimage.Controls.Add(pictureBox1);
-            gbimage.Location = new Point(912, 363);
-            gbimage.Name = "gbimage";
-            gbimage.Size = new Size(242, 317);
-            gbimage.TabIndex = 35;
-            gbimage.TabStop = false;
-            gbimage.Text = "Imagen";
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Location = new Point(39, 39);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(168, 200);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            // 
-            // btnimagen
-            // 
-            btnimagen.Image = (Image)resources.GetObject("btnimagen.Image");
-            btnimagen.ImageAlign = ContentAlignment.MiddleLeft;
-            btnimagen.Location = new Point(39, 259);
-            btnimagen.Name = "btnimagen";
-            btnimagen.Size = new Size(168, 37);
-            btnimagen.TabIndex = 1;
-            btnimagen.Text = "Subir Archivo";
-            btnimagen.UseVisualStyleBackColor = true;
+            dtgpersona.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgpersona.Location = new Point(11, 11);
+            dtgpersona.Name = "dtgpersona";
+            dtgpersona.RowHeadersWidth = 51;
+            dtgpersona.Size = new Size(1366, 319);
+            dtgpersona.TabIndex = 0;
             // 
             // personas
             // 
@@ -456,9 +467,9 @@
             panel1.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             gbimage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dtgpersona).EndInit();
             ResumeLayout(false);
         }
 
@@ -468,7 +479,7 @@
         private Label lblbuscar;
         private Button btbuscar;
         private Panel panel2;
-        private DataGridView dataGridView1;
+        private DataGridView dtgpersona;
         private TextBox txtnombre;
         private Label lblnombre;
         private TextBox txtmasa;
@@ -503,5 +514,6 @@
         private GroupBox gbimage;
         private Button btnimagen;
         private PictureBox pictureBox1;
+        private Button btnprueba;
     }
 }

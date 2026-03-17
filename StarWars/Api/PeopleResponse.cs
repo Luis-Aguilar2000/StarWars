@@ -7,8 +7,6 @@ namespace StarWars.Api
 {
    public class PeopleResponse<T>
     {
-        [JsonPropertyName("count")]
-        public int count { get; set; }
 
         [JsonPropertyName("results")]
         public List<T> results { get; set; }
