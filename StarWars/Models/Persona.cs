@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace StarWars.Data
+namespace StarWars.Models
 {
     public class Persona
     {

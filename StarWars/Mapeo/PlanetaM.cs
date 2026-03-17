@@ -1,5 +1,4 @@
 ﻿using StarWars.Api;
-using StarWars.Data;
 using StarWars.Models;
 using System;
 using System.Collections.Generic;
