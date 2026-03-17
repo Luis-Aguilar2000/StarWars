@@ -39,12 +39,14 @@
             panel2 = new Panel();
             panel4 = new Panel();
             paneldata = new Panel();
+            button5 = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.Controls.Add(button5);
             panel1.Controls.Add(button4);
             panel1.Controls.Add(button3);
             panel1.Controls.Add(button2);
@@ -53,7 +55,7 @@
             panel1.Controls.Add(btninicio);
             panel1.Location = new Point(28, 22);
             panel1.Name = "panel1";
-            panel1.Size = new Size(151, 702);
+            panel1.Size = new Size(151, 948);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
             // 
@@ -199,8 +201,27 @@
             // 
             paneldata.Location = new Point(179, 22);
             paneldata.Name = "paneldata";
-            paneldata.Size = new Size(1085, 702);
+            paneldata.Size = new Size(1390, 948);
             paneldata.TabIndex = 2;
+            // 
+            // button5
+            // 
+            button5.BackColor = Color.Transparent;
+            button5.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            button5.FlatAppearance.BorderSize = 0;
+            button5.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            button5.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            button5.FlatStyle = FlatStyle.Flat;
+            button5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button5.ForeColor = Color.White;
+            button5.Image = (Image)resources.GetObject("button5.Image");
+            button5.Location = new Point(3, 476);
+            button5.Name = "button5";
+            button5.Size = new Size(150, 52);
+            button5.TabIndex = 12;
+            button5.Text = "VIAJES ESPACIALES";
+            button5.TextImageRelation = TextImageRelation.ImageBeforeText;
+            button5.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 
@@ -208,7 +229,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1288, 747);
+            ClientSize = new Size(1614, 997);
             Controls.Add(panel2);
             Controls.Add(paneldata);
             Controls.Add(panel1);
@@ -232,5 +253,6 @@
         private Button button4;
         private Button button3;
         private Button button2;
+        private Button button5;
     }
 }

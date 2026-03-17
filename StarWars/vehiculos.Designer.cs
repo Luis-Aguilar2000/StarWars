@@ -45,9 +45,8 @@
             panel2.Controls.Add(dataGridView1);
             panel2.Location = new Point(-1, 71);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1083, 576);
+            panel2.Size = new Size(1389, 877);
             panel2.TabIndex = 8;
-            
             // 
             // dataGridView1
             // 
@@ -55,7 +54,7 @@
             dataGridView1.Location = new Point(11, 11);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(1061, 319);
+            dataGridView1.Size = new Size(1368, 319);
             dataGridView1.TabIndex = 0;
             // 
             // panel1
@@ -65,9 +64,8 @@
             panel1.Controls.Add(lblbuscar);
             panel1.Location = new Point(-3, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1091, 69);
+            panel1.Size = new Size(1391, 69);
             panel1.TabIndex = 7;
-            
             // 
             // btbuscar
             // 
@@ -102,7 +100,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1085, 702);
+            ClientSize = new Size(1390, 948);
             Controls.Add(panel2);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.None;
