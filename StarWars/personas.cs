@@ -22,7 +22,7 @@ namespace StarWars
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            colorpanel();
+           
         }
 
         private void colorpanel()
@@ -32,6 +32,11 @@ namespace StarWars
         }
 
         private void personas_Load(object sender, EventArgs e)
+        {
+            colorpanel();
+        }
+
+        private void btbuscar_Click(object sender, EventArgs e)
         {
 
         }

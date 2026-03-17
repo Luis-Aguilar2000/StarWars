@@ -57,5 +57,15 @@ namespace StarWars
         {
             abrirformulario(new planetas());
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            abrirformulario(new especies());
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            abrirformulario(new peliculas());
+        }
     }
 }

@@ -45,9 +45,9 @@
             panel1.Controls.Add(btbuscar);
             panel1.Controls.Add(textBuscar);
             panel1.Controls.Add(lblbuscar);
-            panel1.Location = new Point(-8, -24);
+            panel1.Location = new Point(-2, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1083, 69);
+            panel1.Size = new Size(1091, 69);
             panel1.TabIndex = 3;
             // 
             // btbuscar
@@ -58,6 +58,7 @@
             btbuscar.TabIndex = 2;
             btbuscar.Text = "Buscar";
             btbuscar.UseVisualStyleBackColor = true;
+            btbuscar.Click += btbuscar_Click;
             // 
             // textBuscar
             // 
@@ -69,9 +70,11 @@
             // lblbuscar
             // 
             lblbuscar.AutoSize = true;
+            lblbuscar.Font = new Font("Segoe UI Symbol", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblbuscar.ForeColor = Color.FromArgb(251, 204, 60);
             lblbuscar.Location = new Point(73, 22);
             lblbuscar.Name = "lblbuscar";
-            lblbuscar.Size = new Size(52, 20);
+            lblbuscar.Size = new Size(66, 23);
             lblbuscar.TabIndex = 0;
             lblbuscar.Text = "Buscar";
             // 
@@ -87,9 +90,9 @@
             // panel2
             // 
             panel2.Controls.Add(dataGridView1);
-            panel2.Location = new Point(0, 48);
+            panel2.Location = new Point(0, 71);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1083, 654);
+            panel2.Size = new Size(1083, 632);
             panel2.TabIndex = 4;
             // 
             // planetas
@@ -104,6 +107,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "planetas";
             Text = "planetas";
+            Load += planetas_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();

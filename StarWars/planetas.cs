@@ -14,5 +14,20 @@ namespace StarWars
         {
             InitializeComponent();
         }
+
+        private void btbuscar_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void colorpanel()
+        {
+            panel1.BackColor = Color.FromArgb(28, 100, 100, 100);
+            panel2.BackColor = Color.FromArgb(28, 100, 100, 100);
+        }
+
+        private void planetas_Load(object sender, EventArgs e)
+        {
+            colorpanel();
+        }
     }
 }

@@ -59,6 +59,7 @@
             btbuscar.TabIndex = 2;
             btbuscar.Text = "Buscar";
             btbuscar.UseVisualStyleBackColor = true;
+            btbuscar.Click += btbuscar_Click;
             // 
             // textBuscar
             // 
@@ -70,9 +71,12 @@
             // lblbuscar
             // 
             lblbuscar.AutoSize = true;
+            lblbuscar.BackColor = Color.Transparent;
+            lblbuscar.Font = new Font("Segoe UI Symbol", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblbuscar.ForeColor = Color.FromArgb(251, 204, 60);
             lblbuscar.Location = new Point(73, 22);
             lblbuscar.Name = "lblbuscar";
-            lblbuscar.Size = new Size(52, 20);
+            lblbuscar.Size = new Size(66, 23);
             lblbuscar.TabIndex = 0;
             lblbuscar.Text = "Buscar";
             // 
@@ -81,7 +85,7 @@
             panel2.Controls.Add(dataGridView1);
             panel2.Location = new Point(1, 71);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1083, 632);
+            panel2.Size = new Size(1083, 635);
             panel2.TabIndex = 2;
             // 
             // dataGridView1
