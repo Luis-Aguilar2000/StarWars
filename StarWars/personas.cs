@@ -51,10 +51,20 @@ namespace StarWars
 
         private async void btbuscar_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnnuevo_Click(object sender, EventArgs e)
         {
 
         }

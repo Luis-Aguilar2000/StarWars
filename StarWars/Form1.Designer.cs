@@ -30,16 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new Panel();
-            button4 = new Button();
-            button3 = new Button();
-            button2 = new Button();
-            button1 = new Button();
+            button5 = new Button();
             btnpersona = new Button();
             btninicio = new Button();
             panel2 = new Panel();
             panel4 = new Panel();
             paneldata = new Panel();
-            button5 = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
@@ -47,10 +43,6 @@
             // panel1
             // 
             panel1.Controls.Add(button5);
-            panel1.Controls.Add(button4);
-            panel1.Controls.Add(button3);
-            panel1.Controls.Add(button2);
-            panel1.Controls.Add(button1);
             panel1.Controls.Add(btnpersona);
             panel1.Controls.Add(btninicio);
             panel1.Location = new Point(28, 22);
@@ -59,85 +51,24 @@
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
             // 
-            // button4
+            // button5
             // 
-            button4.BackColor = Color.Transparent;
-            button4.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
-            button4.FlatAppearance.BorderSize = 0;
-            button4.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
-            button4.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
-            button4.FlatStyle = FlatStyle.Flat;
-            button4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button4.ForeColor = Color.White;
-            button4.Image = (Image)resources.GetObject("button4.Image");
-            button4.Location = new Point(3, 427);
-            button4.Name = "button4";
-            button4.Size = new Size(150, 52);
-            button4.TabIndex = 11;
-            button4.Text = "VEHICULOS";
-            button4.TextImageRelation = TextImageRelation.ImageBeforeText;
-            button4.UseVisualStyleBackColor = false;
-            button4.Click += button4_Click;
-            // 
-            // button3
-            // 
-            button3.BackColor = Color.Transparent;
-            button3.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
-            button3.FlatAppearance.BorderSize = 0;
-            button3.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
-            button3.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
-            button3.FlatStyle = FlatStyle.Flat;
-            button3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button3.ForeColor = Color.White;
-            button3.Image = (Image)resources.GetObject("button3.Image");
-            button3.Location = new Point(3, 369);
-            button3.Name = "button3";
-            button3.Size = new Size(150, 52);
-            button3.TabIndex = 10;
-            button3.Text = "PELICULAS";
-            button3.TextImageRelation = TextImageRelation.ImageBeforeText;
-            button3.UseVisualStyleBackColor = false;
-            button3.Click += button3_Click;
-            // 
-            // button2
-            // 
-            button2.BackColor = Color.Transparent;
-            button2.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
-            button2.FlatAppearance.BorderSize = 0;
-            button2.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
-            button2.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.ForeColor = Color.White;
-            button2.Image = (Image)resources.GetObject("button2.Image");
-            button2.Location = new Point(3, 311);
-            button2.Name = "button2";
-            button2.Size = new Size(150, 52);
-            button2.TabIndex = 9;
-            button2.Text = "PLANETAS";
-            button2.TextImageRelation = TextImageRelation.ImageBeforeText;
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click;
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.Transparent;
-            button1.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
-            button1.FlatAppearance.BorderSize = 0;
-            button1.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
-            button1.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.ForeColor = Color.White;
-            button1.Image = (Image)resources.GetObject("button1.Image");
-            button1.Location = new Point(0, 253);
-            button1.Name = "button1";
-            button1.Size = new Size(150, 52);
-            button1.TabIndex = 8;
-            button1.Text = "ESPECIES";
-            button1.TextImageRelation = TextImageRelation.ImageBeforeText;
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            button5.BackColor = Color.Transparent;
+            button5.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            button5.FlatAppearance.BorderSize = 0;
+            button5.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            button5.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            button5.FlatStyle = FlatStyle.Flat;
+            button5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button5.ForeColor = Color.White;
+            button5.Image = (Image)resources.GetObject("button5.Image");
+            button5.Location = new Point(3, 253);
+            button5.Name = "button5";
+            button5.Size = new Size(150, 52);
+            button5.TabIndex = 12;
+            button5.Text = "VIAJES ESPACIALES";
+            button5.TextImageRelation = TextImageRelation.ImageBeforeText;
+            button5.UseVisualStyleBackColor = false;
             // 
             // btnpersona
             // 
@@ -204,25 +135,6 @@
             paneldata.Size = new Size(1390, 948);
             paneldata.TabIndex = 2;
             // 
-            // button5
-            // 
-            button5.BackColor = Color.Transparent;
-            button5.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
-            button5.FlatAppearance.BorderSize = 0;
-            button5.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
-            button5.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
-            button5.FlatStyle = FlatStyle.Flat;
-            button5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button5.ForeColor = Color.White;
-            button5.Image = (Image)resources.GetObject("button5.Image");
-            button5.Location = new Point(3, 476);
-            button5.Name = "button5";
-            button5.Size = new Size(150, 52);
-            button5.TabIndex = 12;
-            button5.Text = "VIAJES ESPACIALES";
-            button5.TextImageRelation = TextImageRelation.ImageBeforeText;
-            button5.UseVisualStyleBackColor = false;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -249,10 +161,6 @@
         private Panel paneldata;
         private Button btninicio;
         private Button btnpersona;
-        private Button button1;
-        private Button button4;
-        private Button button3;
-        private Button button2;
         private Button button5;
     }
 }
