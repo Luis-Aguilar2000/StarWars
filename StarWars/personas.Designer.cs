@@ -37,6 +37,7 @@
             btbuscar = new Button();
             textBuscar = new TextBox();
             panel2 = new Panel();
+            btnimagen = new Button();
             btnnuevo = new Button();
             btneliminar = new Button();
             button1 = new Button();
@@ -44,7 +45,6 @@
             btneditar = new Button();
             lblplaneta = new Label();
             gbimage = new GroupBox();
-            btnimagen = new Button();
             pictureBox1 = new PictureBox();
             comboBox4 = new ComboBox();
             comboBox5 = new ComboBox();
@@ -124,6 +124,7 @@
             comboBox7.Name = "comboBox7";
             comboBox7.Size = new Size(131, 28);
             comboBox7.TabIndex = 38;
+            comboBox7.SelectedIndexChanged += comboBox7_SelectedIndexChanged;
             // 
             // btbuscar
             // 
@@ -184,6 +185,17 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(1392, 880);
             panel2.TabIndex = 2;
+            // 
+            // btnimagen
+            // 
+            btnimagen.Image = (Image)resources.GetObject("btnimagen.Image");
+            btnimagen.ImageAlign = ContentAlignment.MiddleLeft;
+            btnimagen.Location = new Point(929, 771);
+            btnimagen.Name = "btnimagen";
+            btnimagen.Size = new Size(168, 37);
+            btnimagen.TabIndex = 1;
+            btnimagen.Text = "Subir Archivo";
+            btnimagen.UseVisualStyleBackColor = true;
             // 
             // btnnuevo
             // 
@@ -294,17 +306,6 @@
             gbimage.TabIndex = 35;
             gbimage.TabStop = false;
             gbimage.Text = "Imagen";
-            // 
-            // btnimagen
-            // 
-            btnimagen.Image = (Image)resources.GetObject("btnimagen.Image");
-            btnimagen.ImageAlign = ContentAlignment.MiddleLeft;
-            btnimagen.Location = new Point(929, 771);
-            btnimagen.Name = "btnimagen";
-            btnimagen.Size = new Size(168, 37);
-            btnimagen.TabIndex = 1;
-            btnimagen.Text = "Subir Archivo";
-            btnimagen.UseVisualStyleBackColor = true;
             // 
             // pictureBox1
             // 
