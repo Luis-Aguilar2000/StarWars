@@ -39,7 +39,7 @@ namespace StarWars
             try
             {
                 var lista = await _service.GetPersonajesAsync();
-                
+
 
                 dtgpersona.DataSource = null;
                 dtgpersona.DataSource = lista;
@@ -71,6 +71,11 @@ namespace StarWars
         }
 
         private void comboBox7_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox16_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

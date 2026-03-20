@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="RestLibrary/RestLibrary.csproj" Id="bd77ac3f-7e6d-4c8e-8ef9-03a2da116edc" />
   <Project Path="StarWars/StarWars.csproj" />
 </Solution>

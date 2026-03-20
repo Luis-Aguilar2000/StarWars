@@ -30,12 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(personas));
             panel1 = new Panel();
-            comboBox10 = new ComboBox();
-            comboBox9 = new ComboBox();
-            comboBox8 = new ComboBox();
-            comboBox7 = new ComboBox();
+            cbtransporte = new ComboBox();
+            cbespecies = new ComboBox();
+            cbpelicula = new ComboBox();
+            cbplaneta = new ComboBox();
             btbuscar = new Button();
-            textBuscar = new TextBox();
+            txtbuscar = new TextBox();
             panel2 = new Panel();
             btnimagen = new Button();
             btnnuevo = new Button();
@@ -43,35 +43,35 @@
             button1 = new Button();
             lblname = new Label();
             btneditar = new Button();
-            lblplaneta = new Label();
             gbimage = new GroupBox();
             pictureBox1 = new PictureBox();
-            comboBox4 = new ComboBox();
-            comboBox5 = new ComboBox();
+            dtgpersona = new DataGridView();
+            label1 = new Label();
+            textBox1 = new TextBox();
+            dateTimePicker1 = new DateTimePicker();
+            label7 = new Label();
+            textBox6 = new TextBox();
+            label6 = new Label();
+            textBox5 = new TextBox();
+            label5 = new Label();
+            textBox4 = new TextBox();
+            label4 = new Label();
+            textBox3 = new TextBox();
+            label3 = new Label();
+            textBox2 = new TextBox();
+            label2 = new Label();
+            label8 = new Label();
             comboBox6 = new ComboBox();
+            comboBox5 = new ComboBox();
+            comboBox4 = new ComboBox();
             comboBox3 = new ComboBox();
             comboBox2 = new ComboBox();
             comboBox1 = new ComboBox();
-            lbltransporte = new Label();
-            lblpelicula = new Label();
-            lblespecie = new Label();
-            lblidioma = new Label();
-            lblgenero = new Label();
-            dtpcumpleaños = new DateTimePicker();
-            lblcumpleaños = new Label();
-            txtcpelo = new TextBox();
-            lblcpelo = new Label();
-            txtcojos = new TextBox();
-            lblcojos = new Label();
-            txtcpiel = new TextBox();
-            lblcpiel = new Label();
-            txtmasa = new TextBox();
-            lblmass = new Label();
-            txtaltura = new TextBox();
-            lblaltura = new Label();
-            txtnombre = new TextBox();
-            lblnombre = new Label();
-            dtgpersona = new DataGridView();
+            label9 = new Label();
+            label10 = new Label();
+            label11 = new Label();
+            label12 = new Label();
+            label13 = new Label();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             gbimage.SuspendLayout();
@@ -81,50 +81,50 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(comboBox10);
-            panel1.Controls.Add(comboBox9);
-            panel1.Controls.Add(comboBox8);
-            panel1.Controls.Add(comboBox7);
+            panel1.Controls.Add(cbtransporte);
+            panel1.Controls.Add(cbespecies);
+            panel1.Controls.Add(cbpelicula);
+            panel1.Controls.Add(cbplaneta);
             panel1.Controls.Add(btbuscar);
-            panel1.Controls.Add(textBuscar);
+            panel1.Controls.Add(txtbuscar);
             panel1.Location = new Point(1, 1);
             panel1.Name = "panel1";
             panel1.Size = new Size(1392, 69);
             panel1.TabIndex = 1;
             panel1.Paint += panel1_Paint;
             // 
-            // comboBox10
+            // cbtransporte
             // 
-            comboBox10.FormattingEnabled = true;
-            comboBox10.Location = new Point(450, 24);
-            comboBox10.Name = "comboBox10";
-            comboBox10.Size = new Size(131, 28);
-            comboBox10.TabIndex = 41;
+            cbtransporte.FormattingEnabled = true;
+            cbtransporte.Location = new Point(450, 24);
+            cbtransporte.Name = "cbtransporte";
+            cbtransporte.Size = new Size(131, 28);
+            cbtransporte.TabIndex = 41;
             // 
-            // comboBox9
+            // cbespecies
             // 
-            comboBox9.FormattingEnabled = true;
-            comboBox9.Location = new Point(313, 24);
-            comboBox9.Name = "comboBox9";
-            comboBox9.Size = new Size(131, 28);
-            comboBox9.TabIndex = 40;
+            cbespecies.FormattingEnabled = true;
+            cbespecies.Location = new Point(313, 24);
+            cbespecies.Name = "cbespecies";
+            cbespecies.Size = new Size(131, 28);
+            cbespecies.TabIndex = 40;
             // 
-            // comboBox8
+            // cbpelicula
             // 
-            comboBox8.FormattingEnabled = true;
-            comboBox8.Location = new Point(176, 24);
-            comboBox8.Name = "comboBox8";
-            comboBox8.Size = new Size(131, 28);
-            comboBox8.TabIndex = 39;
+            cbpelicula.FormattingEnabled = true;
+            cbpelicula.Location = new Point(176, 24);
+            cbpelicula.Name = "cbpelicula";
+            cbpelicula.Size = new Size(131, 28);
+            cbpelicula.TabIndex = 39;
             // 
-            // comboBox7
+            // cbplaneta
             // 
-            comboBox7.FormattingEnabled = true;
-            comboBox7.Location = new Point(39, 22);
-            comboBox7.Name = "comboBox7";
-            comboBox7.Size = new Size(131, 28);
-            comboBox7.TabIndex = 38;
-            comboBox7.SelectedIndexChanged += comboBox7_SelectedIndexChanged;
+            cbplaneta.FormattingEnabled = true;
+            cbplaneta.Location = new Point(39, 22);
+            cbplaneta.Name = "cbplaneta";
+            cbplaneta.Size = new Size(131, 28);
+            cbplaneta.TabIndex = 38;
+            cbplaneta.SelectedIndexChanged += comboBox7_SelectedIndexChanged;
             // 
             // btbuscar
             // 
@@ -136,50 +136,50 @@
             btbuscar.UseVisualStyleBackColor = true;
             btbuscar.Click += btbuscar_Click;
             // 
-            // textBuscar
+            // txtbuscar
             // 
-            textBuscar.BackColor = SystemColors.Window;
-            textBuscar.BorderStyle = BorderStyle.FixedSingle;
-            textBuscar.Location = new Point(951, 24);
-            textBuscar.Name = "textBuscar";
-            textBuscar.Size = new Size(316, 27);
-            textBuscar.TabIndex = 1;
+            txtbuscar.BackColor = SystemColors.Window;
+            txtbuscar.BorderStyle = BorderStyle.FixedSingle;
+            txtbuscar.Location = new Point(951, 24);
+            txtbuscar.Name = "txtbuscar";
+            txtbuscar.Size = new Size(316, 27);
+            txtbuscar.TabIndex = 1;
             // 
             // panel2
             // 
+            panel2.Controls.Add(label8);
+            panel2.Controls.Add(comboBox6);
+            panel2.Controls.Add(comboBox5);
+            panel2.Controls.Add(comboBox4);
+            panel2.Controls.Add(comboBox3);
+            panel2.Controls.Add(comboBox2);
+            panel2.Controls.Add(comboBox1);
+            panel2.Controls.Add(label9);
+            panel2.Controls.Add(label10);
+            panel2.Controls.Add(label11);
+            panel2.Controls.Add(label12);
+            panel2.Controls.Add(label13);
+            panel2.Controls.Add(dateTimePicker1);
+            panel2.Controls.Add(label7);
+            panel2.Controls.Add(textBox6);
+            panel2.Controls.Add(label6);
+            panel2.Controls.Add(textBox5);
+            panel2.Controls.Add(label5);
+            panel2.Controls.Add(textBox4);
+            panel2.Controls.Add(label4);
+            panel2.Controls.Add(textBox3);
+            panel2.Controls.Add(label3);
+            panel2.Controls.Add(textBox2);
+            panel2.Controls.Add(label2);
+            panel2.Controls.Add(textBox1);
+            panel2.Controls.Add(label1);
             panel2.Controls.Add(btnimagen);
             panel2.Controls.Add(btnnuevo);
             panel2.Controls.Add(btneliminar);
             panel2.Controls.Add(button1);
             panel2.Controls.Add(lblname);
             panel2.Controls.Add(btneditar);
-            panel2.Controls.Add(lblplaneta);
             panel2.Controls.Add(gbimage);
-            panel2.Controls.Add(comboBox4);
-            panel2.Controls.Add(comboBox5);
-            panel2.Controls.Add(comboBox6);
-            panel2.Controls.Add(comboBox3);
-            panel2.Controls.Add(comboBox2);
-            panel2.Controls.Add(comboBox1);
-            panel2.Controls.Add(lbltransporte);
-            panel2.Controls.Add(lblpelicula);
-            panel2.Controls.Add(lblespecie);
-            panel2.Controls.Add(lblidioma);
-            panel2.Controls.Add(lblgenero);
-            panel2.Controls.Add(dtpcumpleaños);
-            panel2.Controls.Add(lblcumpleaños);
-            panel2.Controls.Add(txtcpelo);
-            panel2.Controls.Add(lblcpelo);
-            panel2.Controls.Add(txtcojos);
-            panel2.Controls.Add(lblcojos);
-            panel2.Controls.Add(txtcpiel);
-            panel2.Controls.Add(lblcpiel);
-            panel2.Controls.Add(txtmasa);
-            panel2.Controls.Add(lblmass);
-            panel2.Controls.Add(txtaltura);
-            panel2.Controls.Add(lblaltura);
-            panel2.Controls.Add(txtnombre);
-            panel2.Controls.Add(lblnombre);
             panel2.Controls.Add(dtgpersona);
             panel2.Location = new Point(1, 71);
             panel2.Name = "panel2";
@@ -282,18 +282,6 @@
             btneditar.TextAlign = ContentAlignment.MiddleRight;
             btneditar.UseVisualStyleBackColor = false;
             // 
-            // lblplaneta
-            // 
-            lblplaneta.AutoSize = true;
-            lblplaneta.BackColor = Color.Transparent;
-            lblplaneta.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblplaneta.ForeColor = Color.FromArgb(251, 204, 60);
-            lblplaneta.Location = new Point(441, 586);
-            lblplaneta.Name = "lblplaneta";
-            lblplaneta.Size = new Size(69, 20);
-            lblplaneta.TabIndex = 37;
-            lblplaneta.Text = "Planeta:";
-            // 
             // gbimage
             // 
             gbimage.BackColor = Color.Transparent;
@@ -315,260 +303,6 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // comboBox4
-            // 
-            comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new Point(571, 667);
-            comboBox4.Name = "comboBox4";
-            comboBox4.Size = new Size(241, 28);
-            comboBox4.TabIndex = 34;
-            // 
-            // comboBox5
-            // 
-            comboBox5.FormattingEnabled = true;
-            comboBox5.Location = new Point(571, 623);
-            comboBox5.Name = "comboBox5";
-            comboBox5.Size = new Size(241, 28);
-            comboBox5.TabIndex = 33;
-            // 
-            // comboBox6
-            // 
-            comboBox6.FormattingEnabled = true;
-            comboBox6.Location = new Point(571, 583);
-            comboBox6.Name = "comboBox6";
-            comboBox6.Size = new Size(241, 28);
-            comboBox6.TabIndex = 32;
-            // 
-            // comboBox3
-            // 
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(571, 536);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(241, 28);
-            comboBox3.TabIndex = 31;
-            // 
-            // comboBox2
-            // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(571, 492);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(241, 28);
-            comboBox2.TabIndex = 30;
-            // 
-            // comboBox1
-            // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(571, 452);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(241, 28);
-            comboBox1.TabIndex = 29;
-            // 
-            // lbltransporte
-            // 
-            lbltransporte.AutoSize = true;
-            lbltransporte.BackColor = Color.Transparent;
-            lbltransporte.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbltransporte.ForeColor = Color.FromArgb(251, 204, 60);
-            lbltransporte.Location = new Point(441, 669);
-            lbltransporte.Name = "lbltransporte";
-            lbltransporte.Size = new Size(83, 20);
-            lbltransporte.TabIndex = 27;
-            lbltransporte.Text = "Vehiculo: ";
-            // 
-            // lblpelicula
-            // 
-            lblpelicula.AutoSize = true;
-            lblpelicula.BackColor = Color.Transparent;
-            lblpelicula.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblpelicula.ForeColor = Color.FromArgb(251, 204, 60);
-            lblpelicula.Location = new Point(441, 625);
-            lblpelicula.Name = "lblpelicula";
-            lblpelicula.Size = new Size(79, 20);
-            lblpelicula.TabIndex = 25;
-            lblpelicula.Text = "Peliculas:";
-            // 
-            // lblespecie
-            // 
-            lblespecie.AutoSize = true;
-            lblespecie.BackColor = Color.Transparent;
-            lblespecie.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblespecie.ForeColor = Color.FromArgb(251, 204, 60);
-            lblespecie.Location = new Point(441, 538);
-            lblespecie.Name = "lblespecie";
-            lblespecie.Size = new Size(70, 20);
-            lblespecie.TabIndex = 21;
-            lblespecie.Text = "Especie:";
-            // 
-            // lblidioma
-            // 
-            lblidioma.AutoSize = true;
-            lblidioma.BackColor = Color.Transparent;
-            lblidioma.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblidioma.ForeColor = Color.FromArgb(251, 204, 60);
-            lblidioma.Location = new Point(441, 494);
-            lblidioma.Name = "lblidioma";
-            lblidioma.Size = new Size(66, 20);
-            lblidioma.TabIndex = 19;
-            lblidioma.Text = "Idioma:";
-            lblidioma.Click += label5_Click;
-            // 
-            // lblgenero
-            // 
-            lblgenero.AutoSize = true;
-            lblgenero.BackColor = Color.Transparent;
-            lblgenero.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblgenero.ForeColor = Color.FromArgb(251, 204, 60);
-            lblgenero.Location = new Point(441, 452);
-            lblgenero.Name = "lblgenero";
-            lblgenero.Size = new Size(67, 20);
-            lblgenero.TabIndex = 17;
-            lblgenero.Text = "Genero:";
-            // 
-            // dtpcumpleaños
-            // 
-            dtpcumpleaños.Location = new Point(171, 709);
-            dtpcumpleaños.Name = "dtpcumpleaños";
-            dtpcumpleaños.Size = new Size(241, 27);
-            dtpcumpleaños.TabIndex = 16;
-            // 
-            // lblcumpleaños
-            // 
-            lblcumpleaños.AutoSize = true;
-            lblcumpleaños.BackColor = Color.Transparent;
-            lblcumpleaños.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblcumpleaños.ForeColor = Color.FromArgb(251, 204, 60);
-            lblcumpleaños.Location = new Point(41, 709);
-            lblcumpleaños.Name = "lblcumpleaños";
-            lblcumpleaños.Size = new Size(105, 20);
-            lblcumpleaños.TabIndex = 15;
-            lblcumpleaños.Text = "Cumpleaños:";
-            // 
-            // txtcpelo
-            // 
-            txtcpelo.BackColor = SystemColors.Window;
-            txtcpelo.BorderStyle = BorderStyle.FixedSingle;
-            txtcpelo.Location = new Point(171, 665);
-            txtcpelo.Name = "txtcpelo";
-            txtcpelo.Size = new Size(241, 27);
-            txtcpelo.TabIndex = 14;
-            // 
-            // lblcpelo
-            // 
-            lblcpelo.AutoSize = true;
-            lblcpelo.BackColor = Color.Transparent;
-            lblcpelo.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblcpelo.ForeColor = Color.FromArgb(251, 204, 60);
-            lblcpelo.Location = new Point(41, 667);
-            lblcpelo.Name = "lblcpelo";
-            lblcpelo.Size = new Size(116, 20);
-            lblcpelo.TabIndex = 13;
-            lblcpelo.Text = "Color de Pelo:";
-            // 
-            // txtcojos
-            // 
-            txtcojos.BackColor = SystemColors.Window;
-            txtcojos.BorderStyle = BorderStyle.FixedSingle;
-            txtcojos.Location = new Point(171, 621);
-            txtcojos.Name = "txtcojos";
-            txtcojos.Size = new Size(241, 27);
-            txtcojos.TabIndex = 12;
-            // 
-            // lblcojos
-            // 
-            lblcojos.AutoSize = true;
-            lblcojos.BackColor = Color.Transparent;
-            lblcojos.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblcojos.ForeColor = Color.FromArgb(251, 204, 60);
-            lblcojos.Location = new Point(41, 623);
-            lblcojos.Name = "lblcojos";
-            lblcojos.Size = new Size(117, 20);
-            lblcojos.TabIndex = 11;
-            lblcojos.Text = "Color de Ojos:";
-            // 
-            // txtcpiel
-            // 
-            txtcpiel.BackColor = SystemColors.Window;
-            txtcpiel.BorderStyle = BorderStyle.FixedSingle;
-            txtcpiel.Location = new Point(171, 579);
-            txtcpiel.Name = "txtcpiel";
-            txtcpiel.Size = new Size(241, 27);
-            txtcpiel.TabIndex = 10;
-            // 
-            // lblcpiel
-            // 
-            lblcpiel.AutoSize = true;
-            lblcpiel.BackColor = Color.Transparent;
-            lblcpiel.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblcpiel.ForeColor = Color.FromArgb(251, 204, 60);
-            lblcpiel.Location = new Point(41, 581);
-            lblcpiel.Name = "lblcpiel";
-            lblcpiel.Size = new Size(111, 20);
-            lblcpiel.TabIndex = 9;
-            lblcpiel.Text = "Color de Piel:";
-            // 
-            // txtmasa
-            // 
-            txtmasa.BackColor = SystemColors.Window;
-            txtmasa.BorderStyle = BorderStyle.FixedSingle;
-            txtmasa.Location = new Point(171, 534);
-            txtmasa.Name = "txtmasa";
-            txtmasa.Size = new Size(241, 27);
-            txtmasa.TabIndex = 8;
-            // 
-            // lblmass
-            // 
-            lblmass.AutoSize = true;
-            lblmass.BackColor = Color.Transparent;
-            lblmass.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblmass.ForeColor = Color.FromArgb(251, 204, 60);
-            lblmass.Location = new Point(41, 536);
-            lblmass.Name = "lblmass";
-            lblmass.Size = new Size(57, 20);
-            lblmass.TabIndex = 7;
-            lblmass.Text = "Masa: ";
-            // 
-            // txtaltura
-            // 
-            txtaltura.BackColor = SystemColors.Window;
-            txtaltura.BorderStyle = BorderStyle.FixedSingle;
-            txtaltura.Location = new Point(171, 490);
-            txtaltura.Name = "txtaltura";
-            txtaltura.Size = new Size(241, 27);
-            txtaltura.TabIndex = 6;
-            // 
-            // lblaltura
-            // 
-            lblaltura.AutoSize = true;
-            lblaltura.BackColor = Color.Transparent;
-            lblaltura.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblaltura.ForeColor = Color.FromArgb(251, 204, 60);
-            lblaltura.Location = new Point(41, 492);
-            lblaltura.Name = "lblaltura";
-            lblaltura.Size = new Size(59, 20);
-            lblaltura.TabIndex = 5;
-            lblaltura.Text = "Altura:";
-            // 
-            // txtnombre
-            // 
-            txtnombre.BackColor = SystemColors.Window;
-            txtnombre.BorderStyle = BorderStyle.FixedSingle;
-            txtnombre.Location = new Point(171, 448);
-            txtnombre.Name = "txtnombre";
-            txtnombre.Size = new Size(241, 27);
-            txtnombre.TabIndex = 4;
-            // 
-            // lblnombre
-            // 
-            lblnombre.AutoSize = true;
-            lblnombre.BackColor = Color.Transparent;
-            lblnombre.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblnombre.ForeColor = Color.FromArgb(251, 204, 60);
-            lblnombre.Location = new Point(41, 450);
-            lblnombre.Name = "lblnombre";
-            lblnombre.Size = new Size(74, 20);
-            lblnombre.TabIndex = 3;
-            lblnombre.Text = "Nombre:";
-            // 
             // dtgpersona
             // 
             dtgpersona.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -577,6 +311,272 @@
             dtgpersona.RowHeadersWidth = 51;
             dtgpersona.Size = new Size(1366, 339);
             dtgpersona.TabIndex = 0;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.FromArgb(251, 204, 60);
+            label1.Location = new Point(41, 452);
+            label1.Name = "label1";
+            label1.Size = new Size(74, 20);
+            label1.TabIndex = 46;
+            label1.Text = "Nombre:";
+            // 
+            // textBox1
+            // 
+            textBox1.BackColor = SystemColors.Window;
+            textBox1.BorderStyle = BorderStyle.FixedSingle;
+            textBox1.Location = new Point(171, 445);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(241, 27);
+            textBox1.TabIndex = 47;
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Location = new Point(171, 709);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(241, 27);
+            dateTimePicker1.TabIndex = 59;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.BackColor = Color.Transparent;
+            label7.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.ForeColor = Color.FromArgb(251, 204, 60);
+            label7.Location = new Point(41, 709);
+            label7.Name = "label7";
+            label7.Size = new Size(105, 20);
+            label7.TabIndex = 58;
+            label7.Text = "Cumpleaños:";
+            // 
+            // textBox6
+            // 
+            textBox6.BackColor = SystemColors.Window;
+            textBox6.BorderStyle = BorderStyle.FixedSingle;
+            textBox6.Location = new Point(171, 665);
+            textBox6.Name = "textBox6";
+            textBox6.Size = new Size(241, 27);
+            textBox6.TabIndex = 57;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.BackColor = Color.Transparent;
+            label6.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.ForeColor = Color.FromArgb(251, 204, 60);
+            label6.Location = new Point(41, 667);
+            label6.Name = "label6";
+            label6.Size = new Size(116, 20);
+            label6.TabIndex = 56;
+            label6.Text = "Color de Pelo:";
+            // 
+            // textBox5
+            // 
+            textBox5.BackColor = SystemColors.Window;
+            textBox5.BorderStyle = BorderStyle.FixedSingle;
+            textBox5.Location = new Point(171, 621);
+            textBox5.Name = "textBox5";
+            textBox5.Size = new Size(241, 27);
+            textBox5.TabIndex = 55;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.BackColor = Color.Transparent;
+            label5.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.ForeColor = Color.FromArgb(251, 204, 60);
+            label5.Location = new Point(41, 623);
+            label5.Name = "label5";
+            label5.Size = new Size(117, 20);
+            label5.TabIndex = 54;
+            label5.Text = "Color de Ojos:";
+            // 
+            // textBox4
+            // 
+            textBox4.BackColor = SystemColors.Window;
+            textBox4.BorderStyle = BorderStyle.FixedSingle;
+            textBox4.Location = new Point(171, 579);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(241, 27);
+            textBox4.TabIndex = 53;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.FromArgb(251, 204, 60);
+            label4.Location = new Point(41, 581);
+            label4.Name = "label4";
+            label4.Size = new Size(111, 20);
+            label4.TabIndex = 52;
+            label4.Text = "Color de Piel:";
+            // 
+            // textBox3
+            // 
+            textBox3.BackColor = SystemColors.Window;
+            textBox3.BorderStyle = BorderStyle.FixedSingle;
+            textBox3.Location = new Point(171, 534);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(241, 27);
+            textBox3.TabIndex = 51;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.BackColor = Color.Transparent;
+            label3.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.ForeColor = Color.FromArgb(251, 204, 60);
+            label3.Location = new Point(41, 536);
+            label3.Name = "label3";
+            label3.Size = new Size(57, 20);
+            label3.TabIndex = 50;
+            label3.Text = "Masa: ";
+            // 
+            // textBox2
+            // 
+            textBox2.BackColor = SystemColors.Window;
+            textBox2.BorderStyle = BorderStyle.FixedSingle;
+            textBox2.Location = new Point(171, 490);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(241, 27);
+            textBox2.TabIndex = 49;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.ForeColor = Color.FromArgb(251, 204, 60);
+            label2.Location = new Point(41, 492);
+            label2.Name = "label2";
+            label2.Size = new Size(59, 20);
+            label2.TabIndex = 48;
+            label2.Text = "Altura:";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.BackColor = Color.Transparent;
+            label8.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.ForeColor = Color.FromArgb(251, 204, 60);
+            label8.Location = new Point(441, 579);
+            label8.Name = "label8";
+            label8.Size = new Size(69, 20);
+            label8.TabIndex = 71;
+            label8.Text = "Planeta:";
+            // 
+            // comboBox6
+            // 
+            comboBox6.FormattingEnabled = true;
+            comboBox6.Location = new Point(571, 660);
+            comboBox6.Name = "comboBox6";
+            comboBox6.Size = new Size(241, 28);
+            comboBox6.TabIndex = 70;
+            // 
+            // comboBox5
+            // 
+            comboBox5.FormattingEnabled = true;
+            comboBox5.Location = new Point(571, 616);
+            comboBox5.Name = "comboBox5";
+            comboBox5.Size = new Size(241, 28);
+            comboBox5.TabIndex = 69;
+            // 
+            // comboBox4
+            // 
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(571, 576);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(241, 28);
+            comboBox4.TabIndex = 68;
+            // 
+            // comboBox3
+            // 
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Location = new Point(571, 529);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new Size(241, 28);
+            comboBox3.TabIndex = 67;
+            // 
+            // comboBox2
+            // 
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Location = new Point(571, 485);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new Size(241, 28);
+            comboBox2.TabIndex = 66;
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(571, 445);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(241, 28);
+            comboBox1.TabIndex = 65;
+            comboBox1.SelectedIndexChanged += comboBox16_SelectedIndexChanged;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.BackColor = Color.Transparent;
+            label9.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label9.ForeColor = Color.FromArgb(251, 204, 60);
+            label9.Location = new Point(441, 662);
+            label9.Name = "label9";
+            label9.Size = new Size(83, 20);
+            label9.TabIndex = 64;
+            label9.Text = "Vehiculo: ";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.BackColor = Color.Transparent;
+            label10.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label10.ForeColor = Color.FromArgb(251, 204, 60);
+            label10.Location = new Point(441, 618);
+            label10.Name = "label10";
+            label10.Size = new Size(79, 20);
+            label10.TabIndex = 63;
+            label10.Text = "Peliculas:";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.BackColor = Color.Transparent;
+            label11.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label11.ForeColor = Color.FromArgb(251, 204, 60);
+            label11.Location = new Point(441, 531);
+            label11.Name = "label11";
+            label11.Size = new Size(70, 20);
+            label11.TabIndex = 62;
+            label11.Text = "Especie:";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.BackColor = Color.Transparent;
+            label12.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label12.ForeColor = Color.FromArgb(251, 204, 60);
+            label12.Location = new Point(441, 487);
+            label12.Name = "label12";
+            label12.Size = new Size(66, 20);
+            label12.TabIndex = 61;
+            label12.Text = "Idioma:";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.BackColor = Color.Transparent;
+            label13.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label13.ForeColor = Color.FromArgb(251, 204, 60);
+            label13.Location = new Point(441, 445);
+            label13.Name = "label13";
+            label13.Size = new Size(67, 20);
+            label13.TabIndex = 60;
+            label13.Text = "Genero:";
             // 
             // personas
             // 
@@ -603,52 +603,47 @@
 
         #endregion
         private Panel panel1;
-        private TextBox textBuscar;
+        private TextBox txtbuscar;
         private Button btbuscar;
         private Panel panel2;
         private DataGridView dtgpersona;
-        private TextBox txtnombre;
-        private Label lblnombre;
-        private TextBox txtmasa;
-        private Label lblmass;
-        private TextBox txtaltura;
-        private Label lblaltura;
-        private Label lblcumpleaños;
-        private TextBox txtcpelo;
-        private Label lblcpelo;
-        private TextBox txtcojos;
-        private Label lblcojos;
-        private TextBox txtcpiel;
-        private Label lblcpiel;
-        private DateTimePicker dtpcumpleaños;
-        private TextBox textBox1;
-        private Label lbltransporte;
-        private TextBox textBox2;
-        private Label lblpelicula;
-        private TextBox textBox3;
-        private TextBox textBox4;
-        private Label lblespecie;
+        private TextBox textBox6;
         private TextBox textBox5;
-        private Label lblidioma;
-        private Label lblgenero;
-        private ComboBox comboBox1;
-        private ComboBox comboBox4;
-        private ComboBox comboBox5;
-        private ComboBox comboBox6;
-        private ComboBox comboBox3;
-        private ComboBox comboBox2;
+        private TextBox textBox4;
+        private TextBox textBox3;
+        private TextBox textBox2;
         private GroupBox gbimage;
         private Button btnimagen;
         private PictureBox pictureBox1;
-        private Label lblplaneta;
-        private ComboBox comboBox10;
-        private ComboBox comboBox9;
-        private ComboBox comboBox8;
-        private ComboBox comboBox7;
+        private ComboBox cbtransporte;
+        private ComboBox cbespecies;
+        private ComboBox cbpelicula;
+        private ComboBox cbplaneta;
         private Button btneditar;
         private Label lblname;
         private Button btnnuevo;
         private Button btneliminar;
         private Button button1;
+        private TextBox textBox1;
+        private Label label1;
+        private Label label8;
+        private ComboBox comboBox6;
+        private ComboBox comboBox5;
+        private ComboBox comboBox4;
+        private ComboBox comboBox3;
+        private ComboBox comboBox2;
+        private ComboBox comboBox1;
+        private Label label9;
+        private Label label10;
+        private Label label11;
+        private Label label12;
+        private Label label13;
+        private DateTimePicker dateTimePicker1;
+        private Label label7;
+        private Label label6;
+        private Label label5;
+        private Label label4;
+        private Label label3;
+        private Label label2;
     }
 }
