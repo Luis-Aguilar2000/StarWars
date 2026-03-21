@@ -20,17 +20,6 @@ namespace StarWars
         {
             colorpanel();
 
-            try
-            {
-                var lista = await _service.GetPersonajesAsync();
-
-                dtgpersona.DataSource = null;
-                dtgpersona.DataSource = lista;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al cargar datos ❌\n" + ex.Message);
-            }
         }
 
         // METODOS
