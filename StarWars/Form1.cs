@@ -1,11 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using StarWars.Services;
+using RestLibrary.Interfaces;
+using StarWars.Data;
+using StarWars.Dtos;
+//using StarWars.Services;
 
 namespace StarWars
 {
     public partial class Form1 : Form
     {
-        private readonly StarWarsService _service = new StarWarsService();
+        private readonly ApplicationDbContext _context;
+        private readonly IRestApi _restApi;
 
         public Form1()
         {
@@ -18,19 +22,21 @@ namespace StarWars
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            colorpanel();
+            var result = await _restApi.Get<List<PeliculaJsonModel>>("https://swapi.dev/api/", "films");
 
-            try
-            {
-                var lista = await _service.GetPersonajesAsync();
+            //colorpanel();
 
-                dtgpersona.DataSource = null;
-                dtgpersona.DataSource = lista;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al cargar datos ❌\n" + ex.Message);
-            }
+            //try
+            //{
+            //    var lista = await _service.GetPersonajesAsync();
+
+            //    dtgpersona.DataSource = null;
+            //    dtgpersona.DataSource = lista;
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Error al cargar datos ❌\n" + ex.Message);
+            //}
         }
 
         // METODOS

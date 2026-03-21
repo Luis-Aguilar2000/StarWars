@@ -1,5 +1,6 @@
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using StarWars.Data;
 
 namespace StarWars
 {
@@ -16,6 +17,7 @@ namespace StarWars
                 .ConfigureServices((context, services) =>
                 {
                     services.AddHttpClient();
+                    services.AddDbContext<ApplicationDbContext>(op => op.UseSqlServer("Server=HM-2518;Database=HM202401;Trusted_Connection=true;MultipleActiveResultSets=true;TrustServerCertificate=true;"))
                     services.AddTransient<Form1>();
                 })
                 .Build();
