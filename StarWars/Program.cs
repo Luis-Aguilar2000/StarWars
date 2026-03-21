@@ -5,29 +5,23 @@ namespace StarWars
 {
     internal static class Program
     {
-        public static IHost? AppHost { get; private set; } 
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
+        public static IHost? AppHost { get; private set; }
+
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
             AppHost = Host.CreateDefaultBuilder()
-                .ConfigureServices(context, Services =>
-            {
-
-                Services.AddHttpClient();
-                Services.Addtransient<Form1>();
-
-            })
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddHttpClient();
+                    services.AddTransient<Form1>();
+                })
                 .Build();
 
             var mainform = AppHost.Services.GetRequiredService<Form1>();
-            Application.Run(new Form1());
+            Application.Run(mainform);
         }
     }
 }

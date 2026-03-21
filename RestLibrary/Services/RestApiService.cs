@@ -9,9 +9,22 @@ namespace RestLibrary.Services
     {
 
         private readonly HttpClient _httpClient;
-        public Task Get(string url, string endpoint = "")
+
+        public RestApiService(HttpClient httpClient)
         {
-            throw new NotImplementedException();
+            _httpClient = httpClient;
+        }
+        public async Task Get(string url, string endpoint = "")
+        {
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.RequestUri = new Uri($"{url}{endpoint ?? string.Empty}");
+
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            throw new Exception(result);
         }
     }
 }
