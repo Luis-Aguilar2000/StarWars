@@ -1,6 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
+<<<<<<< HEAD
 using Microsoft.Extensions.Hosting;
 using StarWars.Data;
+=======
+using StarWars.Data;
+using RestLibrary.Interfaces;
+using RestLibrary.Services;
+using Microsoft.EntityFrameworkCore;
+>>>>>>> 262c276b4f196c76bc000a93811b6d09b5424bc4
 
 namespace StarWars
 {
@@ -16,8 +23,17 @@ namespace StarWars
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
+                    services.AddTransient<IRestApi, RestApiService>();
                     services.AddHttpClient();
-                    services.AddDbContext<ApplicationDbContext>(op => op.UseSqlServer("Server=HM-2518;Database=HM202401;Trusted_Connection=true;MultipleActiveResultSets=true;TrustServerCertificate=true;"))
+
+                   
+
+                
+                    services.AddDbContext<ApplicationDbContext>(opt =>
+                        opt.UseSqlServer("Server=AGUILAR;Database=MNT_USERS;Trusted_Connection=true;MultipleActiveResultsets=true;TrustServerCertificate=true")
+                    );
+
+
                     services.AddTransient<Form1>();
                 })
                 .Build();

@@ -37,6 +37,7 @@ namespace StarWars
             //{
             //    MessageBox.Show("Error al cargar datos ❌\n" + ex.Message);
             //}
+
         }
 
         // METODOS
