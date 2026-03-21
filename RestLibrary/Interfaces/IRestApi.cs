@@ -6,7 +6,7 @@ namespace RestLibrary.Interfaces
 {
     public interface IRestApi
     {
-        public Task Get(string url, string endpoint = "");
+       Task<T> Get<T>(string url, string endpoint = "") where T : class;
     }
 }
   

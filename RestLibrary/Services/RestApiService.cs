@@ -1,4 +1,6 @@
-﻿using RestLibrary.Interfaces;
+﻿
+using Newtonsoft.Json;
+using RestLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,17 +16,18 @@ namespace RestLibrary.Services
         {
             _httpClient = httpClient;
         }
-        public async Task Get(string url, string endpoint = "")
+        public async Task<T> Get<T>(string url, string endpoint = "") where T : class
         {
             HttpRequestMessage request = new HttpRequestMessage();
+            request.Method = HttpMethod.Get;
             request.RequestUri = new Uri($"{url}{endpoint ?? string.Empty}");
 
             var response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
-            string result = await response.Content.ReadAsStringAsync();
+            string content = await response.Content.ReadAsStringAsync();
 
-            throw new Exception(result);
+            return JsonConvert.DeserializeObject<T>(content);
         }
     }
 }

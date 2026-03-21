@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using RestLibrary.Interfaces;
 using StarWars.Data;
 using StarWars.Dtos;
-//using StarWars.Services;
 
 namespace StarWars
 {
@@ -11,9 +10,11 @@ namespace StarWars
         private readonly ApplicationDbContext _context;
         private readonly IRestApi _restApi;
 
-        public Form1()
+        public Form1(ApplicationDbContext context, IRestApi restApi)
         {
             InitializeComponent();
+            _context = context;
+            _restApi = restApi;
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -22,25 +23,22 @@ namespace StarWars
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            var result = await _restApi.Get<List<PeliculaJsonModel>>("https://swapi.dev/api/", "films");
+            colorpanel();
 
-            //colorpanel();
+            try
+            {
+                var result = await _restApi.Get<PeopleResponse<PersonajeJsonModel>>(
+                    "https://swapi.dev/api/",
+                    "people/"
+                );
 
-            //try
-            //{
-            //    var lista = await _service.GetPersonajesAsync();
-
-            //    dtgpersona.DataSource = null;
-            //    dtgpersona.DataSource = lista;
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Error al cargar datos ❌\n" + ex.Message);
-            //}
-
+                dtgpersona.DataSource = result.Results;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error:\n" + ex.Message);
+            }
         }
-
-        // METODOS
         private void colorpanel()
         {
             panel1.BackColor = Color.FromArgb(60, 100, 100, 100);
@@ -50,7 +48,6 @@ namespace StarWars
 
         private void btnpersona_Click(object sender, EventArgs e)
         {
-
         }
 
         private void btninicio_Click(object sender, EventArgs e)
