@@ -46,8 +46,22 @@ namespace StarWars
             paneldata.BackColor = Color.FromArgb(28, 100, 100, 100);
         }
 
-        private void btnpersona_Click(object sender, EventArgs e)
+        private async void btnpersona_Click(object sender, EventArgs e)
         {
+            try
+            {
+                var result = await _restApi.Get<PeopleResponse<PersonajeJsonModel>>(
+                    "https://swapi.dev/api/",
+                    "people/"
+                );
+
+                dtgpersona.DataSource = null;
+                dtgpersona.DataSource = result.Results;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error:\n" + ex.Message);
+            }
         }
 
         private void btninicio_Click(object sender, EventArgs e)
@@ -63,12 +77,31 @@ namespace StarWars
         {
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private async void button3_Click(object sender, EventArgs e)
         {
+           
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+        }
+
+        private async void btnPeliculas_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = await _restApi.Get<PeopleResponse<PeliculaJsonModel>>(
+                    "https://swapi.dev/api/",
+                    "films/"
+                );
+
+                dtgpersona.DataSource = null;
+                dtgpersona.DataSource = result.Results;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error:\n" + ex.Message);
+            }
         }
     }
 }

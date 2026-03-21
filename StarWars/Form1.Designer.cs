@@ -36,12 +36,6 @@
             panel2 = new Panel();
             panel4 = new Panel();
             paneldata = new Panel();
-            cbtransporte = new ComboBox();
-            cbespecies = new ComboBox();
-            cbpelicula = new ComboBox();
-            txtbuscar = new TextBox();
-            cbplaneta = new ComboBox();
-            btbuscar = new Button();
             label8 = new Label();
             comboBox6 = new ComboBox();
             comboBox5 = new ComboBox();
@@ -77,6 +71,13 @@
             gbimage = new GroupBox();
             pictureBox1 = new PictureBox();
             dtgpersona = new DataGridView();
+            cbtransporte = new ComboBox();
+            cbespecies = new ComboBox();
+            cbpelicula = new ComboBox();
+            txtbuscar = new TextBox();
+            cbplaneta = new ComboBox();
+            btbuscar = new Button();
+            btnPeliculas = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             paneldata.SuspendLayout();
@@ -87,6 +88,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(btnPeliculas);
             panel1.Controls.Add(button5);
             panel1.Controls.Add(btnpersona);
             panel1.Controls.Add(btninicio);
@@ -107,7 +109,7 @@
             button5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button5.ForeColor = Color.White;
             button5.Image = (Image)resources.GetObject("button5.Image");
-            button5.Location = new Point(3, 253);
+            button5.Location = new Point(2, 311);
             button5.Name = "button5";
             button5.Size = new Size(150, 52);
             button5.TabIndex = 12;
@@ -219,56 +221,6 @@
             paneldata.Name = "paneldata";
             paneldata.Size = new Size(1390, 948);
             paneldata.TabIndex = 2;
-            // 
-            // cbtransporte
-            // 
-            cbtransporte.FormattingEnabled = true;
-            cbtransporte.Location = new Point(440, 21);
-            cbtransporte.Name = "cbtransporte";
-            cbtransporte.Size = new Size(131, 28);
-            cbtransporte.TabIndex = 77;
-            // 
-            // cbespecies
-            // 
-            cbespecies.FormattingEnabled = true;
-            cbespecies.Location = new Point(303, 21);
-            cbespecies.Name = "cbespecies";
-            cbespecies.Size = new Size(131, 28);
-            cbespecies.TabIndex = 76;
-            // 
-            // cbpelicula
-            // 
-            cbpelicula.FormattingEnabled = true;
-            cbpelicula.Location = new Point(166, 21);
-            cbpelicula.Name = "cbpelicula";
-            cbpelicula.Size = new Size(131, 28);
-            cbpelicula.TabIndex = 75;
-            // 
-            // txtbuscar
-            // 
-            txtbuscar.BackColor = SystemColors.Window;
-            txtbuscar.BorderStyle = BorderStyle.FixedSingle;
-            txtbuscar.Location = new Point(941, 21);
-            txtbuscar.Name = "txtbuscar";
-            txtbuscar.Size = new Size(316, 27);
-            txtbuscar.TabIndex = 72;
-            // 
-            // cbplaneta
-            // 
-            cbplaneta.FormattingEnabled = true;
-            cbplaneta.Location = new Point(29, 19);
-            cbplaneta.Name = "cbplaneta";
-            cbplaneta.Size = new Size(131, 28);
-            cbplaneta.TabIndex = 74;
-            // 
-            // btbuscar
-            // 
-            btbuscar.Location = new Point(1263, 19);
-            btbuscar.Name = "btbuscar";
-            btbuscar.Size = new Size(94, 29);
-            btbuscar.TabIndex = 73;
-            btbuscar.Text = "Buscar";
-            btbuscar.UseVisualStyleBackColor = true;
             // 
             // label8
             // 
@@ -659,6 +611,76 @@
             dtgpersona.Size = new Size(1366, 339);
             dtgpersona.TabIndex = 78;
             // 
+            // cbtransporte
+            // 
+            cbtransporte.FormattingEnabled = true;
+            cbtransporte.Location = new Point(440, 21);
+            cbtransporte.Name = "cbtransporte";
+            cbtransporte.Size = new Size(131, 28);
+            cbtransporte.TabIndex = 77;
+            // 
+            // cbespecies
+            // 
+            cbespecies.FormattingEnabled = true;
+            cbespecies.Location = new Point(303, 21);
+            cbespecies.Name = "cbespecies";
+            cbespecies.Size = new Size(131, 28);
+            cbespecies.TabIndex = 76;
+            // 
+            // cbpelicula
+            // 
+            cbpelicula.FormattingEnabled = true;
+            cbpelicula.Location = new Point(166, 21);
+            cbpelicula.Name = "cbpelicula";
+            cbpelicula.Size = new Size(131, 28);
+            cbpelicula.TabIndex = 75;
+            // 
+            // txtbuscar
+            // 
+            txtbuscar.BackColor = SystemColors.Window;
+            txtbuscar.BorderStyle = BorderStyle.FixedSingle;
+            txtbuscar.Location = new Point(941, 21);
+            txtbuscar.Name = "txtbuscar";
+            txtbuscar.Size = new Size(316, 27);
+            txtbuscar.TabIndex = 72;
+            // 
+            // cbplaneta
+            // 
+            cbplaneta.FormattingEnabled = true;
+            cbplaneta.Location = new Point(29, 19);
+            cbplaneta.Name = "cbplaneta";
+            cbplaneta.Size = new Size(131, 28);
+            cbplaneta.TabIndex = 74;
+            // 
+            // btbuscar
+            // 
+            btbuscar.Location = new Point(1263, 19);
+            btbuscar.Name = "btbuscar";
+            btbuscar.Size = new Size(94, 29);
+            btbuscar.TabIndex = 73;
+            btbuscar.Text = "Buscar";
+            btbuscar.UseVisualStyleBackColor = true;
+            // 
+            // btnPeliculas
+            // 
+            btnPeliculas.BackColor = Color.Transparent;
+            btnPeliculas.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            btnPeliculas.FlatAppearance.BorderSize = 0;
+            btnPeliculas.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            btnPeliculas.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            btnPeliculas.FlatStyle = FlatStyle.Flat;
+            btnPeliculas.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPeliculas.ForeColor = Color.White;
+            btnPeliculas.Image = (Image)resources.GetObject("btnPeliculas.Image");
+            btnPeliculas.Location = new Point(2, 253);
+            btnPeliculas.Name = "btnPeliculas";
+            btnPeliculas.Size = new Size(150, 52);
+            btnPeliculas.TabIndex = 13;
+            btnPeliculas.Text = "PELICULAS";
+            btnPeliculas.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnPeliculas.UseVisualStyleBackColor = false;
+            btnPeliculas.Click += btnPeliculas_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -732,5 +754,6 @@
         private GroupBox gbimage;
         private PictureBox pictureBox1;
         private DataGridView dtgpersona;
+        private Button btnPeliculas;
     }
 }
