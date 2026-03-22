@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StarWars.Dtos
 {
-    public class NaveJsonModel
+    public class VehiculoJsonModel
     {
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -21,28 +21,24 @@ namespace StarWars.Dtos
 
         [JsonProperty("length")]
         public string Length { get; set; }
+
         [JsonProperty("max_atmosphering_speed")]
-        public string Speed { get; set; }
+        public string MaxAtmospheringSpeed { get; set; }
 
         [JsonProperty("crew")]
         public string Crew { get; set; }
 
+
         [JsonProperty("passengers")]
         public string Passengers { get; set; }
 
-        [JsonProperty("cargo_capacity")]
+        [JsonProperty("cargo_Capacity")]
         public string CargoCapacity { get; set; }
 
         [JsonProperty("consumables")]
         public string Consumables { get; set; }
 
-        [JsonProperty("Hyperdrive_rating")]
-        public string HyperdriveRating { get; set; }
-
-        [JsonProperty("MGLT")]
-        public string MGLT { get; set; }
-
-        [JsonProperty("starship_class")]
-        public string StarshipClass { get; set; }
+        [JsonProperty("vehicle_class")]
+        public string VehicleClass { get; set; }
     }
 }
