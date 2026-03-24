@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PersistenceLibrary.Interfaces;
 using RestLibrary.Interfaces;
 using StarWars.Data;
 using StarWars.Dtos;
@@ -9,12 +10,15 @@ namespace StarWars
     {
         private readonly ApplicationDbContext _context;
         private readonly IRestApi _restApi;
+        private readonly IRepository _repository;
 
-        public Form1(ApplicationDbContext context, IRestApi restApi)
+        public Form1(ApplicationDbContext context, IRestApi restApi, IRepository repository)
         {
-            InitializeComponent();
             _context = context;
             _restApi = restApi;
+            _repository = repository;
+            InitializeComponent();
+            
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
