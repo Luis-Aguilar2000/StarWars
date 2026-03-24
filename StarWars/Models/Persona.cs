@@ -17,13 +17,9 @@ namespace StarWars.Models
         public string Cumpleaños { get; set; }
         public string Genero { get; set; }
 
-        public int IdPlaneta { get; set; }
-        public Planeta Planeta { get; set; }
+        public List<Planeta> Planeta { get; set; }
+        public List<Especie> Especie { get; set; }
 
-        public int IdEspecie { get; set; }
-        public Especie Especie { get; set; }
-
-        // sin tablas intermedias
         public List<Pelicula> Peliculas { get; set; }
         public  List<Transporte> Transportes { get; set; }
 
