@@ -24,8 +24,8 @@ namespace StarWars.Models
         public Especie Especie { get; set; }
 
         // sin tablas intermedias
-        public string UrlPeliculas { get; set; }
-        public string UrlTransportes { get; set; }
+        public List<Pelicula> Peliculas { get; set; }
+        public  List<Transporte> Transportes { get; set; }
 
 
     }

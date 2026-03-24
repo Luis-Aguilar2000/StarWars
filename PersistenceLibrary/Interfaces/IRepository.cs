@@ -8,5 +8,6 @@ namespace PersistenceLibrary.Interfaces
 {
     public interface IRepository
     {
+        void Add<T>(T model) where T : class;
     }
 }

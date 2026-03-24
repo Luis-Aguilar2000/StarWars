@@ -26,7 +26,8 @@ namespace StarWars
                     services.AddDbContext<ApplicationDbContext>(opt =>
                         opt.UseSqlServer("Server=AGUILAR;Database=MNT_USERS;Trusted_Connection=true;MultipleActiveResultsets=true;TrustServerCertificate=true")
                     );
-
+                    services.AddScoped<DbContext, ApplicationDbContext>();
+                    services.AddScoped<IRepository, Repository>();
 
                     services.AddTransient<Form1>();
                 })
