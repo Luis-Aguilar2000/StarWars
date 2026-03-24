@@ -18,7 +18,7 @@ namespace StarWars.Data
         public DbSet<Especie> Especies { get; set; }
         public DbSet<Pelicula> Pelicula { get; set; }
         public DbSet<Persona> Personas { get; set; }
-        public DbSet<Planeta> Transporte { get; set; }
+        public DbSet<Planeta> Peliculas { get; set; }
         public DbSet<TipoTransporte> TipoTransporte { get;set; }
 
         public DbSet<Transporte> Transportes { get; set; }
