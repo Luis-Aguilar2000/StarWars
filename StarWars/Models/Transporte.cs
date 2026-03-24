@@ -19,6 +19,6 @@ namespace StarWars.Models
         public string Comsumible { get; set; }
         public string MGLT { get; set; }
         public string Potencia { get; set; }
-        public TipoTransporte TipoTransporte { get; set; }
+        public List<TipoTransporte> TipoTransporte { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace StarWars.Models
         public string ColorDePiel { get; set; }
         public string ColorDeOjos { get; set; }
         public string ColorDePelo { get; set; }
-        public string Cumpleaños { get; set; }
+        public DateTime Cumpleaños { get; set; }
         public string Genero { get; set; }
 
         public List<Planeta> Planeta { get; set; }
