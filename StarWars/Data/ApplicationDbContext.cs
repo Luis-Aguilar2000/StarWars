@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Policy;
-using System.Text;
+﻿using StarWars.Models;
 using Microsoft.EntityFrameworkCore;
-using StarWars.Models;
 
 namespace StarWars.Data
 {
