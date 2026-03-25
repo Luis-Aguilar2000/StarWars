@@ -13,5 +13,7 @@ namespace StarWars.Models
         public string Director { get; set; }
         public string Productor { get; set; }
         public string FechaDeLanzamiento {  get; set; }
+
+        public List<Persona> Personas { get; set; }
     }
 }

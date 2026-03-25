@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StarWars.Data;
 
@@ -11,9 +12,11 @@ using StarWars.Data;
 namespace StarWars.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260325192522_nueva3")]
+    partial class nueva3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,36 +24,6 @@ namespace StarWars.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("PeliculaPersona", b =>
-                {
-                    b.Property<int>("PeliculasId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PersonasId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PeliculasId", "PersonasId");
-
-                    b.HasIndex("PersonasId");
-
-                    b.ToTable("PeliculaPersona");
-                });
-
-            modelBuilder.Entity("PersonaTransporte", b =>
-                {
-                    b.Property<int>("PersonasId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransportesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PersonasId", "TransportesId");
-
-                    b.HasIndex("TransportesId");
-
-                    b.ToTable("PersonaTransporte");
-                });
 
             modelBuilder.Entity("StarWars.Models.Especie", b =>
                 {
@@ -109,6 +82,9 @@ namespace StarWars.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PersonaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Productor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -118,6 +94,8 @@ namespace StarWars.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PersonaId");
 
                     b.ToTable("Peliculas");
                 });
@@ -285,6 +263,9 @@ namespace StarWars.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PersonaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Potencia")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -298,43 +279,22 @@ namespace StarWars.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PersonaId");
+
                     b.ToTable("Transportes");
-                });
-
-            modelBuilder.Entity("PeliculaPersona", b =>
-                {
-                    b.HasOne("StarWars.Models.Pelicula", null)
-                        .WithMany()
-                        .HasForeignKey("PeliculasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StarWars.Models.Persona", null)
-                        .WithMany()
-                        .HasForeignKey("PersonasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PersonaTransporte", b =>
-                {
-                    b.HasOne("StarWars.Models.Persona", null)
-                        .WithMany()
-                        .HasForeignKey("PersonasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StarWars.Models.Transporte", null)
-                        .WithMany()
-                        .HasForeignKey("TransportesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("StarWars.Models.Especie", b =>
                 {
                     b.HasOne("StarWars.Models.Persona", null)
                         .WithMany("Especie")
+                        .HasForeignKey("PersonaId");
+                });
+
+            modelBuilder.Entity("StarWars.Models.Pelicula", b =>
+                {
+                    b.HasOne("StarWars.Models.Persona", null)
+                        .WithMany("Peliculas")
                         .HasForeignKey("PersonaId");
                 });
 
@@ -352,11 +312,22 @@ namespace StarWars.Migrations
                         .HasForeignKey("TransporteId");
                 });
 
+            modelBuilder.Entity("StarWars.Models.Transporte", b =>
+                {
+                    b.HasOne("StarWars.Models.Persona", null)
+                        .WithMany("Transportes")
+                        .HasForeignKey("PersonaId");
+                });
+
             modelBuilder.Entity("StarWars.Models.Persona", b =>
                 {
                     b.Navigation("Especie");
 
+                    b.Navigation("Peliculas");
+
                     b.Navigation("Planeta");
+
+                    b.Navigation("Transportes");
                 });
 
             modelBuilder.Entity("StarWars.Models.Transporte", b =>
