@@ -20,5 +20,7 @@ namespace StarWars.Models
         public string MGLT { get; set; }
         public string Potencia { get; set; }
         public List<TipoTransporte> TipoTransporte { get; set; }
+
+        public List<Persona> Personas { get; set; }
     }
 }
