@@ -3,6 +3,8 @@ using PersistenceLibrary.Interfaces;
 using RestLibrary.Interfaces;
 using StarWars.Data;
 using StarWars.Dtos;
+using StarWars.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace StarWars
 {
@@ -29,19 +31,11 @@ namespace StarWars
         {
             colorpanel();
 
-            try
-            {
-                var result = await _restApi.Get<PeopleResponse<PersonajeJsonModel>>(
-                    "https://swapi.dev/api/",
-                    "people/"
-                );
+            dtgpersona.SelectionChanged += dtgpersona_SelectionChanged;
 
-                dtgpersona.DataSource = result.Results;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error:\n" + ex.Message);
-            }
+            await CargarGuardarYMostrarAsync();
+            dtgpersona.ClearSelection();
+            Picture1.Image = null;
         }
         private void colorpanel()
         {
@@ -52,20 +46,6 @@ namespace StarWars
 
         private async void btnpersona_Click(object sender, EventArgs e)
         {
-            try
-            {
-                var result = await _restApi.Get<PeopleResponse<PersonajeJsonModel>>(
-                    "https://swapi.dev/api/",
-                    "people/"
-                );
-
-                dtgpersona.DataSource = null;
-                dtgpersona.DataSource = result.Results;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error:\n" + ex.Message);
-            }
         }
 
         private void btninicio_Click(object sender, EventArgs e)
@@ -92,20 +72,99 @@ namespace StarWars
 
         private async void btnPeliculas_Click(object sender, EventArgs e)
         {
+
+        }
+        private void dtgpersona_SelectionChanged(object sender, EventArgs e)
+        {
             try
             {
-                var result = await _restApi.Get<PeopleResponse<PeliculaJsonModel>>(
-                    "https://swapi.dev/api/",
-                    "films/"
-                );
+                if (dtgpersona.CurrentRow == null) return;
 
-                dtgpersona.DataSource = null;
-                dtgpersona.DataSource = result.Results;
+                var fila = dtgpersona.CurrentRow;
+
+                // TEXTBOX
+                textBox1.Text = fila.Cells["Nombre"]?.Value?.ToString() ?? "";
+                textBox2.Text = fila.Cells["Altura"]?.Value?.ToString() ?? "";
+                textBox3.Text = fila.Cells["Masa"]?.Value?.ToString() ?? "";
+                textBox4.Text = fila.Cells["ColorDePiel"]?.Value?.ToString() ?? "";
+                textBox5.Text = fila.Cells["ColorDeOjos"]?.Value?.ToString() ?? "";
+                textBox6.Text = fila.Cells["ColorDePelo"]?.Value?.ToString() ?? "";
+
+
+                string ruta = fila.Cells["Picture"]?.Value?.ToString() ?? "";
+                string rutaCompleta = Path.Combine(Application.StartupPath, ruta);
+
+                if (File.Exists(rutaCompleta))
+                {
+                    // liberar imagen anterior
+                    if (Picture1.Image != null)
+                    {
+                        Picture1.Image.Dispose();
+                        Picture1.Image = null;
+                    }
+
+                    // cargar imagen correctamente
+                    using (FileStream fs = new FileStream(rutaCompleta, FileMode.Open, FileAccess.Read))
+                    {
+                        Picture1.Image = Image.FromStream(fs);
+                    }
+                }
+                else
+                {
+                    Picture1.Image = null;
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error:\n" + ex.Message);
+                MessageBox.Show("Error al cargar imagen: " + ex.Message);
             }
+        }
+        private async Task CargarGuardarYMostrarAsync()
+        {
+            // 1. TRAER DE API
+            var result = await _restApi.Get<PeopleResponse<PersonajeJsonModel>>(
+                "https://swapi.dev/api/",
+                "people/"
+            );
+
+            // 2. GUARDAR EN BD
+            foreach (var item in result.Results)
+            {
+                bool existe = await _context.Personas
+                    .AnyAsync(p => p.Nombre == item.Name);
+
+                if (!existe)
+                {
+                    var persona = new Persona
+                    {
+                        Nombre = item.Name,
+                        Altura = item.Height,
+                        Masa = item.Mass,
+                        ColorDePiel = item.SkinColor,
+                        ColorDeOjos = item.EyeColor,
+                        ColorDePelo = item.HairColor,
+                        Cumpleaños = item.BirthYear,
+                        Genero = item.Gender
+                    };
+
+                    _context.Personas.Add(persona);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            // 3. MOSTRAR DESDE LA BASE
+            var lista = await _context.Personas.ToListAsync();
+
+            dtgpersona.DataSource = null;
+            dtgpersona.DataSource = lista;
+
+            // 4. OCULTAR COLUMNAS
+            if (dtgpersona.Columns["Id"] != null)
+                dtgpersona.Columns["Id"].Visible = false;
+
+            if (dtgpersona.Columns["Picture"] != null)
+                dtgpersona.Columns["Picture"].Visible = false;
         }
     }
 }

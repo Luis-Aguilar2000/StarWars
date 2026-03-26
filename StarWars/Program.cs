@@ -25,7 +25,7 @@ namespace StarWars
                     services.AddHttpClient();
 
                     services.AddDbContext<ApplicationDbContext>(opt =>
-                    opt.UseSqlServer("Server=HM-2518;Database=PruebaProyecto;Trusted_Connection=true;MultipleActiveResultsets=true;TrustServerCertificate=true")
+                    opt.UseSqlServer("Server=AGUILAR;Database=StarWars;Trusted_Connection=true;MultipleActiveResultsets=true;TrustServerCertificate=true")
                     );
                     services.AddScoped<DbContext, ApplicationDbContext>();
                     services.AddScoped<IRepository, Repository>();

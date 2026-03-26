@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new Panel();
+            btnPeliculas = new Button();
             button5 = new Button();
             btnpersona = new Button();
             btninicio = new Button();
@@ -69,7 +70,7 @@
             lblname = new Label();
             btneditar = new Button();
             gbimage = new GroupBox();
-            pictureBox1 = new PictureBox();
+            Picture1 = new PictureBox();
             dtgpersona = new DataGridView();
             cbtransporte = new ComboBox();
             cbespecies = new ComboBox();
@@ -77,12 +78,11 @@
             txtbuscar = new TextBox();
             cbplaneta = new ComboBox();
             btbuscar = new Button();
-            btnPeliculas = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             paneldata.SuspendLayout();
             gbimage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Picture1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dtgpersona).BeginInit();
             SuspendLayout();
             // 
@@ -97,6 +97,26 @@
             panel1.Size = new Size(151, 948);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
+            // 
+            // btnPeliculas
+            // 
+            btnPeliculas.BackColor = Color.Transparent;
+            btnPeliculas.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            btnPeliculas.FlatAppearance.BorderSize = 0;
+            btnPeliculas.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            btnPeliculas.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            btnPeliculas.FlatStyle = FlatStyle.Flat;
+            btnPeliculas.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPeliculas.ForeColor = Color.White;
+            btnPeliculas.Image = (Image)resources.GetObject("btnPeliculas.Image");
+            btnPeliculas.Location = new Point(2, 253);
+            btnPeliculas.Name = "btnPeliculas";
+            btnPeliculas.Size = new Size(150, 52);
+            btnPeliculas.TabIndex = 13;
+            btnPeliculas.Text = "PELICULAS";
+            btnPeliculas.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnPeliculas.UseVisualStyleBackColor = false;
+            btnPeliculas.Click += btnPeliculas_Click;
             // 
             // button5
             // 
@@ -584,7 +604,7 @@
             // gbimage
             // 
             gbimage.BackColor = Color.Transparent;
-            gbimage.Controls.Add(pictureBox1);
+            gbimage.Controls.Add(Picture1);
             gbimage.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             gbimage.ForeColor = Color.FromArgb(251, 204, 60);
             gbimage.Location = new Point(891, 492);
@@ -594,13 +614,14 @@
             gbimage.TabStop = false;
             gbimage.Text = "Imagen";
             // 
-            // pictureBox1
+            // Picture1
             // 
-            pictureBox1.Location = new Point(19, 39);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(222, 271);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            Picture1.Location = new Point(19, 39);
+            Picture1.Name = "Picture1";
+            Picture1.Size = new Size(222, 271);
+            Picture1.SizeMode = PictureBoxSizeMode.StretchImage;
+            Picture1.TabIndex = 0;
+            Picture1.TabStop = false;
             // 
             // dtgpersona
             // 
@@ -661,26 +682,6 @@
             btbuscar.Text = "Buscar";
             btbuscar.UseVisualStyleBackColor = true;
             // 
-            // btnPeliculas
-            // 
-            btnPeliculas.BackColor = Color.Transparent;
-            btnPeliculas.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
-            btnPeliculas.FlatAppearance.BorderSize = 0;
-            btnPeliculas.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
-            btnPeliculas.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
-            btnPeliculas.FlatStyle = FlatStyle.Flat;
-            btnPeliculas.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnPeliculas.ForeColor = Color.White;
-            btnPeliculas.Image = (Image)resources.GetObject("btnPeliculas.Image");
-            btnPeliculas.Location = new Point(2, 253);
-            btnPeliculas.Name = "btnPeliculas";
-            btnPeliculas.Size = new Size(150, 52);
-            btnPeliculas.TabIndex = 13;
-            btnPeliculas.Text = "PELICULAS";
-            btnPeliculas.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnPeliculas.UseVisualStyleBackColor = false;
-            btnPeliculas.Click += btnPeliculas_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -699,7 +700,7 @@
             paneldata.ResumeLayout(false);
             paneldata.PerformLayout();
             gbimage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Picture1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dtgpersona).EndInit();
             ResumeLayout(false);
         }
@@ -752,7 +753,7 @@
         private Label lblname;
         private Button btneditar;
         private GroupBox gbimage;
-        private PictureBox pictureBox1;
+        private PictureBox Picture1;
         private DataGridView dtgpersona;
         private Button btnPeliculas;
     }
