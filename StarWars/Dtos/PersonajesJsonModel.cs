@@ -30,10 +30,10 @@ namespace StarWars.Dtos
         public string Gender { get; set; }
 
         [JsonProperty("homeworld")]
-        public string Homeworld { get; set; }
+        public string Homeworld { get; set; } = string.Empty;
 
         [JsonProperty("films")]
-        public List<string> Films { get; set; }
+        public List<string> Films { get; set; } = new List<string>();
 
         [JsonProperty("species")]
         public List<string> Species { get; set; }

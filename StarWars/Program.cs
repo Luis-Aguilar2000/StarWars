@@ -34,6 +34,7 @@ namespace StarWars
                     //Servicios
                     services.AddScoped<IPersonaService, PersonaService>();
                     services.AddScoped<IPeliculaService, PeliculaService>();
+                    services.AddScoped<IPlanetaService, PlanetaService>();
                     services.AddScoped<IRepository, Repository>();
                     services.AddTransient<Form1>();
                 })

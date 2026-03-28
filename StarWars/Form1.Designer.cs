@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new Panel();
+            btplanetas = new Button();
             btnPeliculas = new Button();
             button5 = new Button();
             btnpersona = new Button();
@@ -88,6 +89,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(btplanetas);
             panel1.Controls.Add(btnPeliculas);
             panel1.Controls.Add(button5);
             panel1.Controls.Add(btnpersona);
@@ -96,6 +98,26 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(151, 948);
             panel1.TabIndex = 0;
+            // 
+            // btplanetas
+            // 
+            btplanetas.BackColor = Color.Transparent;
+            btplanetas.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            btplanetas.FlatAppearance.BorderSize = 0;
+            btplanetas.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            btplanetas.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            btplanetas.FlatStyle = FlatStyle.Flat;
+            btplanetas.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btplanetas.ForeColor = Color.White;
+            btplanetas.Image = (Image)resources.GetObject("btplanetas.Image");
+            btplanetas.Location = new Point(1, 311);
+            btplanetas.Name = "btplanetas";
+            btplanetas.Size = new Size(150, 52);
+            btplanetas.TabIndex = 14;
+            btplanetas.Text = "PLANETAS";
+            btplanetas.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btplanetas.UseVisualStyleBackColor = false;
+            btplanetas.Click += this.btplanetas_Click;
             // 
             // btnPeliculas
             // 
@@ -128,7 +150,7 @@
             button5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button5.ForeColor = Color.White;
             button5.Image = (Image)resources.GetObject("button5.Image");
-            button5.Location = new Point(2, 311);
+            button5.Location = new Point(-1, 480);
             button5.Name = "button5";
             button5.Size = new Size(150, 52);
             button5.TabIndex = 12;
@@ -383,6 +405,7 @@
             // 
             textBox6.BackColor = SystemColors.Window;
             textBox6.BorderStyle = BorderStyle.FixedSingle;
+            textBox6.Enabled = false;
             textBox6.Location = new Point(195, 726);
             textBox6.Name = "textBox6";
             textBox6.Size = new Size(241, 27);
@@ -404,6 +427,7 @@
             // 
             textBox5.BackColor = SystemColors.Window;
             textBox5.BorderStyle = BorderStyle.FixedSingle;
+            textBox5.Enabled = false;
             textBox5.Location = new Point(195, 682);
             textBox5.Name = "textBox5";
             textBox5.Size = new Size(241, 27);
@@ -425,6 +449,7 @@
             // 
             textBox4.BackColor = SystemColors.Window;
             textBox4.BorderStyle = BorderStyle.FixedSingle;
+            textBox4.Enabled = false;
             textBox4.Location = new Point(195, 640);
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(241, 27);
@@ -446,6 +471,7 @@
             // 
             textBox3.BackColor = SystemColors.Window;
             textBox3.BorderStyle = BorderStyle.FixedSingle;
+            textBox3.Enabled = false;
             textBox3.Location = new Point(195, 595);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(241, 27);
@@ -467,6 +493,7 @@
             // 
             textBox2.BackColor = SystemColors.Window;
             textBox2.BorderStyle = BorderStyle.FixedSingle;
+            textBox2.Enabled = false;
             textBox2.Location = new Point(195, 551);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(241, 27);
@@ -488,6 +515,7 @@
             // 
             textBox1.BackColor = SystemColors.Window;
             textBox1.BorderStyle = BorderStyle.FixedSingle;
+            textBox1.Enabled = false;
             textBox1.Location = new Point(195, 506);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(241, 27);
@@ -754,5 +782,6 @@
         private PictureBox Picture1;
         private DataGridView dtgpersona;
         private Button btnPeliculas;
+        private Button btplanetas;
     }
 }

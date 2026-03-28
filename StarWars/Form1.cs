@@ -15,12 +15,14 @@ namespace StarWars
         private readonly IRepository _repository;
         private readonly IPersonaService _personaService;
         private readonly IPeliculaService _peliculaService;
+        private readonly IPlanetaService _planetaService;
 
         private bool cargando = true;
         private string vistaActual = "Personas";
 
-        public Form1(ApplicationDbContext context, IRestApi restApi, IRepository repository, IPersonaService personaService,IPeliculaService peliculaService)
+        public Form1(ApplicationDbContext context, IRestApi restApi, IRepository repository, IPersonaService personaService, IPeliculaService peliculaService, IPlanetaService planetaService)
         {
+            _planetaService = planetaService;
             _peliculaService = peliculaService;
             _personaService = personaService;
             _context = context;
@@ -48,13 +50,19 @@ namespace StarWars
         {
             clickPersonas();
             await CargarMostrarPersonasAsync();
-            
+
         }
 
         private async void btnPeliculas_Click(object sender, EventArgs e)
         {
             clickPeliculas();
             await CargarMostrarPeliculasAsync();
+        }
+
+        private async void btplanetas_Click(object sender, EventArgs e)
+        {
+            
+            await CargarMostrarPlanetasAsync();
         }
 
         //SelectionChanged del DataGridView para mostrar detalles de las tablas
@@ -75,35 +83,8 @@ namespace StarWars
                     textBox4.Text = fila.Cells["ColorDePiel"]?.Value?.ToString() ?? "";
                     textBox5.Text = fila.Cells["ColorDeOjos"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["ColorDePelo"]?.Value?.ToString() ?? "";
+                    CargarImagen(fila);
 
-                    string ruta = "";
-
-                    if (dtgpersona.Columns["Picture"] != null)
-                        ruta = fila.Cells["Picture"]?.Value?.ToString() ?? "";
-
-                    string rutaCompleta = Path.Combine(Application.StartupPath, ruta);
-
-                    if (!string.IsNullOrWhiteSpace(ruta) && File.Exists(rutaCompleta))
-                    {
-                        if (Picture1.Image != null)
-                        {
-                            Picture1.Image.Dispose();
-                            Picture1.Image = null;
-                        }
-
-                        using (FileStream fs = new FileStream(rutaCompleta, FileMode.Open, FileAccess.Read))
-                        {
-                            Picture1.Image = Image.FromStream(fs);
-                        }
-                    }
-                    else
-                    {
-                        if (Picture1.Image != null)
-                        {
-                            Picture1.Image.Dispose();
-                            Picture1.Image = null;
-                        }
-                    }
                     break;
 
                 case "Peliculas":
@@ -113,16 +94,17 @@ namespace StarWars
                     textBox4.Text = fila.Cells["Director"]?.Value?.ToString() ?? "";
                     textBox5.Text = fila.Cells["Productor"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["FechaDeLanzamiento"]?.Value?.ToString() ?? "";
-                    
-                    if (Picture1.Image != null)
-                    {
-                        Picture1.Image.Dispose();
-                        Picture1.Image = null;
-                    }
+                    CargarImagen(fila);
                     break;
 
-                default:
-                    LimpiarControles();
+                case "Planetas":
+                    textBox1.Text = fila.Cells["Nombre"]?.Value?.ToString() ?? "";
+                    textBox2.Text = fila.Cells["PeriodoDeRotación"]?.Value?.ToString() ?? "";
+                    textBox3.Text = fila.Cells["PeriodoOrbital"]?.Value?.ToString() ?? "";
+                    textBox4.Text = fila.Cells["Diametro"]?.Value?.ToString() ?? "";
+                    textBox5.Text = fila.Cells["Clima"]?.Value?.ToString() ?? "";
+                    textBox6.Text = fila.Cells["Gravedad"]?.Value?.ToString() ?? "";
+                    CargarImagen(fila);
                     break;
             }
         }
@@ -138,11 +120,26 @@ namespace StarWars
 
                 var lista = await _personaService.ObtenerPersonasAsync();
 
-                dtgpersona.DataSource = null;
-                dtgpersona.DataSource = lista;
+                var datos = lista
+                    .SelectMany(p => p.Peliculas.DefaultIfEmpty(), (p, peli) => new
+                    {
+                        p.Id,
+                        p.Nombre,
+                        p.Altura,
+                        p.Masa,
+                        p.ColorDePiel,
+                        p.ColorDeOjos,
+                        p.ColorDePelo,
+                        p.Cumpleaños,
+                        p.Genero,
+                        p.Picture,
+                        Pelicula = peli != null ? peli.Titulo : "",
+                        Planeta = p.Planeta != null ? p.Planeta.Nombre : ""
+                    })
+                    .ToList();
 
-                dtgpersona.MultiSelect = false;
-                dtgpersona.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dtgpersona.DataSource = null;
+                dtgpersona.DataSource = datos;
 
                 if (dtgpersona.Columns["Id"] != null)
                     dtgpersona.Columns["Id"].Visible = false;
@@ -152,7 +149,6 @@ namespace StarWars
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar personas: " + ex.Message);
             }
             finally
             {
@@ -181,10 +177,66 @@ namespace StarWars
 
                 if (dtgpersona.Columns["Id"] != null)
                     dtgpersona.Columns["Id"].Visible = false;
+
+
+                if (dtgpersona.Columns["Url"] != null)
+                    dtgpersona.Columns["Url"].Visible = false;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar películas: " + ex.Message);
+            }
+            finally
+            {
+                dtgpersona.ClearSelection();
+                dtgpersona.CurrentCell = null;
+                LimpiarControles();
+                cargando = false;
+            }
+        }
+
+        //PLANETAS
+        private async Task CargarMostrarPlanetasAsync()
+        {
+            try
+            {
+                cargando = true;
+                vistaActual = "Planetas";
+
+                var lista = await _planetaService.ObtenerPlanetasAsync();
+
+                var datos = lista.Select(p => new
+                {
+                    p.Id,
+                    p.Nombre,
+                    p.PeriodoDeRotación,
+                    p.PeriodoOrbital,
+                    p.Diametro,
+                    p.Clima,
+                    p.Gravedad,
+                    p.Terreno,
+                    p.AguaSuperficial,
+                    p.Poblacion,
+                    p.Picture,
+                    p.Url
+                }).ToList();
+
+                dtgpersona.DataSource = null;
+                dtgpersona.DataSource = datos;
+
+                dtgpersona.MultiSelect = false;
+                dtgpersona.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dtgpersona.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+                if (dtgpersona.Columns["Id"] != null)
+                    dtgpersona.Columns["Id"].Visible = false;
+
+                if (dtgpersona.Columns["Url"] != null)
+                    dtgpersona.Columns["Url"].Visible = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar planetas: " + ex.Message);
             }
             finally
             {
@@ -298,8 +350,26 @@ namespace StarWars
             paneldata.BackColor = Color.FromArgb(28, 100, 100, 100);
         }
 
+        //Cargar imagen seleccionada 
+        private void CargarImagen(DataGridViewRow fila)
+        {
+            string ruta = fila.Cells["Picture"]?.Value?.ToString() ?? "";
+            string rutaCompleta = Path.Combine(Application.StartupPath, ruta);
 
+            if (Picture1.Image != null)
+            {
+                Picture1.Image.Dispose();
+                Picture1.Image = null;
+            }
 
+            if (!string.IsNullOrWhiteSpace(ruta) && File.Exists(rutaCompleta))
+            {
+                using (FileStream fs = new FileStream(rutaCompleta, FileMode.Open, FileAccess.Read))
+                {
+                    Picture1.Image = new Bitmap(Image.FromStream(fs));
+                }
+            }
+        }
 
     }
 }

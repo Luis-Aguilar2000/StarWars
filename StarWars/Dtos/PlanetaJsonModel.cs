@@ -33,5 +33,8 @@ namespace StarWars.Dtos
 
         [JsonProperty("population")]
         public string Population { get; set; }
+
+        [JsonProperty("url")]
+        public string Url { get; set; } = string.Empty;
     }
 }

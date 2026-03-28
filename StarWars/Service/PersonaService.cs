@@ -25,34 +25,60 @@ namespace StarWars.Services
             );
 
             if (result?.Results == null || !result.Results.Any())
-                return await _context.Personas.ToListAsync();
+                return await _context.Personas
+                    .Include(p => p.Peliculas)
+                    .Include(p => p.Planeta)
+                    .ToListAsync();
 
             foreach (var item in result.Results)
             {
-                bool existe = await _context.Personas
-                    .AnyAsync(p => p.Nombre == item.Name);
+                var persona = await _context.Personas
+                    .Include(p => p.Peliculas)
+                    .Include(p => p.Planeta)
+                    .FirstOrDefaultAsync(p => p.Nombre == item.Name);
 
-                if (!existe)
+                if (persona == null)
                 {
-                    var persona = new Persona
+                    persona = new Persona
                     {
-                        Nombre = item.Name,
-                        Altura = item.Height,
-                        Masa = item.Mass,
-                        ColorDePiel = item.SkinColor,
-                        ColorDeOjos = item.EyeColor,
-                        ColorDePelo = item.HairColor,
-                        Cumpleaños = item.BirthYear,
-                        Genero = item.Gender
+                        Nombre = item.Name ?? "",
+                        Altura = item.Height ?? "",
+                        Masa = item.Mass ?? "",
+                        ColorDePiel = item.SkinColor ?? "",
+                        ColorDeOjos = item.EyeColor ?? "",
+                        ColorDePelo = item.HairColor ?? "",
+                        Cumpleaños = item.BirthYear ?? "",
+                        Genero = item.Gender ?? "",
+                        Picture = ""
                     };
 
                     _context.Personas.Add(persona);
                 }
+
+                var peliculas = await _context.Peliculas
+                    .Where(p => item.Films.Contains(p.Url))
+                    .ToListAsync();
+
+                persona.Peliculas.Clear();
+
+                foreach (var pelicula in peliculas)
+                {
+                    persona.Peliculas.Add(pelicula);
+                }
+
+                var planeta = await _context.Planetas
+                    .FirstOrDefaultAsync(p => p.Url == item.Homeworld);
+
+                persona.Planeta = planeta;
             }
 
             await _context.SaveChangesAsync();
 
-            return await _context.Personas.ToListAsync();
+            return await _context.Personas
+                .Include(p => p.Peliculas)
+                .Include(p => p.Planeta)
+                .ToListAsync();
         }
+
     }
-}
+    }

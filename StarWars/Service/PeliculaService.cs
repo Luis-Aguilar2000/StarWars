@@ -41,7 +41,9 @@ namespace StarWars.Services
                         Avance = item.OpeningCrawl,
                         Director = item.Director,
                         Productor = item.Producer,
-                        FechaDeLanzamiento = item.ReleaseDate
+                        FechaDeLanzamiento = item.ReleaseDate,
+                       
+                        Url = item.Url, 
                     };
 
                     _context.Peliculas.Add(pelicula);
