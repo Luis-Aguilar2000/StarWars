@@ -57,12 +57,15 @@ namespace StarWars
         {
             clickPeliculas();
             await CargarMostrarPeliculasAsync();
+         
         }
 
         private async void btplanetas_Click(object sender, EventArgs e)
         {
-            
+            clickPlanetas();
             await CargarMostrarPlanetasAsync();
+           
+
         }
 
         //SelectionChanged del DataGridView para mostrar detalles de las tablas
@@ -138,17 +141,11 @@ namespace StarWars
                     })
                     .ToList();
 
-                dtgpersona.DataSource = null;
-                dtgpersona.DataSource = datos;
-
-                if (dtgpersona.Columns["Id"] != null)
-                    dtgpersona.Columns["Id"].Visible = false;
-
-                if (dtgpersona.Columns["Picture"] != null)
-                    dtgpersona.Columns["Picture"].Visible = false;
+                ConfigurarGrid(datos, "Id", "Picture", "Url");
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Error al cargar personas: " + ex.Message);
             }
             finally
             {
@@ -169,18 +166,20 @@ namespace StarWars
 
                 var lista = await _peliculaService.ObtenerPeliculasAsync();
 
-                dtgpersona.DataSource = null;
-                dtgpersona.DataSource = lista;
+                var datos = lista.Select(p => new
+                {
+                    p.Id,
+                    p.Titulo,
+                    p.Episode_id,
+                    p.Avance,
+                    p.Director,
+                    p.Productor,
+                    p.FechaDeLanzamiento,
+                    p.Picture,
+                    p.Url
+                }).ToList();
 
-                dtgpersona.MultiSelect = false;
-                dtgpersona.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-                if (dtgpersona.Columns["Id"] != null)
-                    dtgpersona.Columns["Id"].Visible = false;
-
-
-                if (dtgpersona.Columns["Url"] != null)
-                    dtgpersona.Columns["Url"].Visible = false;
+                ConfigurarGrid(datos, "Id", "Picture", "Url");
             }
             catch (Exception ex)
             {
@@ -221,18 +220,7 @@ namespace StarWars
                     p.Url
                 }).ToList();
 
-                dtgpersona.DataSource = null;
-                dtgpersona.DataSource = datos;
-
-                dtgpersona.MultiSelect = false;
-                dtgpersona.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                dtgpersona.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-
-                if (dtgpersona.Columns["Id"] != null)
-                    dtgpersona.Columns["Id"].Visible = false;
-
-                if (dtgpersona.Columns["Url"] != null)
-                    dtgpersona.Columns["Url"].Visible = false;
+                ConfigurarGrid(datos, "Id", "Picture", "Url");
             }
             catch (Exception ex)
             {
@@ -253,8 +241,6 @@ namespace StarWars
         //PERSONAS
         private void clickPersonas()
         {
-            if (vistaActual == "Personas") return;
-
             vistaActual = "Personas";
 
             this.SuspendLayout();
@@ -286,8 +272,6 @@ namespace StarWars
         //PELICULAS
         private void clickPeliculas()
         {
-            if (vistaActual == "Peliculas") return;
-
             vistaActual = "Peliculas";
 
             this.SuspendLayout();
@@ -309,6 +293,47 @@ namespace StarWars
             comboBox2.Visible = false;
 
             label9.Text = "";
+            comboBox3.Visible = false;
+
+            label10.Text = "";
+            comboBox4.Visible = false;
+
+            label11.Text = "";
+            comboBox5.Visible = false;
+
+            label12.Text = "";
+            comboBox6.Visible = false;
+
+            label13.Text = "";
+
+            this.ResumeLayout();
+        }
+
+        //PLANETAS
+        private void clickPlanetas()
+        {
+
+            vistaActual = "Peliculas";
+
+            this.SuspendLayout();
+
+            lblname.Text = "PLANETAS";
+            label1.Text = "Nombre:";
+            label2.Text = "Periodo de Rotacion:";
+            label3.Text = "Periodo Orbital:";
+            label4.Text = "Diametro:";
+            label5.Text = "Clima:";
+            label6.Text = "Gravedad:";
+
+            dateTimePicker1.Visible = false;
+
+            label7.Text = "Terreno:";
+            comboBox1.Visible = false;
+
+            label8.Text = "Agua Superficial:";
+            comboBox2.Visible = false;
+
+            label9.Text = "Poblacion:";
             comboBox3.Visible = false;
 
             label10.Text = "";
@@ -371,5 +396,21 @@ namespace StarWars
             }
         }
 
+        // Método para configurar el DataGridView de forma genérica
+        private void ConfigurarGrid(object datos, params string[] columnasOcultas)
+        {
+            dtgpersona.DataSource = null;
+            dtgpersona.DataSource = datos;
+
+            dtgpersona.MultiSelect = false;
+            dtgpersona.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtgpersona.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+            foreach (string columna in columnasOcultas)
+            {
+                if (dtgpersona.Columns[columna] != null)
+                    dtgpersona.Columns[columna].Visible = false;
+            }
+        }
     }
 }
