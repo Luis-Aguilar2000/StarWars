@@ -108,11 +108,19 @@ namespace StarWars.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Picture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Productor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -162,10 +170,14 @@ namespace StarWars.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Picture")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PlanetaId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PlanetaId");
 
                     b.ToTable("Personas");
                 });
@@ -206,8 +218,8 @@ namespace StarWars.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PersonaId")
-                        .HasColumnType("int");
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Poblacion")
                         .IsRequired()
@@ -217,9 +229,11 @@ namespace StarWars.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("PersonaId");
+                    b.HasKey("Id");
 
                     b.ToTable("Planetas");
                 });
@@ -342,11 +356,13 @@ namespace StarWars.Migrations
                         .HasForeignKey("PersonaId");
                 });
 
-            modelBuilder.Entity("StarWars.Models.Planeta", b =>
+            modelBuilder.Entity("StarWars.Models.Persona", b =>
                 {
-                    b.HasOne("StarWars.Models.Persona", null)
-                        .WithMany("Planeta")
-                        .HasForeignKey("PersonaId");
+                    b.HasOne("StarWars.Models.Planeta", "Planeta")
+                        .WithMany("Personas")
+                        .HasForeignKey("PlanetaId");
+
+                    b.Navigation("Planeta");
                 });
 
             modelBuilder.Entity("StarWars.Models.TipoTransporte", b =>
@@ -359,8 +375,11 @@ namespace StarWars.Migrations
             modelBuilder.Entity("StarWars.Models.Persona", b =>
                 {
                     b.Navigation("Especie");
+                });
 
-                    b.Navigation("Planeta");
+            modelBuilder.Entity("StarWars.Models.Planeta", b =>
+                {
+                    b.Navigation("Personas");
                 });
 
             modelBuilder.Entity("StarWars.Models.Transporte", b =>

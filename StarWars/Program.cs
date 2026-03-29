@@ -6,6 +6,7 @@ using RestLibrary.Services;
 using Microsoft.EntityFrameworkCore;
 using PersistenceLibrary.Interfaces;
 using PersistenceLibrary.Repositories;
+using StarWars.Services;
 
 namespace StarWars
 {
@@ -30,6 +31,11 @@ namespace StarWars
                     services.AddScoped<DbContext, ApplicationDbContext>();
                     services.AddScoped<IRepository, Repository>();
 
+                    //Servicios
+                    services.AddScoped<IPersonaService, PersonaService>();
+                    services.AddScoped<IPeliculaService, PeliculaService>();
+                    services.AddScoped<IPlanetaService, PlanetaService>();
+                    services.AddScoped<IRepository, Repository>();
                     services.AddTransient<Form1>();
                 })
                 .Build();
