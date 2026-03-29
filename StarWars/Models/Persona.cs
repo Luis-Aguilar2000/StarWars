@@ -12,6 +12,7 @@ namespace StarWars.Models
         public string ColorDeOjos { get; set; } = string.Empty;
         public string ColorDePelo { get; set; } = string.Empty;
         public string Cumpleaños { get; set; } = string.Empty;
+        public string Idioma { get; set; } = string.Empty;
         public string Genero { get; set; } = string.Empty;
         public string? Picture { get; set; }
 
@@ -20,6 +21,6 @@ namespace StarWars.Models
 
         public List<Especie> Especie { get; set; } = new List<Especie>();
         public List<Pelicula> Peliculas { get; set; } = new List<Pelicula>();
-        public List<Transporte> Transportes { get; set; } = new List<Transporte>();
+        //public List<Transporte> Transportes { get; set; } = new List<Transporte>();
     }
 }

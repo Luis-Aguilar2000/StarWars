@@ -28,6 +28,7 @@ namespace StarWars.Services
                 return await _context.Personas
                     .Include(p => p.Peliculas)
                     .Include(p => p.Planeta)
+                    .Include(p => p.Especie)
                     .ToListAsync();
 
             foreach (var item in result.Results)
@@ -35,6 +36,7 @@ namespace StarWars.Services
                 var persona = await _context.Personas
                     .Include(p => p.Peliculas)
                     .Include(p => p.Planeta)
+                    .Include(p => p.Especie)
                     .FirstOrDefaultAsync(p => p.Nombre == item.Name);
 
                 if (persona == null)
@@ -70,6 +72,18 @@ namespace StarWars.Services
                     .FirstOrDefaultAsync(p => p.Url == item.Homeworld);
 
                 persona.Planeta = planeta;
+
+                // AGREGADO: relacionar especies
+                var especies = await _context.Especies
+                    .Where(e => item.Species.Contains(e.Url))
+                    .ToListAsync();
+
+                persona.Especie.Clear();
+
+                foreach (var especie in especies)
+                {
+                    persona.Especie.Add(especie);
+                }
             }
 
             await _context.SaveChangesAsync();
@@ -77,8 +91,8 @@ namespace StarWars.Services
             return await _context.Personas
                 .Include(p => p.Peliculas)
                 .Include(p => p.Planeta)
+                .Include(e => e.Especie)
                 .ToListAsync();
         }
-
     }
-    }
+}

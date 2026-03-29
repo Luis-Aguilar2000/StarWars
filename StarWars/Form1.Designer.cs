@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new Panel();
+            btvehiculos = new Button();
+            btespecies = new Button();
             btplanetas = new Button();
             btnPeliculas = new Button();
             button5 = new Button();
@@ -38,6 +40,7 @@
             panel2 = new Panel();
             panel4 = new Panel();
             paneldata = new Panel();
+            textBox7 = new TextBox();
             label11 = new Label();
             comboBox6 = new ComboBox();
             comboBox5 = new ComboBox();
@@ -50,7 +53,6 @@
             label10 = new Label();
             label9 = new Label();
             label8 = new Label();
-            dateTimePicker1 = new DateTimePicker();
             label7 = new Label();
             textBox6 = new TextBox();
             label6 = new Label();
@@ -89,6 +91,8 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(btvehiculos);
+            panel1.Controls.Add(btespecies);
             panel1.Controls.Add(btplanetas);
             panel1.Controls.Add(btnPeliculas);
             panel1.Controls.Add(button5);
@@ -98,6 +102,45 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(151, 948);
             panel1.TabIndex = 0;
+            // 
+            // btvehiculos
+            // 
+            btvehiculos.BackColor = Color.Transparent;
+            btvehiculos.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            btvehiculos.FlatAppearance.BorderSize = 0;
+            btvehiculos.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            btvehiculos.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            btvehiculos.FlatStyle = FlatStyle.Flat;
+            btvehiculos.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btvehiculos.ForeColor = Color.White;
+            btvehiculos.Image = (Image)resources.GetObject("btvehiculos.Image");
+            btvehiculos.Location = new Point(0, 427);
+            btvehiculos.Name = "btvehiculos";
+            btvehiculos.Size = new Size(150, 52);
+            btvehiculos.TabIndex = 16;
+            btvehiculos.Text = "VEHICULOS";
+            btvehiculos.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btvehiculos.UseVisualStyleBackColor = false;
+            // 
+            // btespecies
+            // 
+            btespecies.BackColor = Color.Transparent;
+            btespecies.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            btespecies.FlatAppearance.BorderSize = 0;
+            btespecies.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            btespecies.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            btespecies.FlatStyle = FlatStyle.Flat;
+            btespecies.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btespecies.ForeColor = Color.White;
+            btespecies.Image = (Image)resources.GetObject("btespecies.Image");
+            btespecies.Location = new Point(0, 369);
+            btespecies.Name = "btespecies";
+            btespecies.Size = new Size(150, 52);
+            btespecies.TabIndex = 15;
+            btespecies.Text = "ESPECIES";
+            btespecies.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btespecies.UseVisualStyleBackColor = false;
+            btespecies.Click += btespecies_Click;
             // 
             // btplanetas
             // 
@@ -117,7 +160,7 @@
             btplanetas.Text = "PLANETAS";
             btplanetas.TextImageRelation = TextImageRelation.ImageBeforeText;
             btplanetas.UseVisualStyleBackColor = false;
-            btplanetas.Click += this.btplanetas_Click;
+            btplanetas.Click += btplanetas_Click;
             // 
             // btnPeliculas
             // 
@@ -150,7 +193,7 @@
             button5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button5.ForeColor = Color.White;
             button5.Image = (Image)resources.GetObject("button5.Image");
-            button5.Location = new Point(-1, 480);
+            button5.Location = new Point(0, 485);
             button5.Name = "button5";
             button5.Size = new Size(150, 52);
             button5.TabIndex = 12;
@@ -217,6 +260,7 @@
             // 
             // paneldata
             // 
+            paneldata.Controls.Add(textBox7);
             paneldata.Controls.Add(label11);
             paneldata.Controls.Add(comboBox6);
             paneldata.Controls.Add(comboBox5);
@@ -229,7 +273,6 @@
             paneldata.Controls.Add(label10);
             paneldata.Controls.Add(label9);
             paneldata.Controls.Add(label8);
-            paneldata.Controls.Add(dateTimePicker1);
             paneldata.Controls.Add(label7);
             paneldata.Controls.Add(textBox6);
             paneldata.Controls.Add(label6);
@@ -261,6 +304,16 @@
             paneldata.Name = "paneldata";
             paneldata.Size = new Size(1390, 948);
             paneldata.TabIndex = 2;
+            // 
+            // textBox7
+            // 
+            textBox7.BackColor = SystemColors.Window;
+            textBox7.BorderStyle = BorderStyle.FixedSingle;
+            textBox7.Enabled = false;
+            textBox7.Location = new Point(195, 765);
+            textBox7.Name = "textBox7";
+            textBox7.Size = new Size(241, 27);
+            textBox7.TabIndex = 112;
             // 
             // label11
             // 
@@ -381,13 +434,6 @@
             label8.Size = new Size(67, 20);
             label8.TabIndex = 100;
             label8.Text = "Genero:";
-            // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.Location = new Point(195, 770);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(241, 27);
-            dateTimePicker1.TabIndex = 99;
             // 
             // label7
             // 
@@ -758,7 +804,6 @@
         private Label label10;
         private Label label9;
         private Label label8;
-        private DateTimePicker dateTimePicker1;
         private Label label7;
         private TextBox textBox6;
         private Label label6;
@@ -783,5 +828,8 @@
         private DataGridView dtgpersona;
         private Button btnPeliculas;
         private Button btplanetas;
+        private Button btvehiculos;
+        private Button btespecies;
+        private TextBox textBox7;
     }
 }

@@ -36,7 +36,7 @@ namespace StarWars.Dtos
         public List<string> Films { get; set; } = new List<string>();
 
         [JsonProperty("species")]
-        public List<string> Species { get; set; }
+        public List<string> Species { get; set; } = new List<string>();
 
         [JsonProperty("vehicles")]
         public List<string> Vehicles { get; set; }

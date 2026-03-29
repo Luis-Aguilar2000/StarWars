@@ -21,6 +21,21 @@ namespace StarWars.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EspeciePersona", b =>
+                {
+                    b.Property<int>("EspecieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonasId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EspecieId", "PersonasId");
+
+                    b.HasIndex("PersonasId");
+
+                    b.ToTable("EspeciePersona");
+                });
+
             modelBuilder.Entity("PeliculaPersona", b =>
                 {
                     b.Property<int>("PeliculasId")
@@ -59,7 +74,23 @@ namespace StarWars.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AlturaPromedio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Clasificacion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ColoresDeOjos")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ColoresDePelo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ColoresDePiel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -71,16 +102,23 @@ namespace StarWars.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Idioma")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PersonaId")
-                        .HasColumnType("int");
+                    b.Property<string>("Picture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PersonaId");
 
                     b.ToTable("Especies");
                 });
@@ -158,6 +196,10 @@ namespace StarWars.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Genero")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Idioma")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -319,6 +361,21 @@ namespace StarWars.Migrations
                     b.ToTable("Transportes");
                 });
 
+            modelBuilder.Entity("EspeciePersona", b =>
+                {
+                    b.HasOne("StarWars.Models.Especie", null)
+                        .WithMany()
+                        .HasForeignKey("EspecieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StarWars.Models.Persona", null)
+                        .WithMany()
+                        .HasForeignKey("PersonasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PeliculaPersona", b =>
                 {
                     b.HasOne("StarWars.Models.Pelicula", null)
@@ -349,13 +406,6 @@ namespace StarWars.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("StarWars.Models.Especie", b =>
-                {
-                    b.HasOne("StarWars.Models.Persona", null)
-                        .WithMany("Especie")
-                        .HasForeignKey("PersonaId");
-                });
-
             modelBuilder.Entity("StarWars.Models.Persona", b =>
                 {
                     b.HasOne("StarWars.Models.Planeta", "Planeta")
@@ -370,11 +420,6 @@ namespace StarWars.Migrations
                     b.HasOne("StarWars.Models.Transporte", null)
                         .WithMany("TipoTransporte")
                         .HasForeignKey("TransporteId");
-                });
-
-            modelBuilder.Entity("StarWars.Models.Persona", b =>
-                {
-                    b.Navigation("Especie");
                 });
 
             modelBuilder.Entity("StarWars.Models.Planeta", b =>
