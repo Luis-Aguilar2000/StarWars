@@ -16,19 +16,22 @@ namespace StarWars
         private readonly IPersonaService _personaService;
         private readonly IPeliculaService _peliculaService;
         private readonly IPlanetaService _planetaService;
+        private readonly IEspecieService _especieService;
 
         private bool cargando = true;
         private string vistaActual = "Personas";
 
-        public Form1(ApplicationDbContext context, IRestApi restApi, IRepository repository, IPersonaService personaService, IPeliculaService peliculaService, IPlanetaService planetaService)
+        public Form1(ApplicationDbContext context, IRestApi restApi, IRepository repository, IPersonaService personaService, IPeliculaService peliculaService, IPlanetaService planetaService, IEspecieService specieService)
         {
             _planetaService = planetaService;
             _peliculaService = peliculaService;
             _personaService = personaService;
+            _especieService = specieService;
             _context = context;
             _restApi = restApi;
             _repository = repository;
             InitializeComponent();
+
         }
         private async void Form1_Load(object sender, EventArgs e)
         {
@@ -57,15 +60,20 @@ namespace StarWars
         {
             clickPeliculas();
             await CargarMostrarPeliculasAsync();
-         
+
         }
 
         private async void btplanetas_Click(object sender, EventArgs e)
         {
             clickPlanetas();
             await CargarMostrarPlanetasAsync();
-           
 
+
+        }
+        private async void btespecies_Click(object sender, EventArgs e)
+        {
+            
+            await CargarMostrarEspeciesAsync();
         }
 
         //SelectionChanged del DataGridView para mostrar detalles de las tablas
@@ -86,6 +94,8 @@ namespace StarWars
                     textBox4.Text = fila.Cells["ColorDePiel"]?.Value?.ToString() ?? "";
                     textBox5.Text = fila.Cells["ColorDeOjos"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["ColorDePelo"]?.Value?.ToString() ?? "";
+                    textBox7.Text = fila.Cells["Cumpleaños"]?.Value?.ToString() ?? "";
+                    comboBox1.Text = fila.Cells["Genero"]?.Value?.ToString() ?? "";
                     CargarImagen(fila);
 
                     break;
@@ -97,6 +107,7 @@ namespace StarWars
                     textBox4.Text = fila.Cells["Director"]?.Value?.ToString() ?? "";
                     textBox5.Text = fila.Cells["Productor"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["FechaDeLanzamiento"]?.Value?.ToString() ?? "";
+
                     CargarImagen(fila);
                     break;
 
@@ -107,6 +118,16 @@ namespace StarWars
                     textBox4.Text = fila.Cells["Diametro"]?.Value?.ToString() ?? "";
                     textBox5.Text = fila.Cells["Clima"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["Gravedad"]?.Value?.ToString() ?? "";
+                    CargarImagen(fila);
+                    break;
+
+                case "Especies":
+                    textBox1.Text = fila.Cells["Nombre"]?.Value?.ToString() ?? "";
+                    textBox2.Text = fila.Cells["Clasificacion"]?.Value?.ToString() ?? "";
+                    textBox3.Text = fila.Cells["Designacion"]?.Value?.ToString() ?? "";
+                    textBox4.Text = fila.Cells["PromedioDeAltura"]?.Value?.ToString() ?? "";
+                    textBox5.Text = fila.Cells["ColorDePiel"]?.Value?.ToString() ?? "";
+                    textBox6.Text = fila.Cells["ColorDeOjos"]?.Value?.ToString() ?? "";
                     CargarImagen(fila);
                     break;
             }
@@ -137,7 +158,8 @@ namespace StarWars
                         p.Genero,
                         p.Picture,
                         Pelicula = peli != null ? peli.Titulo : "",
-                        Planeta = p.Planeta != null ? p.Planeta.Nombre : ""
+                        Planeta = p.Planeta != null ? p.Planeta.Nombre : "",
+                        Especies = string.Join(", ", p.Especie.Select(e => e.Nombre)),
                     })
                     .ToList();
 
@@ -155,7 +177,6 @@ namespace StarWars
                 cargando = false;
             }
         }
-
         //PELÍCULAS
         private async Task CargarMostrarPeliculasAsync()
         {
@@ -235,14 +256,52 @@ namespace StarWars
             }
         }
 
+        private async Task CargarMostrarEspeciesAsync()
+        {
+            try
+            {
+                cargando = true;
+                vistaActual = "Especies";
+
+                var lista = await _especieService.ObtenerEspeciesAsync();
+
+                var datos = lista.Select(e => new
+                {
+                    e.Id,
+                    e.Nombre,
+                    e.Clasificacion,
+                    e.Designacion,
+                    e.AlturaPromedio,
+                    e.ColoresDePiel,
+                    e.ColoresDePelo,
+                    e.ColoresDeOjos,
+                    e.EsperanzaDeVida,
+                    e.Idioma,
+                    e.Picture,
+                    e.Url
+                }).ToList();
+
+                ConfigurarGrid(datos, "Id", "Picture", "Url");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar especies: " + ex.Message);
+            }
+            finally
+            {
+                dtgpersona.ClearSelection();
+                dtgpersona.CurrentCell = null;
+                LimpiarControles();
+                cargando = false;
+            }
+        }
+
         //OTROS METODOS
 
         //Cambio de campo de texto al hacer click en un boton
         //PERSONAS
         private void clickPersonas()
         {
-            vistaActual = "Personas";
-
             this.SuspendLayout();
 
             lblname.Text = "PERSONAS";
@@ -252,7 +311,6 @@ namespace StarWars
             label4.Text = "Color de Piel:";
             label5.Text = "Color de Ojos:";
             label6.Text = "Color de Pelo:";
-            dateTimePicker1.Visible = true;
             label7.Text = "Cumpleaños:";
             comboBox1.Visible = true;
             label8.Text = "Genero:";
@@ -272,8 +330,6 @@ namespace StarWars
         //PELICULAS
         private void clickPeliculas()
         {
-            vistaActual = "Peliculas";
-
             this.SuspendLayout();
 
             lblname.Text = "PELICULAS";
@@ -284,7 +340,7 @@ namespace StarWars
             label5.Text = "Productor:";
             label6.Text = "Fecha de Lanzamiento:";
 
-            dateTimePicker1.Visible = false;
+            textBox7.Visible = false;
 
             label7.Text = "";
             comboBox1.Visible = false;
@@ -312,9 +368,6 @@ namespace StarWars
         //PLANETAS
         private void clickPlanetas()
         {
-
-            vistaActual = "Peliculas";
-
             this.SuspendLayout();
 
             lblname.Text = "PLANETAS";
@@ -325,7 +378,7 @@ namespace StarWars
             label5.Text = "Clima:";
             label6.Text = "Gravedad:";
 
-            dateTimePicker1.Visible = false;
+            textBox7.Visible = false;
 
             label7.Text = "Terreno:";
             comboBox1.Visible = false;
@@ -412,5 +465,7 @@ namespace StarWars
                     dtgpersona.Columns[columna].Visible = false;
             }
         }
+
+
     }
 }

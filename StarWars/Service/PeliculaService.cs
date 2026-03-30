@@ -19,6 +19,7 @@ namespace StarWars.Services
 
         public async Task<List<Pelicula>> ObtenerPeliculasAsync()
         {
+
             var result = await _restApi.Get<PeopleResponse<PeliculaJsonModel>>(
                 "https://swapi.dev/api/",
                 "films/"
@@ -42,8 +43,8 @@ namespace StarWars.Services
                         Director = item.Director,
                         Productor = item.Producer,
                         FechaDeLanzamiento = item.ReleaseDate,
-                       
-                        Url = item.Url, 
+                        Picture = "",
+                        Url = item.Url,
                     };
 
                     _context.Peliculas.Add(pelicula);

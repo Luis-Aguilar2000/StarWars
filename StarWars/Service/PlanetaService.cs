@@ -19,6 +19,7 @@ namespace StarWars.Services
 
         public async Task<List<Planeta>> ObtenerPlanetasAsync()
         {
+
             var result = await _restApi.Get<PeopleResponse<PlanetaJsonModel>>(
                 "https://swapi.dev/api/",
                 "planets/"
