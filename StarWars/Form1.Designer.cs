@@ -309,7 +309,6 @@
             // 
             textBox7.BackColor = SystemColors.Window;
             textBox7.BorderStyle = BorderStyle.FixedSingle;
-            textBox7.Enabled = false;
             textBox7.Location = new Point(195, 765);
             textBox7.Name = "textBox7";
             textBox7.Size = new Size(241, 27);
@@ -451,7 +450,6 @@
             // 
             textBox6.BackColor = SystemColors.Window;
             textBox6.BorderStyle = BorderStyle.FixedSingle;
-            textBox6.Enabled = false;
             textBox6.Location = new Point(195, 726);
             textBox6.Name = "textBox6";
             textBox6.Size = new Size(241, 27);
@@ -473,7 +471,6 @@
             // 
             textBox5.BackColor = SystemColors.Window;
             textBox5.BorderStyle = BorderStyle.FixedSingle;
-            textBox5.Enabled = false;
             textBox5.Location = new Point(195, 682);
             textBox5.Name = "textBox5";
             textBox5.Size = new Size(241, 27);
@@ -495,7 +492,6 @@
             // 
             textBox4.BackColor = SystemColors.Window;
             textBox4.BorderStyle = BorderStyle.FixedSingle;
-            textBox4.Enabled = false;
             textBox4.Location = new Point(195, 640);
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(241, 27);
@@ -517,7 +513,6 @@
             // 
             textBox3.BackColor = SystemColors.Window;
             textBox3.BorderStyle = BorderStyle.FixedSingle;
-            textBox3.Enabled = false;
             textBox3.Location = new Point(195, 595);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(241, 27);
@@ -539,7 +534,6 @@
             // 
             textBox2.BackColor = SystemColors.Window;
             textBox2.BorderStyle = BorderStyle.FixedSingle;
-            textBox2.Enabled = false;
             textBox2.Location = new Point(195, 551);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(241, 27);
@@ -561,7 +555,6 @@
             // 
             textBox1.BackColor = SystemColors.Window;
             textBox1.BorderStyle = BorderStyle.FixedSingle;
-            textBox1.Enabled = false;
             textBox1.Location = new Point(195, 506);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(241, 27);
@@ -607,6 +600,7 @@
             btnnuevo.Text = "NUEVO";
             btnnuevo.TextAlign = ContentAlignment.MiddleRight;
             btnnuevo.UseVisualStyleBackColor = false;
+            btnnuevo.Click += btnnuevo_Click;
             // 
             // btneliminar
             // 
@@ -625,6 +619,7 @@
             btneliminar.Text = "ELIMINAR";
             btneliminar.TextAlign = ContentAlignment.MiddleRight;
             btneliminar.UseVisualStyleBackColor = false;
+            btneliminar.Click += btneliminar_Click;
             // 
             // button1
             // 
@@ -672,6 +667,7 @@
             btneditar.Text = "EDITAR";
             btneditar.TextAlign = ContentAlignment.MiddleRight;
             btneditar.UseVisualStyleBackColor = false;
+            btneditar.Click += btneditar_Click;
             // 
             // gbimage
             // 

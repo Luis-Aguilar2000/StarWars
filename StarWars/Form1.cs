@@ -72,7 +72,7 @@ namespace StarWars
         }
         private async void btespecies_Click(object sender, EventArgs e)
         {
-            
+
             await CargarMostrarEspeciesAsync();
         }
 
@@ -466,6 +466,62 @@ namespace StarWars
             }
         }
 
+        private async void btnnuevo_Click(object sender, EventArgs e)
+        {
 
+            Persona persona = new Persona
+            {
+                Nombre = textBox1.Text,
+                Altura = textBox2.Text,
+                Masa = textBox3.Text,
+                ColorDePiel = textBox4.Text,
+                ColorDeOjos = textBox5.Text,
+                ColorDePelo = textBox6.Text,
+                Cumpleaños = textBox7.Text,
+                Genero = comboBox1.Text
+            };
+
+            await _personaService.CrearPersonaAsync(persona);
+
+            await CargarMostrarPersonasAsync();
+            LimpiarControles();
+        }
+
+        private async void btneditar_Click(object sender, EventArgs e)
+        {
+            if (dtgpersona.CurrentRow == null) return;
+
+            int id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
+
+            Persona persona = new Persona
+            {
+                Id = id,
+                Nombre = textBox1.Text,
+                Altura = textBox2.Text,
+                Masa = textBox3.Text,
+                ColorDePiel = textBox4.Text,
+                ColorDeOjos = textBox5.Text,
+                ColorDePelo = textBox6.Text,
+                Cumpleaños = textBox7.Text,
+                Genero = comboBox1.Text
+            };
+
+            await _personaService.ActualizarPersonaAsync(persona);
+
+            await CargarMostrarPersonasAsync();
+            LimpiarControles();
+        }
+
+        private async void btneliminar_Click(object sender, EventArgs e)
+        {
+            if(dtgpersona.CurrentRow == null) return;
+
+            int id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
+
+            await _personaService.EliminarPersonaAsync(id);
+
+            await CargarMostrarPersonasAsync();
+            LimpiarControles();
+        }
     }
 }
