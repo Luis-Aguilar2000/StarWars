@@ -17,6 +17,21 @@ namespace StarWars.Services
             _restApi = restApi;
         }
 
+        public Task ActualizarPlanetaAsync(Planeta planeta)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CrearPlanetaAsync(Planeta planeta)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task EliminarPlanetaAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<Planeta>> ObtenerPlanetasAsync()
         {
 

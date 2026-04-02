@@ -17,16 +17,25 @@ namespace StarWars
         private readonly IPeliculaService _peliculaService;
         private readonly IPlanetaService _planetaService;
         private readonly IEspecieService _especieService;
+        private readonly ITransporteService _transporteService;
 
         private bool cargando = true;
         private string vistaActual = "Personas";
 
-        public Form1(ApplicationDbContext context, IRestApi restApi, IRepository repository, IPersonaService personaService, IPeliculaService peliculaService, IPlanetaService planetaService, IEspecieService specieService)
+        public Form1(ApplicationDbContext context,
+            IRestApi restApi,
+            IRepository repository,
+            IPersonaService personaService,
+            IPeliculaService peliculaService,
+            IPlanetaService planetaService,
+            IEspecieService specieService,
+            ITransporteService transporteService)
         {
             _planetaService = planetaService;
             _peliculaService = peliculaService;
             _personaService = personaService;
             _especieService = specieService;
+            _transporteService = transporteService;
             _context = context;
             _restApi = restApi;
             _repository = repository;
@@ -38,9 +47,7 @@ namespace StarWars
             colorpanel();
 
             dtgpersona.SelectionChanged += dtgpersona_SelectionChanged;
-
             await CargarMostrarPersonasAsync();
-
             dtgpersona.ClearSelection();
             dtgpersona.CurrentCell = null;
             LimpiarControles();
@@ -52,7 +59,7 @@ namespace StarWars
         private async void btnpersona_Click(object sender, EventArgs e)
         {
             clickPersonas();
-            await CargarMostrarPersonasAsync();
+            await _transporteService.InicializarTiposAsync();
 
         }
 
@@ -72,9 +79,157 @@ namespace StarWars
         }
         private async void btespecies_Click(object sender, EventArgs e)
         {
-
             await CargarMostrarEspeciesAsync();
         }
+
+        private async void btvehiculos_Click(object sender, EventArgs e)
+        {
+            await CargarMostrarTransportesAsync();
+        }
+
+        //Botonera de CRUD para cada tabla
+
+        //BOTON NUEVO PARA CADA TABLA
+        private async void btnnuevo_Click(object sender, EventArgs e)
+        {
+
+            Persona persona = new Persona
+            {
+                Nombre = textBox1.Text,
+                Altura = textBox2.Text,
+                Masa = textBox3.Text,
+                ColorDePiel = textBox4.Text,
+                ColorDeOjos = textBox5.Text,
+                ColorDePelo = textBox6.Text,
+                Cumpleaños = textBox7.Text,
+                Genero = comboBox1.Text
+            };
+
+            await _personaService.CrearPersonaAsync(persona);
+
+            await CargarMostrarPersonasAsync();
+            LimpiarControles();
+        }
+
+        //BOTON ELIMINAR PARA CADA TABLA
+        private async void btneliminar_Click(object sender, EventArgs e)
+        {
+            if (dtgpersona.CurrentRow == null) return;
+
+            int id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
+
+            switch (vistaActual)
+            {
+                case "Personas":
+                    await _personaService.EliminarPersonaAsync(id);
+                    await CargarMostrarPersonasAsync();
+                    break;
+
+                case "Peliculas":
+                    await _peliculaService.EliminarPeliculaAsync(id);
+                    await CargarMostrarPeliculasAsync();
+                    break;
+
+                case "Planetas":
+                    await _planetaService.EliminarPlanetaAsync(id);
+                    await CargarMostrarPlanetasAsync();
+                    break;
+
+                case "Especies":
+                    await _especieService.EliminarEspecieAsync(id);
+                    await CargarMostrarEspeciesAsync();
+                    break;
+
+                    //case "Transportes":
+                    //    await _transporteService.EliminarTransporteAsync(id);
+                    //    await CargarMostrarTransportesAsync();
+                    //    break;
+            }
+
+            LimpiarControles();
+        }
+
+        //BOTON GUARDAR PARA CADA TABLA
+        private async Task btguardar_ClickAsync(object sender, EventArgs e)
+        {
+            if (dtgpersona.CurrentRow == null) return;
+
+            int id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
+
+            switch (vistaActual)
+            {
+                case "Personas":
+                    Persona persona = new Persona
+                    {
+                        Id = id,
+                        Nombre = textBox1.Text,
+                        Altura = textBox2.Text,
+                        Masa = textBox3.Text,
+                        ColorDePiel = textBox4.Text,
+                        ColorDeOjos = textBox5.Text,
+                        ColorDePelo = textBox6.Text,
+                        Cumpleaños = textBox7.Text,
+                        Genero = comboBox1.Text
+                    };
+
+                    await _personaService.ActualizarPersonaAsync(persona);
+                    await CargarMostrarPersonasAsync();
+                    break;
+
+                case "Peliculas":
+                    Pelicula pelicula = new Pelicula
+                    {
+                        Id = id,
+                        Titulo = textBox1.Text,
+                        Episode_id = Convert.ToInt32(textBox2.Text),
+                        Avance = textBox3.Text,
+                        Director = textBox4.Text,
+                        Productor = textBox5.Text,
+                        FechaDeLanzamiento = textBox6.Text
+                    };
+
+                    await _peliculaService.ActualizarPeliculaAsync(pelicula);
+                    await CargarMostrarPeliculasAsync();
+                    break;
+
+                case "Planetas":
+                    Planeta planeta = new Planeta
+                    {
+                        Id = id,
+                        Nombre = textBox1.Text,
+                        PeriodoDeRotación = textBox2.Text,
+                        PeriodoOrbital = textBox3.Text,
+                        Diametro = textBox4.Text,
+                        Clima = textBox5.Text,
+                        Gravedad = textBox6.Text,
+                        Terreno = textBox7.Text
+                    };
+
+                    await _planetaService.ActualizarPlanetaAsync(planeta);
+                    await CargarMostrarPlanetasAsync();
+                    break;
+
+                case "Especies":
+                    Especie especie = new Especie
+                    {
+                        Id = id,
+                        Nombre = textBox1.Text,
+                        Clasificacion = textBox2.Text,
+                        Idioma = textBox3.Text
+                    };
+
+                    await _especieService.ActualizarEspecieAsync(especie);
+                    await CargarMostrarEspeciesAsync();
+                    break;
+
+                    //case "Transportes":
+                    //    // cuando lo tengas listo
+                    //    break;
+            }
+
+            LimpiarControles();
+        }
+
 
         //SelectionChanged del DataGridView para mostrar detalles de las tablas
         private void dtgpersona_SelectionChanged(object sender, EventArgs e)
@@ -128,6 +283,17 @@ namespace StarWars
                     textBox4.Text = fila.Cells["PromedioDeAltura"]?.Value?.ToString() ?? "";
                     textBox5.Text = fila.Cells["ColorDePiel"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["ColorDeOjos"]?.Value?.ToString() ?? "";
+                    CargarImagen(fila);
+                    break;
+
+                case "Transportes":
+                    textBox1.Text = fila.Cells["Nombre"]?.Value?.ToString() ?? "";
+                    textBox2.Text = fila.Cells["Modelo"]?.Value?.ToString() ?? "";
+                    textBox3.Text = fila.Cells["Fabricante"]?.Value?.ToString() ?? "";
+                    textBox4.Text = fila.Cells["Costo"]?.Value?.ToString() ?? "";
+                    textBox5.Text = fila.Cells["Longitud"]?.Value?.ToString() ?? "";
+                    textBox6.Text = fila.Cells["Velocidad"]?.Value?.ToString() ?? "";
+                    textBox7.Text = fila.Cells["Tripulacion"]?.Value?.ToString() ?? "";
                     CargarImagen(fila);
                     break;
             }
@@ -296,6 +462,49 @@ namespace StarWars
             }
         }
 
+        private async Task CargarMostrarTransportesAsync()
+        {
+            try
+            {
+                cargando = true;
+                vistaActual = "Transportes";
+
+                var lista = await _transporteService.ObtenerTransportesAsync();
+
+                var datos = lista.Select(t => new
+                {
+                    t.Id,
+                    t.Nombre,
+                    t.Modelo,
+                    t.Fabricante,
+                    t.CostoEnCreditos,
+                    t.Longitud,
+                    t.VelocidadMaximaAtmosfera,
+                    t.Tripulacion,
+                    t.Pasajeros,
+                    t.CapacidadCarga,
+                    t.Consumibles,
+                    t.MGLT,
+                    t.Clase,
+                    Tipo = t.TipoTransporte != null ? t.TipoTransporte.Nombre : "",
+                    t.Picture,
+                    t.Url
+                }).ToList();
+
+                ConfigurarGrid(datos, "Id", "Picture", "Url");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar transportes: " + ex.Message);
+            }
+            finally
+            {
+                cargando = false;
+                dtgpersona.ClearSelection();
+                Picture1.Image = null;
+            }
+        }
+
         //OTROS METODOS
 
         //Cambio de campo de texto al hacer click en un boton
@@ -322,8 +531,7 @@ namespace StarWars
             label11.Text = "Planeta:";
             comboBox5.Visible = true;
             label12.Text = "Pelicula:";
-            comboBox6.Visible = true;
-            label13.Text = "Vehiculo:";
+
 
             this.ResumeLayout();
         }
@@ -358,9 +566,6 @@ namespace StarWars
             comboBox5.Visible = false;
 
             label12.Text = "";
-            comboBox6.Visible = false;
-
-            label13.Text = "";
 
             this.ResumeLayout();
         }
@@ -396,9 +601,6 @@ namespace StarWars
             comboBox5.Visible = false;
 
             label12.Text = "";
-            comboBox6.Visible = false;
-
-            label13.Text = "";
 
             this.ResumeLayout();
         }
@@ -466,62 +668,6 @@ namespace StarWars
             }
         }
 
-        private async void btnnuevo_Click(object sender, EventArgs e)
-        {
 
-            Persona persona = new Persona
-            {
-                Nombre = textBox1.Text,
-                Altura = textBox2.Text,
-                Masa = textBox3.Text,
-                ColorDePiel = textBox4.Text,
-                ColorDeOjos = textBox5.Text,
-                ColorDePelo = textBox6.Text,
-                Cumpleaños = textBox7.Text,
-                Genero = comboBox1.Text
-            };
-
-            await _personaService.CrearPersonaAsync(persona);
-
-            await CargarMostrarPersonasAsync();
-            LimpiarControles();
-        }
-
-        private async void btneditar_Click(object sender, EventArgs e)
-        {
-            if (dtgpersona.CurrentRow == null) return;
-
-            int id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
-
-            Persona persona = new Persona
-            {
-                Id = id,
-                Nombre = textBox1.Text,
-                Altura = textBox2.Text,
-                Masa = textBox3.Text,
-                ColorDePiel = textBox4.Text,
-                ColorDeOjos = textBox5.Text,
-                ColorDePelo = textBox6.Text,
-                Cumpleaños = textBox7.Text,
-                Genero = comboBox1.Text
-            };
-
-            await _personaService.ActualizarPersonaAsync(persona);
-
-            await CargarMostrarPersonasAsync();
-            LimpiarControles();
-        }
-
-        private async void btneliminar_Click(object sender, EventArgs e)
-        {
-            if(dtgpersona.CurrentRow == null) return;
-
-            int id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
-
-            await _personaService.EliminarPersonaAsync(id);
-
-            await CargarMostrarPersonasAsync();
-            LimpiarControles();
-        }
     }
 }

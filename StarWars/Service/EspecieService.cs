@@ -57,5 +57,28 @@ namespace StarWars.Services
 
             return await _context.Especies.ToListAsync();
         }
+
+        // Implementación de métodos para agregar, actualizar y eliminar especies
+
+        public async Task EliminarEspecieAsync(int id)
+        {
+            var persona = await _context.Personas.FindAsync(id);
+
+            if (persona != null)
+            {
+                _context.Personas.Remove(persona);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public Task CrearEspecieAsync(Especie especie)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ActualizarEspecieAsync(Especie especie)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

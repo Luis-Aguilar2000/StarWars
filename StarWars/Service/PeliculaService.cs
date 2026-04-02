@@ -55,5 +55,32 @@ namespace StarWars.Services
 
             return await _context.Peliculas.ToListAsync();
         }
+
+        // DELETE
+        public async Task EliminarPersonaAsync(int id)
+        {
+            var persona = await _context.Personas.FindAsync(id);
+
+            if (persona != null)
+            {
+                _context.Personas.Remove(persona);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public Task CrearPeliculaAsync(Pelicula pelicula)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ActualizarPeliculaAsync(Pelicula pelicula)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task EliminarPeliculaAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

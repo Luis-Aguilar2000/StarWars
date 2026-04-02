@@ -42,13 +42,11 @@
             paneldata = new Panel();
             textBox7 = new TextBox();
             label11 = new Label();
-            comboBox6 = new ComboBox();
             comboBox5 = new ComboBox();
             comboBox4 = new ComboBox();
             comboBox3 = new ComboBox();
             comboBox2 = new ComboBox();
             comboBox1 = new ComboBox();
-            label13 = new Label();
             label12 = new Label();
             label10 = new Label();
             label9 = new Label();
@@ -69,7 +67,7 @@
             btnimagen = new Button();
             btnnuevo = new Button();
             btneliminar = new Button();
-            button1 = new Button();
+            btguardar = new Button();
             lblname = new Label();
             btneditar = new Button();
             gbimage = new GroupBox();
@@ -121,6 +119,7 @@
             btvehiculos.Text = "VEHICULOS";
             btvehiculos.TextImageRelation = TextImageRelation.ImageBeforeText;
             btvehiculos.UseVisualStyleBackColor = false;
+            btvehiculos.Click += btvehiculos_Click;
             // 
             // btespecies
             // 
@@ -262,13 +261,11 @@
             // 
             paneldata.Controls.Add(textBox7);
             paneldata.Controls.Add(label11);
-            paneldata.Controls.Add(comboBox6);
             paneldata.Controls.Add(comboBox5);
             paneldata.Controls.Add(comboBox4);
             paneldata.Controls.Add(comboBox3);
             paneldata.Controls.Add(comboBox2);
             paneldata.Controls.Add(comboBox1);
-            paneldata.Controls.Add(label13);
             paneldata.Controls.Add(label12);
             paneldata.Controls.Add(label10);
             paneldata.Controls.Add(label9);
@@ -289,7 +286,7 @@
             paneldata.Controls.Add(btnimagen);
             paneldata.Controls.Add(btnnuevo);
             paneldata.Controls.Add(btneliminar);
-            paneldata.Controls.Add(button1);
+            paneldata.Controls.Add(btguardar);
             paneldata.Controls.Add(lblname);
             paneldata.Controls.Add(btneditar);
             paneldata.Controls.Add(gbimage);
@@ -320,19 +317,11 @@
             label11.BackColor = Color.Transparent;
             label11.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label11.ForeColor = Color.FromArgb(251, 204, 60);
-            label11.Location = new Point(474, 646);
+            label11.Location = new Point(474, 557);
             label11.Name = "label11";
-            label11.Size = new Size(69, 20);
+            label11.Size = new Size(72, 20);
             label11.TabIndex = 111;
-            label11.Text = "Planeta:";
-            // 
-            // comboBox6
-            // 
-            comboBox6.FormattingEnabled = true;
-            comboBox6.Location = new Point(604, 727);
-            comboBox6.Name = "comboBox6";
-            comboBox6.Size = new Size(241, 28);
-            comboBox6.TabIndex = 110;
+            label11.Text = "Pelicula:";
             // 
             // comboBox5
             // 
@@ -345,7 +334,7 @@
             // comboBox4
             // 
             comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new Point(604, 643);
+            comboBox4.Location = new Point(604, 554);
             comboBox4.Name = "comboBox4";
             comboBox4.Size = new Size(241, 28);
             comboBox4.TabIndex = 108;
@@ -353,7 +342,7 @@
             // comboBox3
             // 
             comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(604, 596);
+            comboBox3.Location = new Point(604, 599);
             comboBox3.Name = "comboBox3";
             comboBox3.Size = new Size(241, 28);
             comboBox3.TabIndex = 107;
@@ -361,7 +350,7 @@
             // comboBox2
             // 
             comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(604, 552);
+            comboBox2.Location = new Point(604, 641);
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new Size(241, 28);
             comboBox2.TabIndex = 106;
@@ -374,18 +363,6 @@
             comboBox1.Size = new Size(241, 28);
             comboBox1.TabIndex = 105;
             // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.BackColor = Color.Transparent;
-            label13.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label13.ForeColor = Color.FromArgb(251, 204, 60);
-            label13.Location = new Point(474, 729);
-            label13.Name = "label13";
-            label13.Size = new Size(83, 20);
-            label13.TabIndex = 104;
-            label13.Text = "Vehiculo: ";
-            // 
             // label12
             // 
             label12.AutoSize = true;
@@ -394,9 +371,9 @@
             label12.ForeColor = Color.FromArgb(251, 204, 60);
             label12.Location = new Point(474, 685);
             label12.Name = "label12";
-            label12.Size = new Size(79, 20);
+            label12.Size = new Size(78, 20);
             label12.TabIndex = 103;
-            label12.Text = "Peliculas:";
+            label12.Text = "Vehiculo:";
             // 
             // label10
             // 
@@ -404,11 +381,11 @@
             label10.BackColor = Color.Transparent;
             label10.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label10.ForeColor = Color.FromArgb(251, 204, 60);
-            label10.Location = new Point(474, 598);
+            label10.Location = new Point(474, 601);
             label10.Name = "label10";
-            label10.Size = new Size(70, 20);
+            label10.Size = new Size(69, 20);
             label10.TabIndex = 102;
-            label10.Text = "Especie:";
+            label10.Text = "Planeta:";
             // 
             // label9
             // 
@@ -416,11 +393,11 @@
             label9.BackColor = Color.Transparent;
             label9.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label9.ForeColor = Color.FromArgb(251, 204, 60);
-            label9.Location = new Point(474, 554);
+            label9.Location = new Point(474, 643);
             label9.Name = "label9";
-            label9.Size = new Size(66, 20);
+            label9.Size = new Size(70, 20);
             label9.TabIndex = 101;
-            label9.Text = "Idioma:";
+            label9.Text = "Especie:";
             // 
             // label8
             // 
@@ -621,23 +598,23 @@
             btneliminar.UseVisualStyleBackColor = false;
             btneliminar.Click += btneliminar_Click;
             // 
-            // button1
+            // btguardar
             // 
-            button1.BackColor = Color.FromArgb(251, 204, 60);
-            button1.BackgroundImageLayout = ImageLayout.None;
-            button1.FlatAppearance.BorderSize = 0;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.ForeColor = SystemColors.Window;
-            button1.Image = (Image)resources.GetObject("button1.Image");
-            button1.ImageAlign = ContentAlignment.MiddleLeft;
-            button1.Location = new Point(1199, 746);
-            button1.Name = "button1";
-            button1.Size = new Size(136, 56);
-            button1.TabIndex = 83;
-            button1.Text = "GUARDAR";
-            button1.TextAlign = ContentAlignment.MiddleRight;
-            button1.UseVisualStyleBackColor = false;
+            btguardar.BackColor = Color.FromArgb(251, 204, 60);
+            btguardar.BackgroundImageLayout = ImageLayout.None;
+            btguardar.FlatAppearance.BorderSize = 0;
+            btguardar.FlatStyle = FlatStyle.Flat;
+            btguardar.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btguardar.ForeColor = SystemColors.Window;
+            btguardar.Image = (Image)resources.GetObject("btguardar.Image");
+            btguardar.ImageAlign = ContentAlignment.MiddleLeft;
+            btguardar.Location = new Point(1199, 746);
+            btguardar.Name = "btguardar";
+            btguardar.Size = new Size(136, 56);
+            btguardar.TabIndex = 83;
+            btguardar.Text = "GUARDAR";
+            btguardar.TextAlign = ContentAlignment.MiddleRight;
+            btguardar.UseVisualStyleBackColor = false;
             // 
             // lblname
             // 
@@ -667,7 +644,6 @@
             btneditar.Text = "EDITAR";
             btneditar.TextAlign = ContentAlignment.MiddleRight;
             btneditar.UseVisualStyleBackColor = false;
-            btneditar.Click += btneditar_Click;
             // 
             // gbimage
             // 
@@ -789,13 +765,11 @@
         private ComboBox cbplaneta;
         private Button btbuscar;
         private Label label11;
-        private ComboBox comboBox6;
         private ComboBox comboBox5;
         private ComboBox comboBox4;
         private ComboBox comboBox3;
         private ComboBox comboBox2;
         private ComboBox comboBox1;
-        private Label label13;
         private Label label12;
         private Label label10;
         private Label label9;
@@ -816,7 +790,7 @@
         private Button btnimagen;
         private Button btnnuevo;
         private Button btneliminar;
-        private Button button1;
+        private Button btguardar;
         private Label lblname;
         private Button btneditar;
         private GroupBox gbimage;

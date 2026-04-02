@@ -73,7 +73,6 @@ namespace StarWars.Services
 
                 persona.Planeta = planeta;
 
-                // AGREGADO: relacionar especies
                 var especies = await _context.Especies
                     .Where(e => item.Species.Contains(e.Url))
                     .ToListAsync();
