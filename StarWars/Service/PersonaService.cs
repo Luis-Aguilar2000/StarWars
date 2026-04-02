@@ -29,6 +29,7 @@ namespace StarWars.Services
                     .Include(p => p.Peliculas)
                     .Include(p => p.Planeta)
                     .Include(p => p.Especie)
+                    .Include(p => p.Transportes)
                     .ToListAsync();
 
             foreach (var item in result.Results)
@@ -37,6 +38,7 @@ namespace StarWars.Services
                     .Include(p => p.Peliculas)
                     .Include(p => p.Planeta)
                     .Include(p => p.Especie)
+                    .Include(p => p.Transportes)
                     .FirstOrDefaultAsync(p => p.Nombre == item.Name);
 
                 if (persona == null)
@@ -82,6 +84,16 @@ namespace StarWars.Services
                 foreach (var especie in especies)
                 {
                     persona.Especie.Add(especie);
+                }
+
+                var transportes = await _context.Transportes
+                    .Where(t => item.Vehicles.Contains(t.Url) || item.Starships.Contains(t.Url))
+                    .ToListAsync();
+
+                persona.Transportes.Clear();
+                foreach (var transporte in transportes)
+                {
+                    persona.Transportes.Add(transporte);
                 }
             }
 

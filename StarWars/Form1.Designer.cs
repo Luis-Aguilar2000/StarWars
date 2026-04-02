@@ -40,14 +40,15 @@
             panel2 = new Panel();
             panel4 = new Panel();
             paneldata = new Panel();
-            textBox7 = new TextBox();
+            groupBox1 = new GroupBox();
+            checkedListBox1 = new CheckedListBox();
+            checkedListBox2 = new CheckedListBox();
             label11 = new Label();
-            comboBox5 = new ComboBox();
-            comboBox4 = new ComboBox();
-            comboBox3 = new ComboBox();
-            comboBox2 = new ComboBox();
-            comboBox1 = new ComboBox();
             label12 = new Label();
+            comboBox2 = new ComboBox();
+            comboBox3 = new ComboBox();
+            textBox7 = new TextBox();
+            comboBox1 = new ComboBox();
             label10 = new Label();
             label9 = new Label();
             label8 = new Label();
@@ -82,6 +83,7 @@
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             paneldata.SuspendLayout();
+            groupBox1.SuspendLayout();
             gbimage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Picture1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dtgpersona).BeginInit();
@@ -259,14 +261,11 @@
             // 
             // paneldata
             // 
-            paneldata.Controls.Add(textBox7);
-            paneldata.Controls.Add(label11);
-            paneldata.Controls.Add(comboBox5);
-            paneldata.Controls.Add(comboBox4);
-            paneldata.Controls.Add(comboBox3);
+            paneldata.Controls.Add(groupBox1);
             paneldata.Controls.Add(comboBox2);
+            paneldata.Controls.Add(comboBox3);
+            paneldata.Controls.Add(textBox7);
             paneldata.Controls.Add(comboBox1);
-            paneldata.Controls.Add(label12);
             paneldata.Controls.Add(label10);
             paneldata.Controls.Add(label9);
             paneldata.Controls.Add(label8);
@@ -302,14 +301,35 @@
             paneldata.Size = new Size(1390, 948);
             paneldata.TabIndex = 2;
             // 
-            // textBox7
+            // groupBox1
             // 
-            textBox7.BackColor = SystemColors.Window;
-            textBox7.BorderStyle = BorderStyle.FixedSingle;
-            textBox7.Location = new Point(195, 765);
-            textBox7.Name = "textBox7";
-            textBox7.Size = new Size(241, 27);
-            textBox7.TabIndex = 112;
+            groupBox1.Controls.Add(checkedListBox1);
+            groupBox1.Controls.Add(checkedListBox2);
+            groupBox1.Controls.Add(label11);
+            groupBox1.Controls.Add(label12);
+            groupBox1.Location = new Point(941, 509);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(416, 326);
+            groupBox1.TabIndex = 119;
+            groupBox1.TabStop = false;
+            // 
+            // checkedListBox1
+            // 
+            checkedListBox1.Enabled = false;
+            checkedListBox1.FormattingEnabled = true;
+            checkedListBox1.Location = new Point(13, 26);
+            checkedListBox1.Name = "checkedListBox1";
+            checkedListBox1.Size = new Size(185, 246);
+            checkedListBox1.TabIndex = 117;
+            // 
+            // checkedListBox2
+            // 
+            checkedListBox2.Enabled = false;
+            checkedListBox2.FormattingEnabled = true;
+            checkedListBox2.Location = new Point(222, 26);
+            checkedListBox2.Name = "checkedListBox2";
+            checkedListBox2.Size = new Size(185, 246);
+            checkedListBox2.TabIndex = 118;
             // 
             // label11
             // 
@@ -317,51 +337,11 @@
             label11.BackColor = Color.Transparent;
             label11.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label11.ForeColor = Color.FromArgb(251, 204, 60);
-            label11.Location = new Point(474, 557);
+            label11.Location = new Point(70, 289);
             label11.Name = "label11";
             label11.Size = new Size(72, 20);
             label11.TabIndex = 111;
             label11.Text = "Pelicula:";
-            // 
-            // comboBox5
-            // 
-            comboBox5.FormattingEnabled = true;
-            comboBox5.Location = new Point(604, 683);
-            comboBox5.Name = "comboBox5";
-            comboBox5.Size = new Size(241, 28);
-            comboBox5.TabIndex = 109;
-            // 
-            // comboBox4
-            // 
-            comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new Point(604, 554);
-            comboBox4.Name = "comboBox4";
-            comboBox4.Size = new Size(241, 28);
-            comboBox4.TabIndex = 108;
-            // 
-            // comboBox3
-            // 
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(604, 599);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(241, 28);
-            comboBox3.TabIndex = 107;
-            // 
-            // comboBox2
-            // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(604, 641);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(241, 28);
-            comboBox2.TabIndex = 106;
-            // 
-            // comboBox1
-            // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(604, 512);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(241, 28);
-            comboBox1.TabIndex = 105;
             // 
             // label12
             // 
@@ -369,11 +349,48 @@
             label12.BackColor = Color.Transparent;
             label12.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label12.ForeColor = Color.FromArgb(251, 204, 60);
-            label12.Location = new Point(474, 685);
+            label12.Location = new Point(278, 289);
             label12.Name = "label12";
             label12.Size = new Size(78, 20);
             label12.TabIndex = 103;
             label12.Text = "Vehiculo:";
+            // 
+            // comboBox2
+            // 
+            comboBox2.Enabled = false;
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Location = new Point(744, 552);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new Size(181, 28);
+            comboBox2.TabIndex = 115;
+            // 
+            // comboBox3
+            // 
+            comboBox3.Enabled = false;
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Location = new Point(744, 594);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new Size(181, 28);
+            comboBox3.TabIndex = 114;
+            // 
+            // textBox7
+            // 
+            textBox7.BackColor = SystemColors.Window;
+            textBox7.BorderStyle = BorderStyle.FixedSingle;
+            textBox7.Enabled = false;
+            textBox7.Location = new Point(418, 762);
+            textBox7.Name = "textBox7";
+            textBox7.Size = new Size(181, 27);
+            textBox7.TabIndex = 112;
+            // 
+            // comboBox1
+            // 
+            comboBox1.Enabled = false;
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(744, 509);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(181, 28);
+            comboBox1.TabIndex = 105;
             // 
             // label10
             // 
@@ -381,7 +398,7 @@
             label10.BackColor = Color.Transparent;
             label10.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label10.ForeColor = Color.FromArgb(251, 204, 60);
-            label10.Location = new Point(474, 601);
+            label10.Location = new Point(623, 597);
             label10.Name = "label10";
             label10.Size = new Size(69, 20);
             label10.TabIndex = 102;
@@ -393,7 +410,7 @@
             label9.BackColor = Color.Transparent;
             label9.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label9.ForeColor = Color.FromArgb(251, 204, 60);
-            label9.Location = new Point(474, 643);
+            label9.Location = new Point(622, 558);
             label9.Name = "label9";
             label9.Size = new Size(70, 20);
             label9.TabIndex = 101;
@@ -405,7 +422,7 @@
             label8.BackColor = Color.Transparent;
             label8.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label8.ForeColor = Color.FromArgb(251, 204, 60);
-            label8.Location = new Point(474, 512);
+            label8.Location = new Point(622, 509);
             label8.Name = "label8";
             label8.Size = new Size(67, 20);
             label8.TabIndex = 100;
@@ -417,7 +434,7 @@
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.ForeColor = Color.FromArgb(251, 204, 60);
-            label7.Location = new Point(42, 772);
+            label7.Location = new Point(265, 769);
             label7.Name = "label7";
             label7.Size = new Size(105, 20);
             label7.TabIndex = 98;
@@ -427,9 +444,10 @@
             // 
             textBox6.BackColor = SystemColors.Window;
             textBox6.BorderStyle = BorderStyle.FixedSingle;
-            textBox6.Location = new Point(195, 726);
+            textBox6.Enabled = false;
+            textBox6.Location = new Point(418, 723);
             textBox6.Name = "textBox6";
-            textBox6.Size = new Size(241, 27);
+            textBox6.Size = new Size(181, 27);
             textBox6.TabIndex = 97;
             // 
             // label6
@@ -438,7 +456,7 @@
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.FromArgb(251, 204, 60);
-            label6.Location = new Point(42, 730);
+            label6.Location = new Point(265, 727);
             label6.Name = "label6";
             label6.Size = new Size(116, 20);
             label6.TabIndex = 96;
@@ -448,9 +466,10 @@
             // 
             textBox5.BackColor = SystemColors.Window;
             textBox5.BorderStyle = BorderStyle.FixedSingle;
-            textBox5.Location = new Point(195, 682);
+            textBox5.Enabled = false;
+            textBox5.Location = new Point(418, 679);
             textBox5.Name = "textBox5";
-            textBox5.Size = new Size(241, 27);
+            textBox5.Size = new Size(181, 27);
             textBox5.TabIndex = 95;
             // 
             // label5
@@ -459,7 +478,7 @@
             label5.BackColor = Color.Transparent;
             label5.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = Color.FromArgb(251, 204, 60);
-            label5.Location = new Point(42, 686);
+            label5.Location = new Point(265, 683);
             label5.Name = "label5";
             label5.Size = new Size(117, 20);
             label5.TabIndex = 94;
@@ -469,9 +488,10 @@
             // 
             textBox4.BackColor = SystemColors.Window;
             textBox4.BorderStyle = BorderStyle.FixedSingle;
-            textBox4.Location = new Point(195, 640);
+            textBox4.Enabled = false;
+            textBox4.Location = new Point(418, 637);
             textBox4.Name = "textBox4";
-            textBox4.Size = new Size(241, 27);
+            textBox4.Size = new Size(181, 27);
             textBox4.TabIndex = 93;
             // 
             // label4
@@ -480,7 +500,7 @@
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.FromArgb(251, 204, 60);
-            label4.Location = new Point(42, 644);
+            label4.Location = new Point(265, 641);
             label4.Name = "label4";
             label4.Size = new Size(111, 20);
             label4.TabIndex = 92;
@@ -490,9 +510,10 @@
             // 
             textBox3.BackColor = SystemColors.Window;
             textBox3.BorderStyle = BorderStyle.FixedSingle;
-            textBox3.Location = new Point(195, 595);
+            textBox3.Enabled = false;
+            textBox3.Location = new Point(418, 592);
             textBox3.Name = "textBox3";
-            textBox3.Size = new Size(241, 27);
+            textBox3.Size = new Size(181, 27);
             textBox3.TabIndex = 91;
             // 
             // label3
@@ -501,7 +522,7 @@
             label3.BackColor = Color.Transparent;
             label3.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FromArgb(251, 204, 60);
-            label3.Location = new Point(42, 599);
+            label3.Location = new Point(265, 596);
             label3.Name = "label3";
             label3.Size = new Size(57, 20);
             label3.TabIndex = 90;
@@ -511,9 +532,10 @@
             // 
             textBox2.BackColor = SystemColors.Window;
             textBox2.BorderStyle = BorderStyle.FixedSingle;
-            textBox2.Location = new Point(195, 551);
+            textBox2.Enabled = false;
+            textBox2.Location = new Point(418, 548);
             textBox2.Name = "textBox2";
-            textBox2.Size = new Size(241, 27);
+            textBox2.Size = new Size(181, 27);
             textBox2.TabIndex = 89;
             // 
             // label2
@@ -522,7 +544,7 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.FromArgb(251, 204, 60);
-            label2.Location = new Point(42, 555);
+            label2.Location = new Point(265, 552);
             label2.Name = "label2";
             label2.Size = new Size(59, 20);
             label2.TabIndex = 88;
@@ -532,9 +554,10 @@
             // 
             textBox1.BackColor = SystemColors.Window;
             textBox1.BorderStyle = BorderStyle.FixedSingle;
-            textBox1.Location = new Point(195, 506);
+            textBox1.Enabled = false;
+            textBox1.Location = new Point(418, 503);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(241, 27);
+            textBox1.Size = new Size(181, 27);
             textBox1.TabIndex = 87;
             // 
             // label1
@@ -543,7 +566,7 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.FromArgb(251, 204, 60);
-            label1.Location = new Point(42, 515);
+            label1.Location = new Point(265, 505);
             label1.Name = "label1";
             label1.Size = new Size(74, 20);
             label1.TabIndex = 86;
@@ -551,11 +574,12 @@
             // 
             // btnimagen
             // 
+            btnimagen.Enabled = false;
             btnimagen.Image = (Image)resources.GetObject("btnimagen.Image");
             btnimagen.ImageAlign = ContentAlignment.MiddleLeft;
-            btnimagen.Location = new Point(930, 834);
+            btnimagen.Location = new Point(62, 837);
             btnimagen.Name = "btnimagen";
-            btnimagen.Size = new Size(168, 37);
+            btnimagen.Size = new Size(168, 38);
             btnimagen.TabIndex = 79;
             btnimagen.Text = "Subir Archivo";
             btnimagen.UseVisualStyleBackColor = true;
@@ -570,9 +594,9 @@
             btnnuevo.ForeColor = SystemColors.Window;
             btnnuevo.Image = (Image)resources.GetObject("btnnuevo.Image");
             btnnuevo.ImageAlign = ContentAlignment.MiddleLeft;
-            btnnuevo.Location = new Point(1199, 597);
+            btnnuevo.Location = new Point(904, 883);
             btnnuevo.Name = "btnnuevo";
-            btnnuevo.Size = new Size(136, 56);
+            btnnuevo.Size = new Size(136, 45);
             btnnuevo.TabIndex = 85;
             btnnuevo.Text = "NUEVO";
             btnnuevo.TextAlign = ContentAlignment.MiddleRight;
@@ -589,9 +613,9 @@
             btneliminar.ForeColor = SystemColors.Window;
             btneliminar.Image = (Image)resources.GetObject("btneliminar.Image");
             btneliminar.ImageAlign = ContentAlignment.MiddleLeft;
-            btneliminar.Location = new Point(1199, 668);
+            btneliminar.Location = new Point(1212, 883);
             btneliminar.Name = "btneliminar";
-            btneliminar.Size = new Size(136, 56);
+            btneliminar.Size = new Size(136, 45);
             btneliminar.TabIndex = 84;
             btneliminar.Text = "ELIMINAR";
             btneliminar.TextAlign = ContentAlignment.MiddleRight;
@@ -608,9 +632,9 @@
             btguardar.ForeColor = SystemColors.Window;
             btguardar.Image = (Image)resources.GetObject("btguardar.Image");
             btguardar.ImageAlign = ContentAlignment.MiddleLeft;
-            btguardar.Location = new Point(1199, 746);
+            btguardar.Location = new Point(1061, 883);
             btguardar.Name = "btguardar";
-            btguardar.Size = new Size(136, 56);
+            btguardar.Size = new Size(136, 45);
             btguardar.TabIndex = 83;
             btguardar.Text = "GUARDAR";
             btguardar.TextAlign = ContentAlignment.MiddleRight;
@@ -637,13 +661,14 @@
             btneditar.ForeColor = SystemColors.Window;
             btneditar.Image = (Image)resources.GetObject("btneditar.Image");
             btneditar.ImageAlign = ContentAlignment.MiddleLeft;
-            btneditar.Location = new Point(1199, 515);
+            btneditar.Location = new Point(24, 77);
             btneditar.Name = "btneditar";
-            btneditar.Size = new Size(136, 56);
+            btneditar.Size = new Size(104, 46);
             btneditar.TabIndex = 81;
             btneditar.Text = "EDITAR";
             btneditar.TextAlign = ContentAlignment.MiddleRight;
             btneditar.UseVisualStyleBackColor = false;
+            btneditar.Click += btneditar_Click;
             // 
             // gbimage
             // 
@@ -651,9 +676,9 @@
             gbimage.Controls.Add(Picture1);
             gbimage.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             gbimage.ForeColor = Color.FromArgb(251, 204, 60);
-            gbimage.Location = new Point(891, 492);
+            gbimage.Location = new Point(38, 514);
             gbimage.Name = "gbimage";
-            gbimage.Size = new Size(261, 336);
+            gbimage.Size = new Size(207, 304);
             gbimage.TabIndex = 80;
             gbimage.TabStop = false;
             gbimage.Text = "Imagen";
@@ -662,7 +687,7 @@
             // 
             Picture1.Location = new Point(19, 39);
             Picture1.Name = "Picture1";
-            Picture1.Size = new Size(222, 271);
+            Picture1.Size = new Size(173, 235);
             Picture1.SizeMode = PictureBoxSizeMode.StretchImage;
             Picture1.TabIndex = 0;
             Picture1.TabStop = false;
@@ -743,6 +768,8 @@
             panel2.ResumeLayout(false);
             paneldata.ResumeLayout(false);
             paneldata.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             gbimage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)Picture1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dtgpersona).EndInit();
@@ -765,10 +792,6 @@
         private ComboBox cbplaneta;
         private Button btbuscar;
         private Label label11;
-        private ComboBox comboBox5;
-        private ComboBox comboBox4;
-        private ComboBox comboBox3;
-        private ComboBox comboBox2;
         private ComboBox comboBox1;
         private Label label12;
         private Label label10;
@@ -801,5 +824,10 @@
         private Button btvehiculos;
         private Button btespecies;
         private TextBox textBox7;
+        private ComboBox comboBox2;
+        private ComboBox comboBox3;
+        private CheckedListBox checkedListBox1;
+        private CheckedListBox checkedListBox2;
+        private GroupBox groupBox1;
     }
 }

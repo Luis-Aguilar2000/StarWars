@@ -39,9 +39,12 @@ namespace StarWars.Dtos
         public List<string> Species { get; set; } = new List<string>();
 
         [JsonProperty("vehicles")]
-        public List<string> Vehicles { get; set; }
+        public List<string> Vehicles { get; set; } = new List<string>();
 
         [JsonProperty("starships")]
-        public List<string> Starships { get; set; }
+        public List<string> Starships { get; set; } = new List<string>();
+
+        [JsonProperty("url")]
+        public string Url { get; set; } = string.Empty;
     }
 }

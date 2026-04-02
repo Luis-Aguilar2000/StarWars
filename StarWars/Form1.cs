@@ -86,6 +86,10 @@ namespace StarWars
         {
             await CargarMostrarTransportesAsync();
         }
+                private void btneditar_Click(object sender, EventArgs e)
+        {
+            HabilitarControles();
+        }
 
         //Botonera de CRUD para cada tabla
 
@@ -232,7 +236,7 @@ namespace StarWars
 
 
         //SelectionChanged del DataGridView para mostrar detalles de las tablas
-        private void dtgpersona_SelectionChanged(object sender, EventArgs e)
+        private async void dtgpersona_SelectionChanged(object sender, EventArgs e)
         {
             if (cargando) return;
             if (dtgpersona.CurrentRow == null) return;
@@ -250,9 +254,15 @@ namespace StarWars
                     textBox5.Text = fila.Cells["ColorDeOjos"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["ColorDePelo"]?.Value?.ToString() ?? "";
                     textBox7.Text = fila.Cells["Cumpleaños"]?.Value?.ToString() ?? "";
-                    comboBox1.Text = fila.Cells["Genero"]?.Value?.ToString() ?? "";
-                    CargarImagen(fila);
 
+                    comboBox1.Text = fila.Cells["Genero"]?.Value?.ToString() ?? "";
+                    comboBox2.Text = fila.Cells["Especie"]?.Value?.ToString() ?? "";
+                    comboBox3.Text = fila.Cells["Planeta"]?.Value?.ToString() ?? "";
+
+                    await MarcarPeliculasSeleccionadasAsync(fila);
+                    await MarcarVehiculosSeleccionadosAsync(fila);
+
+                    CargarImagen(fila);
                     break;
 
                 case "Peliculas":
@@ -310,24 +320,24 @@ namespace StarWars
 
                 var lista = await _personaService.ObtenerPersonasAsync();
 
-                var datos = lista
-                    .SelectMany(p => p.Peliculas.DefaultIfEmpty(), (p, peli) => new
-                    {
-                        p.Id,
-                        p.Nombre,
-                        p.Altura,
-                        p.Masa,
-                        p.ColorDePiel,
-                        p.ColorDeOjos,
-                        p.ColorDePelo,
-                        p.Cumpleaños,
-                        p.Genero,
-                        p.Picture,
-                        Pelicula = peli != null ? peli.Titulo : "",
-                        Planeta = p.Planeta != null ? p.Planeta.Nombre : "",
-                        Especies = string.Join(", ", p.Especie.Select(e => e.Nombre)),
-                    })
-                    .ToList();
+                var datos = lista.Select(p => new
+                {
+                    p.Id,
+                    p.Nombre,
+                    p.Altura,
+                    p.Masa,
+                    p.ColorDePiel,
+                    p.ColorDeOjos,
+                    p.ColorDePelo,
+                    p.Cumpleaños,
+                    p.Genero,
+                    p.Picture,
+
+                    Pelicula = string.Join(", ", p.Peliculas.Select(x => x.Titulo)),
+                    Planeta = p.Planeta != null ? p.Planeta.Nombre : "",
+                    Especie = string.Join(", ", p.Especie.Select(x => x.Nombre)),
+                    Vehiculo = string.Join(", ", p.Transportes.Select(x => x.Nombre)),
+                }).ToList();
 
                 ConfigurarGrid(datos, "Id", "Picture", "Url");
             }
@@ -509,7 +519,7 @@ namespace StarWars
 
         //Cambio de campo de texto al hacer click en un boton
         //PERSONAS
-        private void clickPersonas()
+        private async Task clickPersonas()
         {
             this.SuspendLayout();
 
@@ -521,17 +531,23 @@ namespace StarWars
             label5.Text = "Color de Ojos:";
             label6.Text = "Color de Pelo:";
             label7.Text = "Cumpleaños:";
+
             comboBox1.Visible = true;
             label8.Text = "Genero:";
-            comboBox2.Visible = true;
-            label9.Text = "Idioma:";
-            comboBox3.Visible = true;
-            label10.Text = "Especie:";
-            comboBox4.Visible = true;
-            label11.Text = "Planeta:";
-            comboBox5.Visible = true;
-            label12.Text = "Pelicula:";
 
+            comboBox2.Visible = true;
+            label9.Text = "Especie:";
+
+            comboBox3.Visible = true;
+            label10.Text = "Planeta:";
+
+            checkedListBox1.Visible = true;
+            label11.Text = "Películas:";
+
+            checkedListBox2.Visible = true;
+            label12.Text = "Vehículos:";
+
+            await CargarCombosPersonasAsync();
 
             this.ResumeLayout();
         }
@@ -560,10 +576,10 @@ namespace StarWars
             comboBox3.Visible = false;
 
             label10.Text = "";
-            comboBox4.Visible = false;
+            comboBox2.Visible = false;
 
             label11.Text = "";
-            comboBox5.Visible = false;
+            //comboBox5.Visible = false;
 
             label12.Text = "";
 
@@ -595,10 +611,10 @@ namespace StarWars
             comboBox3.Visible = false;
 
             label10.Text = "";
-            comboBox4.Visible = false;
+            comboBox2.Visible = false;
 
             label11.Text = "";
-            comboBox5.Visible = false;
+            //comboBox5.Visible = false;
 
             label12.Text = "";
 
@@ -621,7 +637,28 @@ namespace StarWars
                 Picture1.Image = null;
             }
         }
+        private void HabilitarControles()
+        {
+            textBox1.Enabled = true;
+            textBox2.Enabled = true;
+            textBox3.Enabled = true;
+            textBox4.Enabled = true;
+            textBox5.Enabled = true;
+            textBox6.Enabled = true;
+            textBox7.Enabled = true;
 
+            comboBox1.Enabled = true;
+            comboBox2.Enabled = true;
+            comboBox3.Enabled = true;
+
+            checkedListBox1.Enabled = true;
+            checkedListBox2.Enabled = true;
+
+            btnimagen.Enabled = true;
+            btnnuevo.Enabled = false;
+            btneliminar.Enabled = false;
+            btneditar.Enabled = false;
+        }
         // Método para establecer colores con transparencia en los paneles
         private void colorpanel()
         {
@@ -665,6 +702,139 @@ namespace StarWars
             {
                 if (dtgpersona.Columns[columna] != null)
                     dtgpersona.Columns[columna].Visible = false;
+            }
+        }
+
+
+        //Combox de Personas
+
+        private void CargarGeneros()
+        {
+            comboBox1.DataSource = null;
+            comboBox1.Items.Clear();
+
+            comboBox1.Items.Add("male");
+            comboBox1.Items.Add("female");
+            comboBox1.Items.Add("n/a");
+            comboBox1.Items.Add("unknown");
+        }
+        private async Task CargarEspeciesAsync()
+        {
+            var especies = await _especieService.ObtenerEspeciesAsync();
+
+            comboBox2.DataSource = null;
+
+            comboBox2.DataSource = especies;
+            comboBox2.DisplayMember = "Nombre";
+            comboBox2.ValueMember = "Id";
+        }
+        private async Task CargarPlanetasAsync()
+        {
+            var planetas = await _planetaService.ObtenerPlanetasAsync();
+
+            comboBox3.DataSource = null;
+
+            comboBox3.DataSource = planetas;
+            comboBox3.DisplayMember = "Nombre";
+            comboBox3.ValueMember = "Id";
+        }
+        private async Task CargarPeliculasAsync()
+        {
+            var peliculas = await _peliculaService.ObtenerPeliculasAsync();
+
+            checkedListBox1.DataSource = null;
+            checkedListBox1.Items.Clear();
+
+            foreach (var pelicula in peliculas)
+            {
+                checkedListBox1.Items.Add(pelicula);
+            }
+
+            checkedListBox1.DisplayMember = "Titulo";
+            checkedListBox1.ValueMember = "Id";
+        }
+
+        private async Task CargarVehiculosAsync()
+        {
+            var vehiculos = await _transporteService.ObtenerTransportesAsync();
+
+            checkedListBox2.DataSource = null;
+            checkedListBox2.Items.Clear();
+
+            foreach (var vehiculo in vehiculos)
+            {
+                checkedListBox2.Items.Add(vehiculo);
+            }
+
+            checkedListBox2.DisplayMember = "Nombre";
+            checkedListBox2.ValueMember = "Id";
+        }
+
+        private async Task CargarCombosPersonasAsync()
+        {
+            CargarGeneros();
+            await CargarEspeciesAsync();
+            await CargarPlanetasAsync();
+            await CargarPeliculasAsync();
+            await CargarVehiculosAsync();
+        }
+
+
+        // Método para marcar las películas seleccionadas en el CheckedListBox al seleccionar una persona
+        private async Task MarcarPeliculasSeleccionadasAsync(DataGridViewRow fila)
+        {
+            if (checkedListBox1.Items.Count == 0)
+                await CargarPeliculasAsync();
+
+            string peliculasTexto = fila.Cells["Pelicula"]?.Value?.ToString() ?? "";
+
+            for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                checkedListBox1.SetItemChecked(i, false);
+
+            if (!string.IsNullOrWhiteSpace(peliculasTexto))
+            {
+                var peliculasSeleccionadas = peliculasTexto
+                    .Split(',')
+                    .Select(x => x.Trim())
+                    .ToList();
+
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                {
+                    if (checkedListBox1.Items[i] is Pelicula pelicula &&
+                        peliculasSeleccionadas.Contains(pelicula.Titulo))
+                    {
+                        checkedListBox1.SetItemChecked(i, true);
+                    }
+                }
+            }
+        }
+
+        // Método para marcar los vehículos seleccionados en el CheckedListBox al seleccionar una persona
+        private async Task MarcarVehiculosSeleccionadosAsync(DataGridViewRow fila)
+        {
+            if (checkedListBox2.Items.Count == 0)
+                await CargarVehiculosAsync();
+
+            string vehiculosTexto = fila.Cells["Vehiculo"]?.Value?.ToString() ?? "";
+
+            for (int i = 0; i < checkedListBox2.Items.Count; i++)
+                checkedListBox2.SetItemChecked(i, false);
+
+            if (!string.IsNullOrWhiteSpace(vehiculosTexto))
+            {
+                var vehiculosSeleccionados = vehiculosTexto
+                    .Split(',')
+                    .Select(x => x.Trim())
+                    .ToList();
+
+                for (int i = 0; i < checkedListBox2.Items.Count; i++)
+                {
+                    if (checkedListBox2.Items[i] is Transporte vehiculo &&
+                        vehiculosSeleccionados.Contains(vehiculo.Nombre))
+                    {
+                        checkedListBox2.SetItemChecked(i, true);
+                    }
+                }
             }
         }
 
