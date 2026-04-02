@@ -30,16 +30,18 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel1 = new Panel();
-            btvehiculos = new Button();
-            btespecies = new Button();
-            btplanetas = new Button();
+            btnvehiculos = new Button();
+            btnespecies = new Button();
+            btnplanetas = new Button();
             btnPeliculas = new Button();
-            button5 = new Button();
+            btnviajes = new Button();
             btnpersona = new Button();
             btninicio = new Button();
             panel2 = new Panel();
             panel4 = new Panel();
             paneldata = new Panel();
+            btncancelar = new Button();
+            btnactualizar = new Button();
             groupBox1 = new GroupBox();
             checkedListBox1 = new CheckedListBox();
             checkedListBox2 = new CheckedListBox();
@@ -48,6 +50,7 @@
             comboBox2 = new ComboBox();
             comboBox3 = new ComboBox();
             textBox7 = new TextBox();
+            btnnuevo = new Button();
             comboBox1 = new ComboBox();
             label10 = new Label();
             label9 = new Label();
@@ -66,9 +69,8 @@
             textBox1 = new TextBox();
             label1 = new Label();
             btnimagen = new Button();
-            btnnuevo = new Button();
             btneliminar = new Button();
-            btguardar = new Button();
+            btncrear = new Button();
             lblname = new Label();
             btneditar = new Button();
             gbimage = new GroupBox();
@@ -91,11 +93,11 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(btvehiculos);
-            panel1.Controls.Add(btespecies);
-            panel1.Controls.Add(btplanetas);
+            panel1.Controls.Add(btnvehiculos);
+            panel1.Controls.Add(btnespecies);
+            panel1.Controls.Add(btnplanetas);
             panel1.Controls.Add(btnPeliculas);
-            panel1.Controls.Add(button5);
+            panel1.Controls.Add(btnviajes);
             panel1.Controls.Add(btnpersona);
             panel1.Controls.Add(btninicio);
             panel1.Location = new Point(28, 22);
@@ -103,65 +105,65 @@
             panel1.Size = new Size(151, 948);
             panel1.TabIndex = 0;
             // 
-            // btvehiculos
+            // btnvehiculos
             // 
-            btvehiculos.BackColor = Color.Transparent;
-            btvehiculos.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
-            btvehiculos.FlatAppearance.BorderSize = 0;
-            btvehiculos.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
-            btvehiculos.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
-            btvehiculos.FlatStyle = FlatStyle.Flat;
-            btvehiculos.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btvehiculos.ForeColor = Color.White;
-            btvehiculos.Image = (Image)resources.GetObject("btvehiculos.Image");
-            btvehiculos.Location = new Point(0, 427);
-            btvehiculos.Name = "btvehiculos";
-            btvehiculos.Size = new Size(150, 52);
-            btvehiculos.TabIndex = 16;
-            btvehiculos.Text = "VEHICULOS";
-            btvehiculos.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btvehiculos.UseVisualStyleBackColor = false;
-            btvehiculos.Click += btvehiculos_Click;
+            btnvehiculos.BackColor = Color.Transparent;
+            btnvehiculos.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            btnvehiculos.FlatAppearance.BorderSize = 0;
+            btnvehiculos.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            btnvehiculos.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            btnvehiculos.FlatStyle = FlatStyle.Flat;
+            btnvehiculos.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnvehiculos.ForeColor = Color.White;
+            btnvehiculos.Image = (Image)resources.GetObject("btnvehiculos.Image");
+            btnvehiculos.Location = new Point(0, 427);
+            btnvehiculos.Name = "btnvehiculos";
+            btnvehiculos.Size = new Size(150, 52);
+            btnvehiculos.TabIndex = 16;
+            btnvehiculos.Text = "VEHICULOS";
+            btnvehiculos.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnvehiculos.UseVisualStyleBackColor = false;
+            btnvehiculos.Click += btvehiculos_Click;
             // 
-            // btespecies
+            // btnespecies
             // 
-            btespecies.BackColor = Color.Transparent;
-            btespecies.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
-            btespecies.FlatAppearance.BorderSize = 0;
-            btespecies.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
-            btespecies.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
-            btespecies.FlatStyle = FlatStyle.Flat;
-            btespecies.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btespecies.ForeColor = Color.White;
-            btespecies.Image = (Image)resources.GetObject("btespecies.Image");
-            btespecies.Location = new Point(0, 369);
-            btespecies.Name = "btespecies";
-            btespecies.Size = new Size(150, 52);
-            btespecies.TabIndex = 15;
-            btespecies.Text = "ESPECIES";
-            btespecies.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btespecies.UseVisualStyleBackColor = false;
-            btespecies.Click += btespecies_Click;
+            btnespecies.BackColor = Color.Transparent;
+            btnespecies.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            btnespecies.FlatAppearance.BorderSize = 0;
+            btnespecies.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            btnespecies.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            btnespecies.FlatStyle = FlatStyle.Flat;
+            btnespecies.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnespecies.ForeColor = Color.White;
+            btnespecies.Image = (Image)resources.GetObject("btnespecies.Image");
+            btnespecies.Location = new Point(0, 369);
+            btnespecies.Name = "btnespecies";
+            btnespecies.Size = new Size(150, 52);
+            btnespecies.TabIndex = 15;
+            btnespecies.Text = "ESPECIES";
+            btnespecies.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnespecies.UseVisualStyleBackColor = false;
+            btnespecies.Click += btespecies_Click;
             // 
-            // btplanetas
+            // btnplanetas
             // 
-            btplanetas.BackColor = Color.Transparent;
-            btplanetas.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
-            btplanetas.FlatAppearance.BorderSize = 0;
-            btplanetas.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
-            btplanetas.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
-            btplanetas.FlatStyle = FlatStyle.Flat;
-            btplanetas.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btplanetas.ForeColor = Color.White;
-            btplanetas.Image = (Image)resources.GetObject("btplanetas.Image");
-            btplanetas.Location = new Point(1, 311);
-            btplanetas.Name = "btplanetas";
-            btplanetas.Size = new Size(150, 52);
-            btplanetas.TabIndex = 14;
-            btplanetas.Text = "PLANETAS";
-            btplanetas.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btplanetas.UseVisualStyleBackColor = false;
-            btplanetas.Click += btplanetas_Click;
+            btnplanetas.BackColor = Color.Transparent;
+            btnplanetas.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            btnplanetas.FlatAppearance.BorderSize = 0;
+            btnplanetas.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            btnplanetas.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            btnplanetas.FlatStyle = FlatStyle.Flat;
+            btnplanetas.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnplanetas.ForeColor = Color.White;
+            btnplanetas.Image = (Image)resources.GetObject("btnplanetas.Image");
+            btnplanetas.Location = new Point(1, 311);
+            btnplanetas.Name = "btnplanetas";
+            btnplanetas.Size = new Size(150, 52);
+            btnplanetas.TabIndex = 14;
+            btnplanetas.Text = "PLANETAS";
+            btnplanetas.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnplanetas.UseVisualStyleBackColor = false;
+            btnplanetas.Click += btplanetas_Click;
             // 
             // btnPeliculas
             // 
@@ -183,24 +185,24 @@
             btnPeliculas.UseVisualStyleBackColor = false;
             btnPeliculas.Click += btnPeliculas_Click;
             // 
-            // button5
+            // btnviajes
             // 
-            button5.BackColor = Color.Transparent;
-            button5.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
-            button5.FlatAppearance.BorderSize = 0;
-            button5.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
-            button5.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
-            button5.FlatStyle = FlatStyle.Flat;
-            button5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button5.ForeColor = Color.White;
-            button5.Image = (Image)resources.GetObject("button5.Image");
-            button5.Location = new Point(0, 485);
-            button5.Name = "button5";
-            button5.Size = new Size(150, 52);
-            button5.TabIndex = 12;
-            button5.Text = "VIAJES ESPACIALES";
-            button5.TextImageRelation = TextImageRelation.ImageBeforeText;
-            button5.UseVisualStyleBackColor = false;
+            btnviajes.BackColor = Color.Transparent;
+            btnviajes.FlatAppearance.BorderColor = Color.FromArgb(251, 204, 60);
+            btnviajes.FlatAppearance.BorderSize = 0;
+            btnviajes.FlatAppearance.MouseDownBackColor = Color.FromArgb(251, 204, 60);
+            btnviajes.FlatAppearance.MouseOverBackColor = Color.FromArgb(251, 204, 60);
+            btnviajes.FlatStyle = FlatStyle.Flat;
+            btnviajes.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnviajes.ForeColor = Color.White;
+            btnviajes.Image = (Image)resources.GetObject("btnviajes.Image");
+            btnviajes.Location = new Point(0, 485);
+            btnviajes.Name = "btnviajes";
+            btnviajes.Size = new Size(150, 52);
+            btnviajes.TabIndex = 12;
+            btnviajes.Text = "VIAJES ESPACIALES";
+            btnviajes.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnviajes.UseVisualStyleBackColor = false;
             // 
             // btnpersona
             // 
@@ -261,10 +263,13 @@
             // 
             // paneldata
             // 
+            paneldata.Controls.Add(btncancelar);
+            paneldata.Controls.Add(btnactualizar);
             paneldata.Controls.Add(groupBox1);
             paneldata.Controls.Add(comboBox2);
             paneldata.Controls.Add(comboBox3);
             paneldata.Controls.Add(textBox7);
+            paneldata.Controls.Add(btnnuevo);
             paneldata.Controls.Add(comboBox1);
             paneldata.Controls.Add(label10);
             paneldata.Controls.Add(label9);
@@ -283,9 +288,8 @@
             paneldata.Controls.Add(textBox1);
             paneldata.Controls.Add(label1);
             paneldata.Controls.Add(btnimagen);
-            paneldata.Controls.Add(btnnuevo);
             paneldata.Controls.Add(btneliminar);
-            paneldata.Controls.Add(btguardar);
+            paneldata.Controls.Add(btncrear);
             paneldata.Controls.Add(lblname);
             paneldata.Controls.Add(btneditar);
             paneldata.Controls.Add(gbimage);
@@ -300,6 +304,43 @@
             paneldata.Name = "paneldata";
             paneldata.Size = new Size(1390, 948);
             paneldata.TabIndex = 2;
+            // 
+            // btncancelar
+            // 
+            btncancelar.BackColor = Color.FromArgb(251, 204, 60);
+            btncancelar.BackgroundImageLayout = ImageLayout.None;
+            btncancelar.FlatAppearance.BorderSize = 0;
+            btncancelar.FlatStyle = FlatStyle.Flat;
+            btncancelar.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btncancelar.ForeColor = SystemColors.Window;
+            btncancelar.ImageAlign = ContentAlignment.MiddleLeft;
+            btncancelar.Location = new Point(1274, 75);
+            btncancelar.Name = "btncancelar";
+            btncancelar.Size = new Size(104, 48);
+            btncancelar.TabIndex = 121;
+            btncancelar.Text = "CANCELAR";
+            btncancelar.TextAlign = ContentAlignment.MiddleRight;
+            btncancelar.UseVisualStyleBackColor = false;
+            btncancelar.Click += btncancelar_Click;
+            // 
+            // btnactualizar
+            // 
+            btnactualizar.BackColor = Color.FromArgb(251, 204, 60);
+            btnactualizar.BackgroundImageLayout = ImageLayout.None;
+            btnactualizar.Enabled = false;
+            btnactualizar.FlatAppearance.BorderSize = 0;
+            btnactualizar.FlatStyle = FlatStyle.Flat;
+            btnactualizar.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnactualizar.ForeColor = SystemColors.Window;
+            btnactualizar.Image = (Image)resources.GetObject("btnactualizar.Image");
+            btnactualizar.ImageAlign = ContentAlignment.MiddleLeft;
+            btnactualizar.Location = new Point(902, 883);
+            btnactualizar.Name = "btnactualizar";
+            btnactualizar.Size = new Size(162, 45);
+            btnactualizar.TabIndex = 120;
+            btnactualizar.Text = "ACTUALIZAR";
+            btnactualizar.TextAlign = ContentAlignment.MiddleRight;
+            btnactualizar.UseVisualStyleBackColor = false;
             // 
             // groupBox1
             // 
@@ -382,6 +423,25 @@
             textBox7.Name = "textBox7";
             textBox7.Size = new Size(181, 27);
             textBox7.TabIndex = 112;
+            // 
+            // btnnuevo
+            // 
+            btnnuevo.BackColor = Color.FromArgb(251, 204, 60);
+            btnnuevo.BackgroundImageLayout = ImageLayout.None;
+            btnnuevo.FlatAppearance.BorderSize = 0;
+            btnnuevo.FlatStyle = FlatStyle.Flat;
+            btnnuevo.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnnuevo.ForeColor = SystemColors.Window;
+            btnnuevo.Image = (Image)resources.GetObject("btnnuevo.Image");
+            btnnuevo.ImageAlign = ContentAlignment.MiddleLeft;
+            btnnuevo.Location = new Point(134, 75);
+            btnnuevo.Name = "btnnuevo";
+            btnnuevo.Size = new Size(104, 48);
+            btnnuevo.TabIndex = 85;
+            btnnuevo.Text = "NUEVO";
+            btnnuevo.TextAlign = ContentAlignment.MiddleRight;
+            btnnuevo.UseVisualStyleBackColor = false;
+            btnnuevo.Click += btnnuevo_Click;
             // 
             // comboBox1
             // 
@@ -584,25 +644,6 @@
             btnimagen.Text = "Subir Archivo";
             btnimagen.UseVisualStyleBackColor = true;
             // 
-            // btnnuevo
-            // 
-            btnnuevo.BackColor = Color.FromArgb(251, 204, 60);
-            btnnuevo.BackgroundImageLayout = ImageLayout.None;
-            btnnuevo.FlatAppearance.BorderSize = 0;
-            btnnuevo.FlatStyle = FlatStyle.Flat;
-            btnnuevo.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnnuevo.ForeColor = SystemColors.Window;
-            btnnuevo.Image = (Image)resources.GetObject("btnnuevo.Image");
-            btnnuevo.ImageAlign = ContentAlignment.MiddleLeft;
-            btnnuevo.Location = new Point(904, 883);
-            btnnuevo.Name = "btnnuevo";
-            btnnuevo.Size = new Size(136, 45);
-            btnnuevo.TabIndex = 85;
-            btnnuevo.Text = "NUEVO";
-            btnnuevo.TextAlign = ContentAlignment.MiddleRight;
-            btnnuevo.UseVisualStyleBackColor = false;
-            btnnuevo.Click += btnnuevo_Click;
-            // 
             // btneliminar
             // 
             btneliminar.BackColor = Color.FromArgb(251, 204, 60);
@@ -622,23 +663,24 @@
             btneliminar.UseVisualStyleBackColor = false;
             btneliminar.Click += btneliminar_Click;
             // 
-            // btguardar
+            // btncrear
             // 
-            btguardar.BackColor = Color.FromArgb(251, 204, 60);
-            btguardar.BackgroundImageLayout = ImageLayout.None;
-            btguardar.FlatAppearance.BorderSize = 0;
-            btguardar.FlatStyle = FlatStyle.Flat;
-            btguardar.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btguardar.ForeColor = SystemColors.Window;
-            btguardar.Image = (Image)resources.GetObject("btguardar.Image");
-            btguardar.ImageAlign = ContentAlignment.MiddleLeft;
-            btguardar.Location = new Point(1061, 883);
-            btguardar.Name = "btguardar";
-            btguardar.Size = new Size(136, 45);
-            btguardar.TabIndex = 83;
-            btguardar.Text = "GUARDAR";
-            btguardar.TextAlign = ContentAlignment.MiddleRight;
-            btguardar.UseVisualStyleBackColor = false;
+            btncrear.BackColor = Color.FromArgb(251, 204, 60);
+            btncrear.BackgroundImageLayout = ImageLayout.None;
+            btncrear.Enabled = false;
+            btncrear.FlatAppearance.BorderSize = 0;
+            btncrear.FlatStyle = FlatStyle.Flat;
+            btncrear.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btncrear.ForeColor = SystemColors.Window;
+            btncrear.Image = (Image)resources.GetObject("btncrear.Image");
+            btncrear.ImageAlign = ContentAlignment.MiddleLeft;
+            btncrear.Location = new Point(1070, 883);
+            btncrear.Name = "btncrear";
+            btncrear.Size = new Size(136, 45);
+            btncrear.TabIndex = 83;
+            btncrear.Text = "CREAR";
+            btncrear.TextAlign = ContentAlignment.MiddleRight;
+            btncrear.UseVisualStyleBackColor = false;
             // 
             // lblname
             // 
@@ -783,7 +825,7 @@
         private Panel panel4;
         private Button btninicio;
         private Button btnpersona;
-        private Button button5;
+        private Button btnviajes;
         private Panel paneldata;
         private ComboBox cbtransporte;
         private ComboBox cbespecies;
@@ -813,21 +855,23 @@
         private Button btnimagen;
         private Button btnnuevo;
         private Button btneliminar;
-        private Button btguardar;
+        private Button btncrear;
         private Label lblname;
         private Button btneditar;
         private GroupBox gbimage;
         private PictureBox Picture1;
         private DataGridView dtgpersona;
         private Button btnPeliculas;
-        private Button btplanetas;
-        private Button btvehiculos;
-        private Button btespecies;
+        private Button btnplanetas;
+        private Button btnvehiculos;
+        private Button btnespecies;
         private TextBox textBox7;
         private ComboBox comboBox2;
         private ComboBox comboBox3;
         private CheckedListBox checkedListBox1;
         private CheckedListBox checkedListBox2;
         private GroupBox groupBox1;
+        private Button btnactualizar;
+        private Button btncancelar;
     }
 }

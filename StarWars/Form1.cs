@@ -21,6 +21,7 @@ namespace StarWars
 
         private bool cargando = true;
         private string vistaActual = "Personas";
+        private bool cancelado = false;
 
         public Form1(ApplicationDbContext context,
             IRestApi restApi,
@@ -55,11 +56,11 @@ namespace StarWars
             cargando = false;
         }
 
-        //Botonera General
+        //Botonera NA
         private async void btnpersona_Click(object sender, EventArgs e)
         {
             clickPersonas();
-            await _transporteService.InicializarTiposAsync();
+            await CargarMostrarPersonasAsync();
 
         }
 
@@ -86,37 +87,50 @@ namespace StarWars
         {
             await CargarMostrarTransportesAsync();
         }
-                private void btneditar_Click(object sender, EventArgs e)
+
+        //botonera del crud
+        //editar
+        private void btneditar_Click(object sender, EventArgs e)
         {
+            if (dtgpersona.CurrentRow == null || dtgpersona.CurrentRow.Index < 0)
+            {
+                MessageBox.Show("Seleccione un personaje.");
+                return;
+            }
+            btncrear.Enabled = true;
             HabilitarControles();
+            btnactualizar.Enabled = true;
+            dtgpersona.Enabled = false;
         }
-
-        //Botonera de CRUD para cada tabla
-
-        //BOTON NUEVO PARA CADA TABLA
+        //nuevo
         private async void btnnuevo_Click(object sender, EventArgs e)
         {
+            HabilitarControles();
+            dtgpersona.Enabled = false;
+            btncrear.Enabled = true;
 
-            Persona persona = new Persona
-            {
-                Nombre = textBox1.Text,
-                Altura = textBox2.Text,
-                Masa = textBox3.Text,
-                ColorDePiel = textBox4.Text,
-                ColorDeOjos = textBox5.Text,
-                ColorDePelo = textBox6.Text,
-                Cumpleaños = textBox7.Text,
-                Genero = comboBox1.Text
-            };
+        }
+        //cancelar
+        private void btncancelar_Click(object sender, EventArgs e)
+        {
+            cancelado = true;
 
-            await _personaService.CrearPersonaAsync(persona);
+            DeshabilitarControles();
+            dtgpersona.Enabled = true;
+            btncrear.Enabled = false;
+            btnactualizar.Enabled = false;
 
-            await CargarMostrarPersonasAsync();
             LimpiarControles();
+
+            dtgpersona.ClearSelection();
+            dtgpersona.CurrentCell = null;
+
+            cancelado = false;
         }
 
-        //BOTON ELIMINAR PARA CADA TABLA
-        private async void btneliminar_Click(object sender, EventArgs e)
+
+        //actualizar
+        private async void btnactualizar_Click(object sender, EventArgs e)
         {
             if (dtgpersona.CurrentRow == null) return;
 
@@ -125,36 +139,30 @@ namespace StarWars
             switch (vistaActual)
             {
                 case "Personas":
-                    await _personaService.EliminarPersonaAsync(id);
+                    Persona persona = new Persona
+                    {
+                        Id = id,
+                        Nombre = textBox1.Text,
+                        Altura = textBox2.Text,
+                        Masa = textBox3.Text,
+                        ColorDePiel = textBox4.Text,
+                        ColorDeOjos = textBox5.Text,
+                        ColorDePelo = textBox6.Text,
+                        Cumpleaños = textBox7.Text,
+                        Genero = comboBox1.Text
+                    };
+
+                    await _personaService.ActualizarPersonaAsync(persona);
                     await CargarMostrarPersonasAsync();
                     break;
-
-                case "Peliculas":
-                    await _peliculaService.EliminarPeliculaAsync(id);
-                    await CargarMostrarPeliculasAsync();
-                    break;
-
-                case "Planetas":
-                    await _planetaService.EliminarPlanetaAsync(id);
-                    await CargarMostrarPlanetasAsync();
-                    break;
-
-                case "Especies":
-                    await _especieService.EliminarEspecieAsync(id);
-                    await CargarMostrarEspeciesAsync();
-                    break;
-
-                    //case "Transportes":
-                    //    await _transporteService.EliminarTransporteAsync(id);
-                    //    await CargarMostrarTransportesAsync();
-                    //    break;
             }
 
+            DeshabilitarControles();
+            dtgpersona.Enabled = true;
             LimpiarControles();
         }
-
-        //BOTON GUARDAR PARA CADA TABLA
-        private async Task btguardar_ClickAsync(object sender, EventArgs e)
+        //CREAR
+        private async Task btncrear_ClickAsync(object sender, EventArgs e)
         {
             if (dtgpersona.CurrentRow == null) return;
 
@@ -235,10 +243,77 @@ namespace StarWars
         }
 
 
+
+        //ELIMINAR
+        private async void btneliminar_Click(object sender, EventArgs e)
+        {
+            if (dtgpersona.CurrentRow == null || dtgpersona.CurrentRow.Index < 0)
+            {
+                MessageBox.Show("Seleccione un registro para eliminar.");
+                return;
+            }
+
+            DialogResult resultado = MessageBox.Show(
+                "¿Está seguro que desea eliminar este registro?",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (resultado != DialogResult.Yes)
+                return;
+
+            try
+            {
+                int id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
+
+                switch (vistaActual)
+                {
+                    case "Personas":
+                        await _personaService.EliminarPersonaAsync(id);
+                        await CargarMostrarPersonasAsync();
+                        break;
+
+                    case "Peliculas":
+                        await _peliculaService.EliminarPeliculaAsync(id);
+                        await CargarMostrarPeliculasAsync();
+                        break;
+
+                    case "Planetas":
+                        await _planetaService.EliminarPlanetaAsync(id);
+                        await CargarMostrarPlanetasAsync();
+                        break;
+
+                    case "Especies":
+                        await _especieService.EliminarEspecieAsync(id);
+                        await CargarMostrarEspeciesAsync();
+                        break;
+
+                        //case "Transportes":
+                        //    await _transporteService.EliminarTransporteAsync(id);
+                        //    await CargarMostrarTransportesAsync();
+                        //    break;
+                }
+
+                LimpiarControles();
+                DeshabilitarControles();
+                dtgpersona.Enabled = true;
+
+                MessageBox.Show("Registro eliminado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar: " + ex.Message);
+            }
+        }
+
+        
+
         //SelectionChanged del DataGridView para mostrar detalles de las tablas
         private async void dtgpersona_SelectionChanged(object sender, EventArgs e)
         {
             if (cargando) return;
+            if (cancelado) return;
             if (dtgpersona.CurrentRow == null) return;
             if (dtgpersona.CurrentCell == null) return;
 
@@ -630,6 +705,13 @@ namespace StarWars
             textBox4.Text = "";
             textBox5.Text = "";
             textBox6.Text = "";
+            textBox7.Text = "";
+
+            comboBox1.ResetText();
+            comboBox2.ResetText();
+            comboBox3.ResetText();
+            checkedListBox1.Items.Clear();
+            checkedListBox2.Items.Clear();
 
             if (Picture1.Image != null)
             {
@@ -654,10 +736,37 @@ namespace StarWars
             checkedListBox1.Enabled = true;
             checkedListBox2.Enabled = true;
 
-            btnimagen.Enabled = true;
-            btnnuevo.Enabled = false;
-            btneliminar.Enabled = false;
             btneditar.Enabled = false;
+            btnnuevo.Enabled = false;
+            btncancelar.Enabled = true;
+            btnimagen.Enabled = true;
+            btneliminar.Enabled = false;
+
+        }
+
+        private void DeshabilitarControles()
+        {
+            textBox1.Enabled = false;
+            textBox2.Enabled = false;
+            textBox3.Enabled = false;
+            textBox4.Enabled = false;
+            textBox5.Enabled = false;
+            textBox6.Enabled = false;
+            textBox7.Enabled = false;
+
+            comboBox1.Enabled = false;
+            comboBox2.Enabled = false;
+            comboBox3.Enabled = false;
+
+            checkedListBox1.Enabled = false;
+            checkedListBox2.Enabled = false;
+
+            btnimagen.Enabled = false;
+            btnnuevo.Enabled = true;
+            btneliminar.Enabled = true;
+            btneditar.Enabled = true;
+            btnactualizar.Enabled = false;
+
         }
         // Método para establecer colores con transparencia en los paneles
         private void colorpanel()
