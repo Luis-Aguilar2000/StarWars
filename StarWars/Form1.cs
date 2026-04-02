@@ -59,7 +59,7 @@ namespace StarWars
         //Botonera NA
         private async void btnpersona_Click(object sender, EventArgs e)
         {
-            clickPersonas();
+            await clickPersonas();
             await CargarMostrarPersonasAsync();
 
         }
@@ -90,14 +90,29 @@ namespace StarWars
 
         //botonera del crud
         //editar
-        private void btneditar_Click(object sender, EventArgs e)
+        private async void btneditar_Click(object sender, EventArgs e)
         {
             if (dtgpersona.CurrentRow == null || dtgpersona.CurrentRow.Index < 0)
             {
                 MessageBox.Show("Seleccione un personaje.");
                 return;
             }
-            btncrear.Enabled = true;
+
+            if (vistaActual == "Personas")
+            {
+                var fila = dtgpersona.CurrentRow;
+
+                await CargarCombosPersonasAsync();
+
+                comboBox1.Text = fila.Cells["Genero"]?.Value?.ToString() ?? "";
+                comboBox2.Text = fila.Cells["Especie"]?.Value?.ToString() ?? "";
+                comboBox3.Text = fila.Cells["Planeta"]?.Value?.ToString() ?? "";
+
+                await MarcarPeliculasSeleccionadasAsync(fila);
+                await MarcarVehiculosSeleccionadosAsync(fila);
+            }
+
+            btncrear.Enabled = false;
             HabilitarControles();
             btnactualizar.Enabled = true;
             dtgpersona.Enabled = false;
@@ -109,6 +124,12 @@ namespace StarWars
             dtgpersona.Enabled = false;
             btncrear.Enabled = true;
 
+            LimpiarControles();
+
+            if (vistaActual == "Personas")
+            {
+                await CargarCombosPersonasAsync();
+            }
         }
         //cancelar
         private void btncancelar_Click(object sender, EventArgs e)
@@ -122,12 +143,17 @@ namespace StarWars
 
             LimpiarControles();
 
+            checkedListBox1.DataSource = null;
+            checkedListBox1.Items.Clear();
+
+            checkedListBox2.DataSource = null;
+            checkedListBox2.Items.Clear();
+
             dtgpersona.ClearSelection();
             dtgpersona.CurrentCell = null;
 
             cancelado = false;
         }
-
 
         //actualizar
         private async void btnactualizar_Click(object sender, EventArgs e)
@@ -707,11 +733,19 @@ namespace StarWars
             textBox6.Text = "";
             textBox7.Text = "";
 
-            comboBox1.ResetText();
-            comboBox2.ResetText();
-            comboBox3.ResetText();
-            checkedListBox1.Items.Clear();
-            checkedListBox2.Items.Clear();
+            comboBox1.SelectedIndex = -1;
+            comboBox2.SelectedIndex = -1;
+            comboBox3.SelectedIndex = -1;
+
+            comboBox1.Text = "";
+            comboBox2.Text = "";
+            comboBox3.Text = "";
+
+            for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                checkedListBox1.SetItemChecked(i, false);
+
+            for (int i = 0; i < checkedListBox2.Items.Count; i++)
+                checkedListBox2.SetItemChecked(i, false);
 
             if (Picture1.Image != null)
             {
