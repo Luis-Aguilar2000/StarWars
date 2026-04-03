@@ -682,6 +682,7 @@
             btncrear.Text = "CREAR";
             btncrear.TextAlign = ContentAlignment.MiddleRight;
             btncrear.UseVisualStyleBackColor = false;
+            btncrear.Click += btncrear_Click;
             // 
             // lblname
             // 

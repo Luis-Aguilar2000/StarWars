@@ -4,9 +4,10 @@ namespace StarWars.Services
 {
     public interface IPlanetaService
     {
-        Task<List<Planeta>> ObtenerPlanetasAsync();
-        Task CrearPlanetaAsync(Planeta planeta);
-        Task ActualizarPlanetaAsync(Planeta planeta);
-        Task EliminarPlanetaAsync(int id);
+        Task<List<Planeta>> ObtenerPlanetas();
+        Task SincronizarPlanetas();
+        Task CrearPlaneta(Planeta planeta);
+        Task ActualizarPlaneta(Planeta planeta);
+        Task EliminarPlaneta(int id);
     }
 }

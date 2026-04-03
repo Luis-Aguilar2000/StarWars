@@ -17,7 +17,15 @@ namespace StarWars.Services
             _restApi = restApi;
         }
 
-        public async Task<List<Planeta>> ObtenerPlanetasAsync()
+        public async Task<List<Planeta>> ObtenerPlanetas()
+        {
+            return await _context.Planetas
+                .AsNoTracking()
+                .OrderBy(p => p.Nombre)
+                .ToListAsync();
+        }
+
+        public async Task SincronizarPlanetas()
         {
             var result = await _restApi.Get<PeopleResponse<PlanetaJsonModel>>(
                 "https://swapi.dev/api/",
@@ -25,78 +33,84 @@ namespace StarWars.Services
             );
 
             if (result?.Results == null || !result.Results.Any())
-                return await _context.Planetas.ToListAsync();
+                return;
 
-            var planetasGuardados = await _context.Planetas.ToListAsync();
+            var nuevosPlanetas = new List<Planeta>();
 
             foreach (var item in result.Results)
             {
-                bool existe = planetasGuardados.Any(p => p.Url == item.Url);
+                bool existe = await _context.Planetas
+                    .AnyAsync(p => p.Nombre == item.Name);
 
                 if (!existe)
                 {
                     var planeta = new Planeta
                     {
-                        Nombre = item.Name ?? "",
-                        PeriodoDeRotación = item.RotationPeriod ?? "",
-                        PeriodoOrbital = item.OrbitalPeriod ?? "",
-                        Diametro = item.Diameter ?? "",
-                        Clima = item.Climate ?? "",
-                        Gravedad = item.Gravity ?? "",
-                        Terreno = item.Terrain ?? "",
-                        AguaSuperficial = item.SurfaceWater ?? "",
-                        Poblacion = item.Population ?? "",
+                        Nombre = item.Name,
+                        PeriodoDeRotación = item.RotationPeriod,
+                        PeriodoOrbital = item.OrbitalPeriod,
+                        Diametro = item.Diameter,
+                        Clima = item.Climate,
+                        Gravedad = item.Gravity,
+                        Terreno = item.Terrain,
+                        AguaSuperficial = item.SurfaceWater,
+                        Poblacion = item.Population,
                         Picture = "",
-                        Url = item.Url ?? ""
+                        Url = item.Url
                     };
 
-                    _context.Planetas.Add(planeta);
-                    planetasGuardados.Add(planeta);
+                    nuevosPlanetas.Add(planeta);
                 }
             }
 
-            await _context.SaveChangesAsync();
-
-            return await _context.Planetas.ToListAsync();
+            if (nuevosPlanetas.Any())
+            {
+                await _context.Planetas.AddRangeAsync(nuevosPlanetas);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task CrearPlanetaAsync(Planeta planeta)
+        public async Task CrearPlaneta(Planeta planeta)
         {
+            if (planeta == null) return;
+
             _context.Planetas.Add(planeta);
             await _context.SaveChangesAsync();
         }
 
-        public async Task ActualizarPlanetaAsync(Planeta planeta)
+        public async Task ActualizarPlaneta(Planeta planeta)
         {
-            var planetaBD = await _context.Planetas.FindAsync(planeta.Id);
+            if (planeta == null) return;
 
-            if (planetaBD != null)
-            {
-                planetaBD.Nombre = planeta.Nombre;
-                planetaBD.PeriodoDeRotación = planeta.PeriodoDeRotación;
-                planetaBD.PeriodoOrbital = planeta.PeriodoOrbital;
-                planetaBD.Diametro = planeta.Diametro;
-                planetaBD.Clima = planeta.Clima;
-                planetaBD.Gravedad = planeta.Gravedad;
-                planetaBD.Terreno = planeta.Terreno;
-                planetaBD.AguaSuperficial = planeta.AguaSuperficial;
-                planetaBD.Poblacion = planeta.Poblacion;
-                planetaBD.Picture = planeta.Picture;
-                planetaBD.Url = planeta.Url;
+            var planetaExistente = await _context.Planetas
+                .FirstOrDefaultAsync(p => p.Id == planeta.Id);
 
-                await _context.SaveChangesAsync();
-            }
+            if (planetaExistente == null) return;
+
+            planetaExistente.Nombre = planeta.Nombre;
+            planetaExistente.PeriodoDeRotación = planeta.PeriodoDeRotación;
+            planetaExistente.PeriodoOrbital = planeta.PeriodoOrbital;
+            planetaExistente.Diametro = planeta.Diametro;
+            planetaExistente.Clima = planeta.Clima;
+            planetaExistente.Gravedad = planeta.Gravedad;
+            planetaExistente.Terreno = planeta.Terreno;
+            planetaExistente.AguaSuperficial = planeta.AguaSuperficial;
+            planetaExistente.Poblacion = planeta.Poblacion;
+            planetaExistente.Picture = planeta.Picture;
+            planetaExistente.Url = planeta.Url;
+
+            await _context.SaveChangesAsync();
         }
 
-        public async Task EliminarPlanetaAsync(int id)
+        public async Task EliminarPlaneta(int id)
         {
-            var planeta = await _context.Planetas.FindAsync(id);
+            var planeta = await _context.Planetas
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (planeta != null)
-            {
-                _context.Planetas.Remove(planeta);
-                await _context.SaveChangesAsync();
-            }
+            if (planeta == null) return;
+
+            _context.Planetas.Remove(planeta);
+            await _context.SaveChangesAsync();
         }
     }
 }

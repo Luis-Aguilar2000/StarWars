@@ -17,7 +17,7 @@ namespace StarWars.Services
             _restApi = restApi;
         }
 
-        public async Task InicializarTiposAsync()
+        public async Task InicializarTipos()
         {
             if (!await _context.TipoTransporte.AnyAsync())
             {
@@ -28,9 +28,18 @@ namespace StarWars.Services
             }
         }
 
-        public async Task<List<Transporte>> ObtenerTransportesAsync()
+        public async Task<List<Transporte>> ObtenerTransportes()
         {
-            await InicializarTiposAsync();
+            return await _context.Transportes
+                .Include(t => t.TipoTransporte)
+                .AsNoTracking()
+                .OrderBy(t => t.Nombre)
+                .ToListAsync();
+        }
+
+        public async Task SincronizarTransportes()
+        {
+            await InicializarTipos();
 
             var tipoNave = await _context.TipoTransporte
                 .FirstOrDefaultAsync(t => t.Nombre == "Nave");
@@ -39,15 +48,15 @@ namespace StarWars.Services
                 .FirstOrDefaultAsync(t => t.Nombre == "Vehículo");
 
             if (tipoNave == null || tipoVehiculo == null)
-            {
-                return await _context.Transportes
-                    .Include(t => t.TipoTransporte)
-                    .ToListAsync();
-            }
+                return;
 
-            var transportesGuardados = await _context.Transportes.ToListAsync();
+            var urlsGuardadas = await _context.Transportes
+                .Select(t => t.Url)
+                .ToListAsync();
 
-            // 🔹 NAVES
+            var setUrls = new HashSet<string>(urlsGuardadas.Where(x => !string.IsNullOrWhiteSpace(x)));
+
+            // NAVES
             var naves = await _restApi.Get<PeopleResponse<TransporteJsonModel>>(
                 "https://swapi.dev/api/",
                 "starships/"
@@ -57,9 +66,9 @@ namespace StarWars.Services
             {
                 foreach (var item in naves.Results)
                 {
-                    bool existe = transportesGuardados.Any(t => t.Url == item.Url);
+                    string url = item.Url ?? "";
 
-                    if (!existe)
+                    if (!string.IsNullOrWhiteSpace(url) && !setUrls.Contains(url))
                     {
                         var transporte = new Transporte
                         {
@@ -76,17 +85,17 @@ namespace StarWars.Services
                             MGLT = item.MGLT ?? "",
                             Clase = item.StarshipClass ?? "",
                             Picture = "",
-                            Url = item.Url ?? "",
+                            Url = url,
                             TipoTransporteId = tipoNave.Id
                         };
 
                         _context.Transportes.Add(transporte);
-                        transportesGuardados.Add(transporte);
+                        setUrls.Add(url);
                     }
                 }
             }
 
-            // 🔹 VEHÍCULOS
+            // VEHÍCULOS
             var vehiculos = await _restApi.Get<PeopleResponse<TransporteJsonModel>>(
                 "https://swapi.dev/api/",
                 "vehicles/"
@@ -96,9 +105,9 @@ namespace StarWars.Services
             {
                 foreach (var item in vehiculos.Results)
                 {
-                    bool existe = transportesGuardados.Any(t => t.Url == item.Url);
+                    string url = item.Url ?? "";
 
-                    if (!existe)
+                    if (!string.IsNullOrWhiteSpace(url) && !setUrls.Contains(url))
                     {
                         var transporte = new Transporte
                         {
@@ -115,64 +124,62 @@ namespace StarWars.Services
                             MGLT = item.MGLT ?? "",
                             Clase = item.VehicleClass ?? "",
                             Picture = "",
-                            Url = item.Url ?? "",
+                            Url = url,
                             TipoTransporteId = tipoVehiculo.Id
                         };
 
                         _context.Transportes.Add(transporte);
-                        transportesGuardados.Add(transporte);
+                        setUrls.Add(url);
                     }
                 }
             }
 
             await _context.SaveChangesAsync();
-
-            return await _context.Transportes
-                .Include(t => t.TipoTransporte)
-                .ToListAsync();
         }
 
-        public async Task CrearTransporteAsync(Transporte transporte)
+        public async Task CrearTransporte(Transporte transporte)
         {
+            if (transporte == null) return;
+
             _context.Transportes.Add(transporte);
             await _context.SaveChangesAsync();
         }
 
-        public async Task ActualizarTransporteAsync(Transporte transporte)
+        public async Task ActualizarTransporte(Transporte transporte)
         {
+            if (transporte == null) return;
+
             var transporteBD = await _context.Transportes.FindAsync(transporte.Id);
 
-            if (transporteBD != null)
-            {
-                transporteBD.Nombre = transporte.Nombre;
-                transporteBD.Modelo = transporte.Modelo;
-                transporteBD.Fabricante = transporte.Fabricante;
-                transporteBD.CostoEnCreditos = transporte.CostoEnCreditos;
-                transporteBD.Longitud = transporte.Longitud;
-                transporteBD.VelocidadMaximaAtmosfera = transporte.VelocidadMaximaAtmosfera;
-                transporteBD.Tripulacion = transporte.Tripulacion;
-                transporteBD.Pasajeros = transporte.Pasajeros;
-                transporteBD.CapacidadCarga = transporte.CapacidadCarga;
-                transporteBD.Consumibles = transporte.Consumibles;
-                transporteBD.MGLT = transporte.MGLT;
-                transporteBD.Clase = transporte.Clase;
-                transporteBD.Picture = transporte.Picture;
-                transporteBD.Url = transporte.Url;
-                transporteBD.TipoTransporteId = transporte.TipoTransporteId;
+            if (transporteBD == null) return;
 
-                await _context.SaveChangesAsync();
-            }
+            transporteBD.Nombre = transporte.Nombre;
+            transporteBD.Modelo = transporte.Modelo;
+            transporteBD.Fabricante = transporte.Fabricante;
+            transporteBD.CostoEnCreditos = transporte.CostoEnCreditos;
+            transporteBD.Longitud = transporte.Longitud;
+            transporteBD.VelocidadMaximaAtmosfera = transporte.VelocidadMaximaAtmosfera;
+            transporteBD.Tripulacion = transporte.Tripulacion;
+            transporteBD.Pasajeros = transporte.Pasajeros;
+            transporteBD.CapacidadCarga = transporte.CapacidadCarga;
+            transporteBD.Consumibles = transporte.Consumibles;
+            transporteBD.MGLT = transporte.MGLT;
+            transporteBD.Clase = transporte.Clase;
+            transporteBD.Picture = transporte.Picture;
+            transporteBD.Url = transporte.Url;
+            transporteBD.TipoTransporteId = transporte.TipoTransporteId;
+
+            await _context.SaveChangesAsync();
         }
 
-        public async Task EliminarTransporteAsync(int id)
+        public async Task EliminarTransporte(int id)
         {
             var transporte = await _context.Transportes.FindAsync(id);
 
-            if (transporte != null)
-            {
-                _context.Transportes.Remove(transporte);
-                await _context.SaveChangesAsync();
-            }
+            if (transporte == null) return;
+
+            _context.Transportes.Remove(transporte);
+            await _context.SaveChangesAsync();
         }
     }
 }

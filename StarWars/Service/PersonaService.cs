@@ -17,7 +17,18 @@ namespace StarWars.Services
             _restApi = restApi;
         }
 
-        public async Task<List<Persona>> ObtenerPersonasAsync()
+        public async Task<List<Persona>> ObtenerPersonas()
+        {
+            return await _context.Personas
+                .Include(p => p.Planeta)
+                .Include(p => p.Peliculas)
+                .Include(p => p.Especie)
+                .Include(p => p.Transportes)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task SincronizarPersonas()
         {
             var result = await _restApi.Get<PeopleResponse<PersonajeJsonModel>>(
                 "https://swapi.dev/api/",
@@ -25,175 +36,138 @@ namespace StarWars.Services
             );
 
             if (result?.Results == null || !result.Results.Any())
-            {
-                return await _context.Personas
-                    .Include(p => p.Peliculas)
-                    .Include(p => p.Planeta)
-                    .Include(p => p.Especie)
-                    .Include(p => p.Transportes)
-                    .ToListAsync();
-            }
+                return;
 
-            // Cargar todo primero una sola vez
-            var personasDB = await _context.Personas
-                .Include(p => p.Peliculas)
-                .Include(p => p.Planeta)
-                .Include(p => p.Especie)
-                .Include(p => p.Transportes)
-                .ToListAsync();
-
-            var peliculasDB = await _context.Peliculas.ToListAsync();
-            var planetasDB = await _context.Planetas.ToListAsync();
-            var especiesDB = await _context.Especies.ToListAsync();
-            var transportesDB = await _context.Transportes.ToListAsync();
+            var nuevasPersonas = new List<Persona>();
 
             foreach (var item in result.Results)
             {
-                var persona = personasDB.FirstOrDefault(p => p.Nombre == item.Name);
+                bool existe = await _context.Personas
+                    .AnyAsync(p => p.Nombre == item.Name);
 
-                if (persona == null)
+                if (!existe)
                 {
-                    persona = new Persona
+                    var persona = new Persona
                     {
-                        Nombre = item.Name ?? "",
-                        Altura = item.Height ?? "",
-                        Masa = item.Mass ?? "",
-                        ColorDePiel = item.SkinColor ?? "",
-                        ColorDeOjos = item.EyeColor ?? "",
-                        ColorDePelo = item.HairColor ?? "",
-                        Cumpleaños = item.BirthYear ?? "",
-                        Genero = item.Gender ?? "",
-                        Picture = "",
-                        Peliculas = new List<Pelicula>(),
-                        Especie = new List<Especie>(),
-                        Transportes = new List<Transporte>()
+                        Nombre = item.Name,
+                        Altura = item.Height,
+                        Masa = item.Mass,
+                        ColorDePiel = item.SkinColor,
+                        ColorDeOjos = item.EyeColor,
+                        ColorDePelo = item.HairColor,
+                        Cumpleaños = item.BirthYear,
+                        Genero = item.Gender,
+                        Picture = ""
                     };
 
-                    _context.Personas.Add(persona);
-                    personasDB.Add(persona);
-                }
-                else
-                {
-                    persona.Nombre = item.Name ?? "";
-                    persona.Altura = item.Height ?? "";
-                    persona.Masa = item.Mass ?? "";
-                    persona.ColorDePiel = item.SkinColor ?? "";
-                    persona.ColorDeOjos = item.EyeColor ?? "";
-                    persona.ColorDePelo = item.HairColor ?? "";
-                    persona.Cumpleaños = item.BirthYear ?? "";
-                    persona.Genero = item.Gender ?? "";
-                }
-
-                // Películas
-                persona.Peliculas.Clear();
-
-                if (item.Films != null && item.Films.Any())
-                {
-                    var peliculas = peliculasDB
-                        .Where(p => !string.IsNullOrEmpty(p.Url) && item.Films.Contains(p.Url))
-                        .ToList();
-
-                    foreach (var pelicula in peliculas)
-                    {
-                        persona.Peliculas.Add(pelicula);
-                    }
-                }
-
-                // Planeta
-                persona.Planeta = null;
-
-                if (!string.IsNullOrEmpty(item.Homeworld))
-                {
-                    var planeta = planetasDB.FirstOrDefault(p => p.Url == item.Homeworld);
-                    persona.Planeta = planeta;
-                }
-
-                // Especies
-                persona.Especie.Clear();
-
-                if (item.Species != null && item.Species.Any())
-                {
-                    var especies = especiesDB
-                        .Where(e => !string.IsNullOrEmpty(e.Url) && item.Species.Contains(e.Url))
-                        .ToList();
-
-                    foreach (var especie in especies)
-                    {
-                        persona.Especie.Add(especie);
-                    }
-                }
-
-                // Transportes
-                persona.Transportes.Clear();
-
-                var urlsTransportes = new List<string>();
-
-                if (item.Vehicles != null && item.Vehicles.Any())
-                    urlsTransportes.AddRange(item.Vehicles);
-
-                if (item.Starships != null && item.Starships.Any())
-                    urlsTransportes.AddRange(item.Starships);
-
-                if (urlsTransportes.Any())
-                {
-                    var transportes = transportesDB
-                        .Where(t => !string.IsNullOrEmpty(t.Url) && urlsTransportes.Contains(t.Url))
-                        .ToList();
-
-                    foreach (var transporte in transportes)
-                    {
-                        persona.Transportes.Add(transporte);
-                    }
+                    nuevasPersonas.Add(persona);
                 }
             }
 
-            await _context.SaveChangesAsync();
-
-            return await _context.Personas
-                .Include(p => p.Peliculas)
-                .Include(p => p.Planeta)
-                .Include(p => p.Especie)
-                .Include(p => p.Transportes)
-                .ToListAsync();
+            if (nuevasPersonas.Any())
+            {
+                await _context.Personas.AddRangeAsync(nuevasPersonas);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task CrearPersonaAsync(Persona persona)
+        public async Task CrearPersona(Persona persona, int? especieId, List<int> peliculasIds, List<int> transportesIds)
         {
+            if (persona == null) return;
+
+            if (especieId.HasValue)
+            {
+                var especie = await _context.Especies.FindAsync(especieId.Value);
+                if (especie != null)
+                {
+                    persona.Especie = new List<Especie> { especie };
+                }
+            }
+
+            if (peliculasIds != null && peliculasIds.Any())
+            {
+                var peliculas = await _context.Peliculas
+                    .Where(p => peliculasIds.Contains(p.Id))
+                    .ToListAsync();
+
+                persona.Peliculas = peliculas;
+            }
+
+            if (transportesIds != null && transportesIds.Any())
+            {
+                var transportes = await _context.Transportes
+                    .Where(t => transportesIds.Contains(t.Id))
+                    .ToListAsync();
+
+                persona.Transportes = transportes;
+            }
+
             _context.Personas.Add(persona);
             await _context.SaveChangesAsync();
         }
 
-        public async Task ActualizarPersonaAsync(Persona persona)
+        public async Task ActualizarPersona(Persona persona, int? especieId, List<int> peliculasIds, List<int> transportesIds)
         {
-            if (persona == null)
-                throw new Exception("La persona viene null");
+            var personaBD = await _context.Personas
+                .Include(p => p.Especie)
+                .Include(p => p.Peliculas)
+                .Include(p => p.Transportes)
+                .FirstOrDefaultAsync(p => p.Id == persona.Id);
 
-            var existente = await _context.Personas.FindAsync(persona.Id);
+            if (personaBD == null) return;
 
-            if (existente == null) return;
+            personaBD.Nombre = persona.Nombre;
+            personaBD.Altura = persona.Altura;
+            personaBD.Masa = persona.Masa;
+            personaBD.ColorDePiel = persona.ColorDePiel;
+            personaBD.ColorDeOjos = persona.ColorDeOjos;
+            personaBD.ColorDePelo = persona.ColorDePelo;
+            personaBD.Cumpleaños = persona.Cumpleaños;
+            personaBD.Genero = persona.Genero;
+            personaBD.PlanetaId = persona.PlanetaId;
 
-            existente.Nombre = persona.Nombre;
-            existente.Altura = persona.Altura;
-            existente.Masa = persona.Masa;
-            existente.ColorDePiel = persona.ColorDePiel;
-            existente.ColorDeOjos = persona.ColorDeOjos;
-            existente.ColorDePelo = persona.ColorDePelo;
-            existente.Cumpleaños = persona.Cumpleaños;
-            existente.Genero = persona.Genero;
-            existente.Picture = persona.Picture;
+            personaBD.Especie.Clear();
+            personaBD.Peliculas.Clear();
+            personaBD.Transportes.Clear();
+
+            if (especieId.HasValue)
+            {
+                var especie = await _context.Especies.FindAsync(especieId.Value);
+                if (especie != null)
+                    personaBD.Especie.Add(especie);
+            }
+
+            if (peliculasIds != null && peliculasIds.Any())
+            {
+                var peliculas = await _context.Peliculas
+                    .Where(p => peliculasIds.Contains(p.Id))
+                    .ToListAsync();
+
+                foreach (var pelicula in peliculas)
+                    personaBD.Peliculas.Add(pelicula);
+            }
+
+            if (transportesIds != null && transportesIds.Any())
+            {
+                var transportes = await _context.Transportes
+                    .Where(t => transportesIds.Contains(t.Id))
+                    .ToListAsync();
+
+                foreach (var transporte in transportes)
+                    personaBD.Transportes.Add(transporte);
+            }
 
             await _context.SaveChangesAsync();
         }
-
-        public async Task EliminarPersonaAsync(int id)
+        public async Task EliminarPersona(int id)
         {
-            var persona = await _context.Personas.FindAsync(id);
+            var persona = await _context.Personas
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (persona != null)
-            {
-                _context.Personas.Remove(persona);
-                await _context.SaveChangesAsync();
-            }
+            if (persona == null) return;
+
+            _context.Personas.Remove(persona);
+            await _context.SaveChangesAsync();
         }
     }
 }

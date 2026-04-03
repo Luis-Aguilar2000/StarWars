@@ -17,7 +17,15 @@ namespace StarWars.Services
             _restApi = restApi;
         }
 
-        public async Task<List<Pelicula>> ObtenerPeliculasAsync()
+        public async Task<List<Pelicula>> ObtenerPeliculas()
+        {
+            return await _context.Peliculas
+                .AsNoTracking()
+                .OrderBy(p => p.Titulo)
+                .ToListAsync();
+        }
+
+        public async Task SincronizarPeliculas()
         {
             var result = await _restApi.Get<PeopleResponse<PeliculaJsonModel>>(
                 "https://swapi.dev/api/",
@@ -25,71 +33,78 @@ namespace StarWars.Services
             );
 
             if (result?.Results == null || !result.Results.Any())
-                return await _context.Peliculas.ToListAsync();
+                return;
 
-            var peliculasGuardadas = await _context.Peliculas.ToListAsync();
+            var nuevasPeliculas = new List<Pelicula>();
 
             foreach (var item in result.Results)
             {
-                bool existe = peliculasGuardadas.Any(p => p.Titulo == item.Title);
+                bool existe = await _context.Peliculas
+                    .AnyAsync(p => p.Titulo == item.Title);
 
                 if (!existe)
                 {
                     var pelicula = new Pelicula
                     {
-                        Titulo = item.Title ?? "",
+                        Titulo = item.Title,
                         Episode_id = item.EpisodeId,
-                        Avance = item.OpeningCrawl ?? "",
-                        Director = item.Director ?? "",
-                        Productor = item.Producer ?? "",
-                        FechaDeLanzamiento = item.ReleaseDate ?? "",
+                        Avance = item.OpeningCrawl,
+                        Director = item.Director,
+                        Productor = item.Producer,
+                        FechaDeLanzamiento = item.ReleaseDate,
                         Picture = "",
-                        Url = item.Url ?? ""
+                        Url = item.Url
                     };
 
-                    _context.Peliculas.Add(pelicula);
+                    nuevasPeliculas.Add(pelicula);
                 }
             }
 
-            await _context.SaveChangesAsync();
-
-            return await _context.Peliculas.ToListAsync();
+            if (nuevasPeliculas.Any())
+            {
+                await _context.Peliculas.AddRangeAsync(nuevasPeliculas);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task CrearPeliculaAsync(Pelicula pelicula)
+        public async Task CrearPelicula(Pelicula pelicula)
         {
+            if (pelicula == null) return;
+
             _context.Peliculas.Add(pelicula);
             await _context.SaveChangesAsync();
         }
 
-        public async Task ActualizarPeliculaAsync(Pelicula pelicula)
+        public async Task ActualizarPelicula(Pelicula pelicula)
         {
-            var peliculaBD = await _context.Peliculas.FindAsync(pelicula.Id);
+            if (pelicula == null) return;
 
-            if (peliculaBD != null)
-            {
-                peliculaBD.Titulo = pelicula.Titulo;
-                peliculaBD.Episode_id = pelicula.Episode_id;
-                peliculaBD.Avance = pelicula.Avance;
-                peliculaBD.Director = pelicula.Director;
-                peliculaBD.Productor = pelicula.Productor;
-                peliculaBD.FechaDeLanzamiento = pelicula.FechaDeLanzamiento;
-                peliculaBD.Picture = pelicula.Picture;
-                peliculaBD.Url = pelicula.Url;
+            var peliculaExistente = await _context.Peliculas
+                .FirstOrDefaultAsync(p => p.Id == pelicula.Id);
 
-                await _context.SaveChangesAsync();
-            }
+            if (peliculaExistente == null) return;
+
+            peliculaExistente.Titulo = pelicula.Titulo;
+            peliculaExistente.Episode_id = pelicula.Episode_id;
+            peliculaExistente.Avance = pelicula.Avance;
+            peliculaExistente.Director = pelicula.Director;
+            peliculaExistente.Productor = pelicula.Productor;
+            peliculaExistente.FechaDeLanzamiento = pelicula.FechaDeLanzamiento;
+            peliculaExistente.Picture = pelicula.Picture;
+            peliculaExistente.Url = pelicula.Url;
+
+            await _context.SaveChangesAsync();
         }
 
-        public async Task EliminarPeliculaAsync(int id)
+        public async Task EliminarPelicula(int id)
         {
-            var pelicula = await _context.Peliculas.FindAsync(id);
+            var pelicula = await _context.Peliculas
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (pelicula != null)
-            {
-                _context.Peliculas.Remove(pelicula);
-                await _context.SaveChangesAsync();
-            }
+            if (pelicula == null) return;
+
+            _context.Peliculas.Remove(pelicula);
+            await _context.SaveChangesAsync();
         }
     }
 }

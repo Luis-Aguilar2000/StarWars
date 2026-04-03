@@ -4,9 +4,10 @@ namespace StarWars.Services
 {
     public interface IPeliculaService
     {
-        Task<List<Pelicula>> ObtenerPeliculasAsync();
-        Task CrearPeliculaAsync(Pelicula pelicula);
-        Task ActualizarPeliculaAsync(Pelicula pelicula);
-        Task EliminarPeliculaAsync(int id);
+        Task<List<Pelicula>> ObtenerPeliculas();
+        Task SincronizarPeliculas();
+        Task CrearPelicula(Pelicula pelicula);
+        Task ActualizarPelicula(Pelicula pelicula);
+        Task EliminarPelicula(int id);
     }
 }

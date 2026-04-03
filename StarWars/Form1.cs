@@ -20,6 +20,7 @@ namespace StarWars
         private readonly ITransporteService _transporteService;
 
         private bool cargando = true;
+        private int ultimoId = -1;
         private string vistaActual = "Personas";
         private bool cancelado = false;
         private bool combosCargados = false;
@@ -48,7 +49,14 @@ namespace StarWars
             colorpanel();
 
             dtgpersona.SelectionChanged += dtgpersona_SelectionChanged;
-            await CargarMostrarPersonasAsync();
+
+            await _personaService.SincronizarPersonas();
+            await _peliculaService.SincronizarPeliculas();
+            await _planetaService.SincronizarPlanetas();
+            await _especieService.SincronizarEspecies();
+            await _transporteService.SincronizarTransportes();
+            await ObtenerPersonasBD();
+
             dtgpersona.ClearSelection();
             dtgpersona.CurrentCell = null;
             LimpiarControles();
@@ -59,33 +67,33 @@ namespace StarWars
         //Botonera NA
         private async void btnpersona_Click(object sender, EventArgs e)
         {
-            await clickPersonas();
-            await CargarMostrarPersonasAsync();
 
+            await ObtenerPersonasBD();
+            await clickPersonas();
         }
 
         private async void btnPeliculas_Click(object sender, EventArgs e)
         {
+            await ObtenerPeliculasBD();
             clickPeliculas();
-            await CargarMostrarPeliculasAsync();
 
         }
 
         private async void btplanetas_Click(object sender, EventArgs e)
         {
             clickPlanetas();
-            await CargarMostrarPlanetasAsync();
+            await ObtenerPlanetasBD();
 
 
         }
         private async void btespecies_Click(object sender, EventArgs e)
         {
-            await CargarMostrarEspeciesAsync();
+            await ObtenerEspeciesBD();
         }
 
         private async void btvehiculos_Click(object sender, EventArgs e)
         {
-            await CargarMostrarTransportesAsync();
+            await ObtenerTransportesBD();
         }
 
         //botonera del crud
@@ -151,6 +159,7 @@ namespace StarWars
 
             dtgpersona.ClearSelection();
             dtgpersona.CurrentCell = null;
+            ultimoId = -1;
 
             cancelado = false;
         }
@@ -165,6 +174,29 @@ namespace StarWars
             switch (vistaActual)
             {
                 case "Personas":
+                    var peliculasSeleccionadas = new List<int>();
+                    var transportesSeleccionados = new List<int>();
+
+                    foreach (var item in checkedListBox1.CheckedItems)
+                    {
+                        if (item is Pelicula peliculaItem)
+                            peliculasSeleccionadas.Add(peliculaItem.Id);
+                    }
+
+                    foreach (var item in checkedListBox2.CheckedItems)
+                    {
+                        if (item is Transporte transporteItem)
+                            transportesSeleccionados.Add(transporteItem.Id);
+                    }
+
+                    int? planetaId = null;
+                    if (comboBox3.SelectedValue != null)
+                        planetaId = Convert.ToInt32(comboBox3.SelectedValue);
+
+                    int? especieId = null;
+                    if (comboBox2.SelectedValue != null)
+                        especieId = Convert.ToInt32(comboBox2.SelectedValue);
+
                     Persona persona = new Persona
                     {
                         Id = id,
@@ -175,11 +207,18 @@ namespace StarWars
                         ColorDeOjos = textBox5.Text,
                         ColorDePelo = textBox6.Text,
                         Cumpleaños = textBox7.Text,
-                        Genero = comboBox1.Text
+                        Genero = comboBox1.Text,
+                        PlanetaId = planetaId
                     };
 
-                    await _personaService.ActualizarPersonaAsync(persona);
-                    await CargarMostrarPersonasAsync();
+                    await _personaService.ActualizarPersona(
+                        persona,
+                        especieId,
+                        peliculasSeleccionadas,
+                        transportesSeleccionados
+                    );
+
+                    await ObtenerPersonasBD();
                     break;
             }
 
@@ -188,84 +227,145 @@ namespace StarWars
             LimpiarControles();
         }
         //CREAR
-        private async Task btncrear_ClickAsync(object sender, EventArgs e)
+        private async void btncrear_Click(object sender, EventArgs e)
         {
-            if (dtgpersona.CurrentRow == null) return;
-
-            int id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
-
-            switch (vistaActual)
+            try
             {
-                case "Personas":
-                    Persona persona = new Persona
-                    {
-                        Id = id,
-                        Nombre = textBox1.Text,
-                        Altura = textBox2.Text,
-                        Masa = textBox3.Text,
-                        ColorDePiel = textBox4.Text,
-                        ColorDeOjos = textBox5.Text,
-                        ColorDePelo = textBox6.Text,
-                        Cumpleaños = textBox7.Text,
-                        Genero = comboBox1.Text
-                    };
+                bool creado = false;
 
-                    await _personaService.ActualizarPersonaAsync(persona);
-                    await CargarMostrarPersonasAsync();
-                    break;
+                switch (vistaActual)
+                {
+                    case "Personas":
+                        var peliculasSeleccionadas = new List<int>();
+                        var transportesSeleccionados = new List<int>();
 
-                case "Peliculas":
-                    Pelicula pelicula = new Pelicula
-                    {
-                        Id = id,
-                        Titulo = textBox1.Text,
-                        Episode_id = Convert.ToInt32(textBox2.Text),
-                        Avance = textBox3.Text,
-                        Director = textBox4.Text,
-                        Productor = textBox5.Text,
-                        FechaDeLanzamiento = textBox6.Text
-                    };
+                        foreach (var item in checkedListBox1.CheckedItems)
+                        {
+                            if (item is Pelicula peliculaItem)
+                                peliculasSeleccionadas.Add(peliculaItem.Id);
+                        }
 
-                    await _peliculaService.ActualizarPeliculaAsync(pelicula);
-                    await CargarMostrarPeliculasAsync();
-                    break;
+                        foreach (var item in checkedListBox2.CheckedItems)
+                        {
+                            if (item is Transporte transporteItem)
+                                transportesSeleccionados.Add(transporteItem.Id);
+                        }
 
-                case "Planetas":
-                    Planeta planeta = new Planeta
-                    {
-                        Id = id,
-                        Nombre = textBox1.Text,
-                        PeriodoDeRotación = textBox2.Text,
-                        PeriodoOrbital = textBox3.Text,
-                        Diametro = textBox4.Text,
-                        Clima = textBox5.Text,
-                        Gravedad = textBox6.Text,
-                        Terreno = textBox7.Text
-                    };
+                        int? planetaId = null;
+                        if (comboBox3.SelectedValue != null)
+                            planetaId = Convert.ToInt32(comboBox3.SelectedValue);
 
-                    await _planetaService.ActualizarPlanetaAsync(planeta);
-                    await CargarMostrarPlanetasAsync();
-                    break;
+                        int? especieId = null;
+                        if (comboBox2.SelectedValue != null)
+                            especieId = Convert.ToInt32(comboBox2.SelectedValue);
 
-                case "Especies":
-                    Especie especie = new Especie
-                    {
-                        Id = id,
-                        Nombre = textBox1.Text,
-                        Clasificacion = textBox2.Text,
-                        Idioma = textBox3.Text
-                    };
+                        Persona persona = new Persona
+                        {
+                            Nombre = textBox1.Text,
+                            Altura = textBox2.Text,
+                            Masa = textBox3.Text,
+                            ColorDePiel = textBox4.Text,
+                            ColorDeOjos = textBox5.Text,
+                            ColorDePelo = textBox6.Text,
+                            Cumpleaños = textBox7.Text,
+                            Genero = comboBox1.Text,
+                            PlanetaId = planetaId
+                        };
 
-                    await _especieService.ActualizarEspecieAsync(especie);
-                    await CargarMostrarEspeciesAsync();
-                    break;
+                        await _personaService.CrearPersona(
+                            persona,
+                            especieId,
+                            peliculasSeleccionadas,
+                            transportesSeleccionados
+                        );
 
-                    //case "Transportes":
-                    //    // cuando lo tengas listo
-                    //    break;
+                        await ObtenerPersonasBD();
+                        creado = true;
+                        break;
+
+                    case "Peliculas":
+                        Pelicula pelicula = new Pelicula
+                        {
+                            Titulo = textBox1.Text,
+                            Episode_id = int.TryParse(textBox2.Text, out int episodio) ? episodio : 0,
+                            Director = textBox3.Text,
+                            Productor = textBox4.Text,
+                            FechaDeLanzamiento = textBox5.Text,
+                            Avance = textBox6.Text
+                        };
+
+                        await _peliculaService.CrearPelicula(pelicula);
+                        await ObtenerPeliculasBD();
+                        creado = true;
+                        break;
+
+                    case "Planetas":
+                        Planeta planeta = new Planeta
+                        {
+                            Nombre = textBox1.Text,
+                            PeriodoDeRotación = textBox2.Text,
+                            PeriodoOrbital = textBox3.Text,
+                            Diametro = textBox4.Text,
+                            Clima = textBox5.Text,
+                            Gravedad = textBox6.Text,
+                            Terreno = textBox7.Text
+                        };
+
+                        await _planetaService.CrearPlaneta(planeta);
+                        await ObtenerPlanetasBD();
+                        creado = true;
+                        break;
+
+                    case "Especies":
+                        Especie especie = new Especie
+                        {
+                            Nombre = textBox1.Text,
+                            Clasificacion = textBox2.Text,
+                            Designacion = textBox3.Text,
+                            AlturaPromedio = textBox4.Text,
+                            ColoresDePiel = textBox5.Text,
+                            ColoresDeOjos = textBox6.Text,
+                            Idioma = textBox7.Text
+                        };
+
+                        await _especieService.CrearEspecie(especie);
+                        await ObtenerEspeciesBD();
+                        creado = true;
+                        break;
+
+                    case "Transportes":
+                        Transporte transporte = new Transporte
+                        {
+                            Nombre = textBox1.Text,
+                            Modelo = textBox2.Text,
+                            Fabricante = textBox3.Text,
+                            CostoEnCreditos = textBox4.Text,
+                            Longitud = textBox5.Text,
+                            VelocidadMaximaAtmosfera = textBox6.Text,
+                            Tripulacion = textBox7.Text
+                        };
+
+                        await _transporteService.CrearTransporte(transporte);
+                        await ObtenerTransportesBD();
+                        creado = true;
+                        break;
+                }
+
+                if (creado)
+                    MessageBox.Show("Registro creado correctamente ✅");
+                else
+                    MessageBox.Show("No se creó el registro ❌");
+
+                LimpiarControles();
+                DeshabilitarControles();
+                dtgpersona.Enabled = true;
+                btncrear.Enabled = false;
+                btnactualizar.Enabled = false;
             }
-
-            LimpiarControles();
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al crear: " + ex.Message);
+            }
         }
 
 
@@ -296,23 +396,23 @@ namespace StarWars
                 switch (vistaActual)
                 {
                     case "Personas":
-                        await _personaService.EliminarPersonaAsync(id);
-                        await CargarMostrarPersonasAsync();
+                        await _personaService.EliminarPersona(id);
+                        await ObtenerPersonasBD();
                         break;
 
                     case "Peliculas":
-                        await _peliculaService.EliminarPeliculaAsync(id);
-                        await CargarMostrarPeliculasAsync();
+                        await _peliculaService.EliminarPelicula(id);
+                        await ObtenerPeliculasBD();
                         break;
 
                     case "Planetas":
-                        await _planetaService.EliminarPlanetaAsync(id);
-                        await CargarMostrarPlanetasAsync();
+                        await _planetaService.EliminarPlaneta(id);
+                        await ObtenerPlanetasBD();
                         break;
 
                     case "Especies":
-                        await _especieService.EliminarEspecieAsync(id);
-                        await CargarMostrarEspeciesAsync();
+                        await _especieService.EliminarEspecie(id);
+                        await ObtenerEspeciesBD();
                         break;
 
                         //case "Transportes":
@@ -338,12 +438,23 @@ namespace StarWars
         //SelectionChanged del DataGridView para mostrar detalles de las tablas
         private async void dtgpersona_SelectionChanged(object sender, EventArgs e)
         {
-            if (cargando) return;
-            if (cancelado) return;
+            if (cargando || cancelado) return;
             if (dtgpersona.CurrentRow == null) return;
             if (dtgpersona.CurrentCell == null) return;
 
             var fila = dtgpersona.CurrentRow;
+
+            if (fila.Cells["Id"] == null || fila.Cells["Id"].Value == null)
+                return;
+
+            int idActual;
+            if (!int.TryParse(fila.Cells["Id"].Value.ToString(), out idActual))
+                return;
+
+            if (idActual == ultimoId)
+                return;
+
+            ultimoId = idActual;
 
             switch (vistaActual)
             {
@@ -384,6 +495,8 @@ namespace StarWars
                     textBox4.Text = fila.Cells["Diametro"]?.Value?.ToString() ?? "";
                     textBox5.Text = fila.Cells["Clima"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["Gravedad"]?.Value?.ToString() ?? "";
+                    textBox7.Text = fila.Cells["Terreno"]?.Value?.ToString() ?? "";
+
                     CargarImagen(fila);
                     break;
 
@@ -391,9 +504,11 @@ namespace StarWars
                     textBox1.Text = fila.Cells["Nombre"]?.Value?.ToString() ?? "";
                     textBox2.Text = fila.Cells["Clasificacion"]?.Value?.ToString() ?? "";
                     textBox3.Text = fila.Cells["Designacion"]?.Value?.ToString() ?? "";
-                    textBox4.Text = fila.Cells["PromedioDeAltura"]?.Value?.ToString() ?? "";
-                    textBox5.Text = fila.Cells["ColorDePiel"]?.Value?.ToString() ?? "";
-                    textBox6.Text = fila.Cells["ColorDeOjos"]?.Value?.ToString() ?? "";
+                    textBox4.Text = fila.Cells["AlturaPromedio"]?.Value?.ToString() ?? "";
+                    textBox5.Text = fila.Cells["ColoresDePiel"]?.Value?.ToString() ?? "";
+                    textBox6.Text = fila.Cells["ColoresDeOjos"]?.Value?.ToString() ?? "";
+                    textBox7.Text = fila.Cells["Idioma"]?.Value?.ToString() ?? "";
+
                     CargarImagen(fila);
                     break;
 
@@ -401,10 +516,11 @@ namespace StarWars
                     textBox1.Text = fila.Cells["Nombre"]?.Value?.ToString() ?? "";
                     textBox2.Text = fila.Cells["Modelo"]?.Value?.ToString() ?? "";
                     textBox3.Text = fila.Cells["Fabricante"]?.Value?.ToString() ?? "";
-                    textBox4.Text = fila.Cells["Costo"]?.Value?.ToString() ?? "";
+                    textBox4.Text = fila.Cells["CostoEnCreditos"]?.Value?.ToString() ?? "";
                     textBox5.Text = fila.Cells["Longitud"]?.Value?.ToString() ?? "";
-                    textBox6.Text = fila.Cells["Velocidad"]?.Value?.ToString() ?? "";
+                    textBox6.Text = fila.Cells["VelocidadMaximaAtmosfera"]?.Value?.ToString() ?? "";
                     textBox7.Text = fila.Cells["Tripulacion"]?.Value?.ToString() ?? "";
+
                     CargarImagen(fila);
                     break;
             }
@@ -412,14 +528,14 @@ namespace StarWars
 
         // Métodos para cargar, guardar y mostrar datos de las tablas
         //PERSONAS
-        private async Task CargarMostrarPersonasAsync()
+        private async Task ObtenerPersonasBD()
         {
             try
             {
                 cargando = true;
                 vistaActual = "Personas";
 
-                var lista = await _personaService.ObtenerPersonasAsync();
+                var lista = await _personaService.ObtenerPersonas();
 
                 var datos = lista.Select(p => new
                 {
@@ -450,19 +566,20 @@ namespace StarWars
             {
                 dtgpersona.ClearSelection();
                 dtgpersona.CurrentCell = null;
+                ultimoId = -1;
                 LimpiarControles();
                 cargando = false;
             }
         }
         //PELÍCULAS
-        private async Task CargarMostrarPeliculasAsync()
+        private async Task ObtenerPeliculasBD()
         {
             try
             {
                 cargando = true;
                 vistaActual = "Peliculas";
 
-                var lista = await _peliculaService.ObtenerPeliculasAsync();
+                var lista = await _peliculaService.ObtenerPeliculas();
 
                 var datos = lista.Select(p => new
                 {
@@ -493,14 +610,14 @@ namespace StarWars
         }
 
         //PLANETAS
-        private async Task CargarMostrarPlanetasAsync()
+        private async Task ObtenerPlanetasBD()
         {
             try
             {
                 cargando = true;
                 vistaActual = "Planetas";
 
-                var lista = await _planetaService.ObtenerPlanetasAsync();
+                var lista = await _planetaService.ObtenerPlanetas();
 
                 var datos = lista.Select(p => new
                 {
@@ -528,19 +645,20 @@ namespace StarWars
             {
                 dtgpersona.ClearSelection();
                 dtgpersona.CurrentCell = null;
+                ultimoId = -1;
                 LimpiarControles();
                 cargando = false;
             }
         }
 
-        private async Task CargarMostrarEspeciesAsync()
+        private async Task ObtenerEspeciesBD()
         {
             try
             {
                 cargando = true;
                 vistaActual = "Especies";
 
-                var lista = await _especieService.ObtenerEspeciesAsync();
+                var lista = await _especieService.ObtenerEspecies();
 
                 var datos = lista.Select(e => new
                 {
@@ -568,19 +686,20 @@ namespace StarWars
             {
                 dtgpersona.ClearSelection();
                 dtgpersona.CurrentCell = null;
+                ultimoId = -1;
                 LimpiarControles();
                 cargando = false;
             }
         }
 
-        private async Task CargarMostrarTransportesAsync()
+        private async Task ObtenerTransportesBD()
         {
             try
             {
                 cargando = true;
                 vistaActual = "Transportes";
 
-                var lista = await _transporteService.ObtenerTransportesAsync();
+                var lista = await _transporteService.ObtenerTransportes();
 
                 var datos = lista.Select(t => new
                 {
@@ -612,6 +731,7 @@ namespace StarWars
             {
                 cargando = false;
                 dtgpersona.ClearSelection();
+                ultimoId = -1;
                 Picture1.Image = null;
             }
         }
@@ -642,6 +762,7 @@ namespace StarWars
             comboBox3.Visible = true;
             label10.Text = "Planeta:";
 
+            groupBox1.Visible = true;
             checkedListBox1.Visible = true;
             label11.Text = "Películas:";
 
@@ -867,7 +988,7 @@ namespace StarWars
         }
         private async Task CargarEspeciesAsync()
         {
-            var especies = await _especieService.ObtenerEspeciesAsync();
+            var especies = await _especieService.ObtenerEspecies();
 
             comboBox2.DataSource = null;
 
@@ -877,7 +998,7 @@ namespace StarWars
         }
         private async Task CargarPlanetasAsync()
         {
-            var planetas = await _planetaService.ObtenerPlanetasAsync();
+            var planetas = await _planetaService.ObtenerPlanetas();
 
             comboBox3.DataSource = null;
 
@@ -887,7 +1008,7 @@ namespace StarWars
         }
         private async Task CargarPeliculasAsync()
         {
-            var peliculas = await _peliculaService.ObtenerPeliculasAsync();
+            var peliculas = await _peliculaService.ObtenerPeliculas();
 
             checkedListBox1.DataSource = null;
             checkedListBox1.Items.Clear();
@@ -903,7 +1024,7 @@ namespace StarWars
 
         private async Task CargarVehiculosAsync()
         {
-            var vehiculos = await _transporteService.ObtenerTransportesAsync();
+            var vehiculos = await _transporteService.ObtenerTransportes();
 
             checkedListBox2.DataSource = null;
             checkedListBox2.Items.Clear();

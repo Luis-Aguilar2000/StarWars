@@ -3,10 +3,11 @@ namespace StarWars.Services
 {
     public interface IPersonaService
     {
-        Task<List<Persona>> ObtenerPersonasAsync();
+        Task<List<Persona>> ObtenerPersonas();
+        Task SincronizarPersonas();
 
-        Task CrearPersonaAsync(Persona persona);
-        Task ActualizarPersonaAsync(Persona persona);
-        Task EliminarPersonaAsync(int id);
+        Task CrearPersona(Persona persona, int? especieId, List<int> peliculasIds, List<int> transportesIds);
+        Task ActualizarPersona(Persona persona, int? especieId, List<int> peliculasIds, List<int> transportesIds);
+        Task EliminarPersona(int id);
     }
 }
