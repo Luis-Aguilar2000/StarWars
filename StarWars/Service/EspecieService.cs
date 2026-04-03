@@ -27,10 +27,12 @@ namespace StarWars.Services
             if (result?.Results == null || !result.Results.Any())
                 return await _context.Especies.ToListAsync();
 
+            // Traer una sola vez las especies guardadas
+            var especiesGuardadas = await _context.Especies.ToListAsync();
+
             foreach (var item in result.Results)
             {
-                bool existe = await _context.Especies
-                    .AnyAsync(e => e.Nombre == item.Name);
+                bool existe = especiesGuardadas.Any(e => e.Nombre == item.Name);
 
                 if (!existe)
                 {
@@ -58,27 +60,43 @@ namespace StarWars.Services
             return await _context.Especies.ToListAsync();
         }
 
-        // Implementación de métodos para agregar, actualizar y eliminar especies
-
-        public async Task EliminarEspecieAsync(int id)
+        public async Task CrearEspecieAsync(Especie especie)
         {
-            var persona = await _context.Personas.FindAsync(id);
+            _context.Especies.Add(especie);
+            await _context.SaveChangesAsync();
+        }
 
-            if (persona != null)
+        public async Task ActualizarEspecieAsync(Especie especie)
+        {
+            var especieBD = await _context.Especies.FindAsync(especie.Id);
+
+            if (especieBD != null)
             {
-                _context.Personas.Remove(persona);
+                especieBD.Nombre = especie.Nombre;
+                especieBD.Clasificacion = especie.Clasificacion;
+                especieBD.Designacion = especie.Designacion;
+                especieBD.AlturaPromedio = especie.AlturaPromedio;
+                especieBD.ColoresDePiel = especie.ColoresDePiel;
+                especieBD.ColoresDePelo = especie.ColoresDePelo;
+                especieBD.ColoresDeOjos = especie.ColoresDeOjos;
+                especieBD.EsperanzaDeVida = especie.EsperanzaDeVida;
+                especieBD.Idioma = especie.Idioma;
+                especieBD.Picture = especie.Picture;
+                especieBD.Url = especie.Url;
+
                 await _context.SaveChangesAsync();
             }
         }
 
-        public Task CrearEspecieAsync(Especie especie)
+        public async Task EliminarEspecieAsync(int id)
         {
-            throw new NotImplementedException();
-        }
+            var especie = await _context.Especies.FindAsync(id);
 
-        public Task ActualizarEspecieAsync(Especie especie)
-        {
-            throw new NotImplementedException();
+            if (especie != null)
+            {
+                _context.Especies.Remove(especie);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

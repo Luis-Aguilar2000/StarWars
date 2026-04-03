@@ -19,7 +19,6 @@ namespace StarWars.Services
 
         public async Task<List<Pelicula>> ObtenerPeliculasAsync()
         {
-
             var result = await _restApi.Get<PeopleResponse<PeliculaJsonModel>>(
                 "https://swapi.dev/api/",
                 "films/"
@@ -28,23 +27,24 @@ namespace StarWars.Services
             if (result?.Results == null || !result.Results.Any())
                 return await _context.Peliculas.ToListAsync();
 
+            var peliculasGuardadas = await _context.Peliculas.ToListAsync();
+
             foreach (var item in result.Results)
             {
-                bool existe = await _context.Peliculas
-                    .AnyAsync(p => p.Titulo == item.Title);
+                bool existe = peliculasGuardadas.Any(p => p.Titulo == item.Title);
 
                 if (!existe)
                 {
                     var pelicula = new Pelicula
                     {
-                        Titulo = item.Title,
+                        Titulo = item.Title ?? "",
                         Episode_id = item.EpisodeId,
-                        Avance = item.OpeningCrawl,
-                        Director = item.Director,
-                        Productor = item.Producer,
-                        FechaDeLanzamiento = item.ReleaseDate,
+                        Avance = item.OpeningCrawl ?? "",
+                        Director = item.Director ?? "",
+                        Productor = item.Producer ?? "",
+                        FechaDeLanzamiento = item.ReleaseDate ?? "",
                         Picture = "",
-                        Url = item.Url,
+                        Url = item.Url ?? ""
                     };
 
                     _context.Peliculas.Add(pelicula);
@@ -56,31 +56,40 @@ namespace StarWars.Services
             return await _context.Peliculas.ToListAsync();
         }
 
-        // DELETE
-        public async Task EliminarPersonaAsync(int id)
+        public async Task CrearPeliculaAsync(Pelicula pelicula)
         {
-            var persona = await _context.Personas.FindAsync(id);
+            _context.Peliculas.Add(pelicula);
+            await _context.SaveChangesAsync();
+        }
 
-            if (persona != null)
+        public async Task ActualizarPeliculaAsync(Pelicula pelicula)
+        {
+            var peliculaBD = await _context.Peliculas.FindAsync(pelicula.Id);
+
+            if (peliculaBD != null)
             {
-                _context.Personas.Remove(persona);
+                peliculaBD.Titulo = pelicula.Titulo;
+                peliculaBD.Episode_id = pelicula.Episode_id;
+                peliculaBD.Avance = pelicula.Avance;
+                peliculaBD.Director = pelicula.Director;
+                peliculaBD.Productor = pelicula.Productor;
+                peliculaBD.FechaDeLanzamiento = pelicula.FechaDeLanzamiento;
+                peliculaBD.Picture = pelicula.Picture;
+                peliculaBD.Url = pelicula.Url;
+
                 await _context.SaveChangesAsync();
             }
         }
 
-        public Task CrearPeliculaAsync(Pelicula pelicula)
+        public async Task EliminarPeliculaAsync(int id)
         {
-            throw new NotImplementedException();
-        }
+            var pelicula = await _context.Peliculas.FindAsync(id);
 
-        public Task ActualizarPeliculaAsync(Pelicula pelicula)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task EliminarPeliculaAsync(int id)
-        {
-            throw new NotImplementedException();
+            if (pelicula != null)
+            {
+                _context.Peliculas.Remove(pelicula);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

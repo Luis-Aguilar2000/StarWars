@@ -25,21 +25,31 @@ namespace StarWars.Services
             );
 
             if (result?.Results == null || !result.Results.Any())
+            {
                 return await _context.Personas
                     .Include(p => p.Peliculas)
                     .Include(p => p.Planeta)
                     .Include(p => p.Especie)
                     .Include(p => p.Transportes)
                     .ToListAsync();
+            }
+
+            // Cargar todo primero una sola vez
+            var personasDB = await _context.Personas
+                .Include(p => p.Peliculas)
+                .Include(p => p.Planeta)
+                .Include(p => p.Especie)
+                .Include(p => p.Transportes)
+                .ToListAsync();
+
+            var peliculasDB = await _context.Peliculas.ToListAsync();
+            var planetasDB = await _context.Planetas.ToListAsync();
+            var especiesDB = await _context.Especies.ToListAsync();
+            var transportesDB = await _context.Transportes.ToListAsync();
 
             foreach (var item in result.Results)
             {
-                var persona = await _context.Personas
-                    .Include(p => p.Peliculas)
-                    .Include(p => p.Planeta)
-                    .Include(p => p.Especie)
-                    .Include(p => p.Transportes)
-                    .FirstOrDefaultAsync(p => p.Nombre == item.Name);
+                var persona = personasDB.FirstOrDefault(p => p.Nombre == item.Name);
 
                 if (persona == null)
                 {
@@ -53,47 +63,87 @@ namespace StarWars.Services
                         ColorDePelo = item.HairColor ?? "",
                         Cumpleaños = item.BirthYear ?? "",
                         Genero = item.Gender ?? "",
-                        Picture = ""
+                        Picture = "",
+                        Peliculas = new List<Pelicula>(),
+                        Especie = new List<Especie>(),
+                        Transportes = new List<Transporte>()
                     };
 
                     _context.Personas.Add(persona);
+                    personasDB.Add(persona);
+                }
+                else
+                {
+                    persona.Nombre = item.Name ?? "";
+                    persona.Altura = item.Height ?? "";
+                    persona.Masa = item.Mass ?? "";
+                    persona.ColorDePiel = item.SkinColor ?? "";
+                    persona.ColorDeOjos = item.EyeColor ?? "";
+                    persona.ColorDePelo = item.HairColor ?? "";
+                    persona.Cumpleaños = item.BirthYear ?? "";
+                    persona.Genero = item.Gender ?? "";
                 }
 
-                var peliculas = await _context.Peliculas
-                    .Where(p => item.Films.Contains(p.Url))
-                    .ToListAsync();
-
+                // Películas
                 persona.Peliculas.Clear();
 
-                foreach (var pelicula in peliculas)
+                if (item.Films != null && item.Films.Any())
                 {
-                    persona.Peliculas.Add(pelicula);
+                    var peliculas = peliculasDB
+                        .Where(p => !string.IsNullOrEmpty(p.Url) && item.Films.Contains(p.Url))
+                        .ToList();
+
+                    foreach (var pelicula in peliculas)
+                    {
+                        persona.Peliculas.Add(pelicula);
+                    }
                 }
 
-                var planeta = await _context.Planetas
-                    .FirstOrDefaultAsync(p => p.Url == item.Homeworld);
+                // Planeta
+                persona.Planeta = null;
 
-                persona.Planeta = planeta;
+                if (!string.IsNullOrEmpty(item.Homeworld))
+                {
+                    var planeta = planetasDB.FirstOrDefault(p => p.Url == item.Homeworld);
+                    persona.Planeta = planeta;
+                }
 
-                var especies = await _context.Especies
-                    .Where(e => item.Species.Contains(e.Url))
-                    .ToListAsync();
-
+                // Especies
                 persona.Especie.Clear();
 
-                foreach (var especie in especies)
+                if (item.Species != null && item.Species.Any())
                 {
-                    persona.Especie.Add(especie);
+                    var especies = especiesDB
+                        .Where(e => !string.IsNullOrEmpty(e.Url) && item.Species.Contains(e.Url))
+                        .ToList();
+
+                    foreach (var especie in especies)
+                    {
+                        persona.Especie.Add(especie);
+                    }
                 }
 
-                var transportes = await _context.Transportes
-                    .Where(t => item.Vehicles.Contains(t.Url) || item.Starships.Contains(t.Url))
-                    .ToListAsync();
-
+                // Transportes
                 persona.Transportes.Clear();
-                foreach (var transporte in transportes)
+
+                var urlsTransportes = new List<string>();
+
+                if (item.Vehicles != null && item.Vehicles.Any())
+                    urlsTransportes.AddRange(item.Vehicles);
+
+                if (item.Starships != null && item.Starships.Any())
+                    urlsTransportes.AddRange(item.Starships);
+
+                if (urlsTransportes.Any())
                 {
-                    persona.Transportes.Add(transporte);
+                    var transportes = transportesDB
+                        .Where(t => !string.IsNullOrEmpty(t.Url) && urlsTransportes.Contains(t.Url))
+                        .ToList();
+
+                    foreach (var transporte in transportes)
+                    {
+                        persona.Transportes.Add(transporte);
+                    }
                 }
             }
 
@@ -102,18 +152,17 @@ namespace StarWars.Services
             return await _context.Personas
                 .Include(p => p.Peliculas)
                 .Include(p => p.Planeta)
-                .Include(e => e.Especie)
+                .Include(p => p.Especie)
+                .Include(p => p.Transportes)
                 .ToListAsync();
         }
 
-        // CREATE
         public async Task CrearPersonaAsync(Persona persona)
         {
             _context.Personas.Add(persona);
             await _context.SaveChangesAsync();
         }
 
-        // UPDATE
         public async Task ActualizarPersonaAsync(Persona persona)
         {
             if (persona == null)
@@ -131,11 +180,11 @@ namespace StarWars.Services
             existente.ColorDePelo = persona.ColorDePelo;
             existente.Cumpleaños = persona.Cumpleaños;
             existente.Genero = persona.Genero;
+            existente.Picture = persona.Picture;
 
             await _context.SaveChangesAsync();
         }
 
-        // DELETE
         public async Task EliminarPersonaAsync(int id)
         {
             var persona = await _context.Personas.FindAsync(id);

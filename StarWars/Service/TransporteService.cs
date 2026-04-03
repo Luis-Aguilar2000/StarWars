@@ -28,21 +28,6 @@ namespace StarWars.Services
             }
         }
 
-        public Task ActualizarTransporteAsync(Transporte transporte)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CrearTransporteAsync(Transporte transporte)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task EliminarTransporteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<Transporte>> ObtenerTransportesAsync()
         {
             await InicializarTiposAsync();
@@ -60,46 +45,48 @@ namespace StarWars.Services
                     .ToListAsync();
             }
 
+            var transportesGuardados = await _context.Transportes.ToListAsync();
+
+            // 🔹 NAVES
             var naves = await _restApi.Get<PeopleResponse<TransporteJsonModel>>(
                 "https://swapi.dev/api/",
                 "starships/"
             );
 
-            if (naves?.Results == null || !naves.Results.Any())
+            if (naves?.Results != null && naves.Results.Any())
             {
-                return await _context.Transportes
-                    .Include(t => t.TipoTransporte)
-                    .ToListAsync();
-            }
-
-            foreach (var item in naves.Results)
-            {
-                bool existe = await _context.Transportes
-                    .AnyAsync(t => t.Url == item.Url);
-
-                if (!existe)
+                foreach (var item in naves.Results)
                 {
-                    _context.Transportes.Add(new Transporte
+                    bool existe = transportesGuardados.Any(t => t.Url == item.Url);
+
+                    if (!existe)
                     {
-                        Nombre = item.Name,
-                        Modelo = item.Model,
-                        Fabricante = item.Manufacturer,
-                        CostoEnCreditos = item.Cost,
-                        Longitud = item.Length,
-                        VelocidadMaximaAtmosfera = item.MaxAtmospheringSpeed,
-                        Tripulacion = item.Crew,
-                        Pasajeros = item.Passengers,
-                        CapacidadCarga = item.CargoCapacity,
-                        Consumibles = item.Consumables,
-                        MGLT = item.MGLT ?? "",
-                        Clase = item.StarshipClass ?? "",
-                        Picture = "",
-                        Url = item.Url,
-                        TipoTransporteId = tipoNave.Id
-                    });
+                        var transporte = new Transporte
+                        {
+                            Nombre = item.Name ?? "",
+                            Modelo = item.Model ?? "",
+                            Fabricante = item.Manufacturer ?? "",
+                            CostoEnCreditos = item.Cost ?? "",
+                            Longitud = item.Length ?? "",
+                            VelocidadMaximaAtmosfera = item.MaxAtmospheringSpeed ?? "",
+                            Tripulacion = item.Crew ?? "",
+                            Pasajeros = item.Passengers ?? "",
+                            CapacidadCarga = item.CargoCapacity ?? "",
+                            Consumibles = item.Consumables ?? "",
+                            MGLT = item.MGLT ?? "",
+                            Clase = item.StarshipClass ?? "",
+                            Picture = "",
+                            Url = item.Url ?? "",
+                            TipoTransporteId = tipoNave.Id
+                        };
+
+                        _context.Transportes.Add(transporte);
+                        transportesGuardados.Add(transporte);
+                    }
                 }
             }
 
+            // 🔹 VEHÍCULOS
             var vehiculos = await _restApi.Get<PeopleResponse<TransporteJsonModel>>(
                 "https://swapi.dev/api/",
                 "vehicles/"
@@ -109,29 +96,31 @@ namespace StarWars.Services
             {
                 foreach (var item in vehiculos.Results)
                 {
-                    bool existe = await _context.Transportes
-                        .AnyAsync(t => t.Url == item.Url);
+                    bool existe = transportesGuardados.Any(t => t.Url == item.Url);
 
                     if (!existe)
                     {
-                        _context.Transportes.Add(new Transporte
+                        var transporte = new Transporte
                         {
-                            Nombre = item.Name,
-                            Modelo = item.Model,
-                            Fabricante = item.Manufacturer,
-                            CostoEnCreditos = item.Cost,
-                            Longitud = item.Length,
-                            VelocidadMaximaAtmosfera = item.MaxAtmospheringSpeed,
-                            Tripulacion = item.Crew,
-                            Pasajeros = item.Passengers,
-                            CapacidadCarga = item.CargoCapacity,
-                            Consumibles = item.Consumables,
+                            Nombre = item.Name ?? "",
+                            Modelo = item.Model ?? "",
+                            Fabricante = item.Manufacturer ?? "",
+                            CostoEnCreditos = item.Cost ?? "",
+                            Longitud = item.Length ?? "",
+                            VelocidadMaximaAtmosfera = item.MaxAtmospheringSpeed ?? "",
+                            Tripulacion = item.Crew ?? "",
+                            Pasajeros = item.Passengers ?? "",
+                            CapacidadCarga = item.CargoCapacity ?? "",
+                            Consumibles = item.Consumables ?? "",
                             MGLT = item.MGLT ?? "",
                             Clase = item.VehicleClass ?? "",
                             Picture = "",
-                            Url = item.Url,
+                            Url = item.Url ?? "",
                             TipoTransporteId = tipoVehiculo.Id
-                        });
+                        };
+
+                        _context.Transportes.Add(transporte);
+                        transportesGuardados.Add(transporte);
                     }
                 }
             }
@@ -141,6 +130,49 @@ namespace StarWars.Services
             return await _context.Transportes
                 .Include(t => t.TipoTransporte)
                 .ToListAsync();
+        }
+
+        public async Task CrearTransporteAsync(Transporte transporte)
+        {
+            _context.Transportes.Add(transporte);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ActualizarTransporteAsync(Transporte transporte)
+        {
+            var transporteBD = await _context.Transportes.FindAsync(transporte.Id);
+
+            if (transporteBD != null)
+            {
+                transporteBD.Nombre = transporte.Nombre;
+                transporteBD.Modelo = transporte.Modelo;
+                transporteBD.Fabricante = transporte.Fabricante;
+                transporteBD.CostoEnCreditos = transporte.CostoEnCreditos;
+                transporteBD.Longitud = transporte.Longitud;
+                transporteBD.VelocidadMaximaAtmosfera = transporte.VelocidadMaximaAtmosfera;
+                transporteBD.Tripulacion = transporte.Tripulacion;
+                transporteBD.Pasajeros = transporte.Pasajeros;
+                transporteBD.CapacidadCarga = transporte.CapacidadCarga;
+                transporteBD.Consumibles = transporte.Consumibles;
+                transporteBD.MGLT = transporte.MGLT;
+                transporteBD.Clase = transporte.Clase;
+                transporteBD.Picture = transporte.Picture;
+                transporteBD.Url = transporte.Url;
+                transporteBD.TipoTransporteId = transporte.TipoTransporteId;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task EliminarTransporteAsync(int id)
+        {
+            var transporte = await _context.Transportes.FindAsync(id);
+
+            if (transporte != null)
+            {
+                _context.Transportes.Remove(transporte);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
