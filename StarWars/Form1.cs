@@ -22,7 +22,7 @@ namespace StarWars
         private bool cargando = true;
         private string vistaActual = "Personas";
         private bool cancelado = false;
-
+        private bool combosCargados = false;
         public Form1(ApplicationDbContext context,
             IRestApi restApi,
             IRepository repository,
@@ -659,18 +659,13 @@ namespace StarWars
 
             lblname.Text = "PELICULAS";
             label1.Text = "Titulo:";
-            textBox1.Size = new Size(250, textBox1.Height);
             label2.Text = "Episodio:";
-            textBox2.Size = new Size(250, textBox2.Height);
             label3.Text = "Director:";
-            textBox3.Size = new Size(250, textBox3.Height);
             label4.Text = "Productor:";
-            textBox4.Size = new Size(250, textBox4.Height);
             label5.Text = "Lanzamiento:";
-            textBox5.Size = new Size(250, textBox5.Height);
             label6.Text = "Avance:";
             textBox6.Multiline = true;
-            textBox6.Size = new Size(250, 200);
+            textBox6.Size = new Size(textBox6.Width, 200);
 
             textBox7.Visible = false;
 
@@ -924,11 +919,24 @@ namespace StarWars
 
         private async Task CargarCombosPersonasAsync()
         {
-            CargarGeneros();
-            await CargarEspeciesAsync();
-            await CargarPlanetasAsync();
-            await CargarPeliculasAsync();
-            await CargarVehiculosAsync();
+            if (combosCargados) return;
+
+            try
+            {
+                combosCargados = true;
+                cargando = true;
+
+                CargarGeneros();
+                await CargarEspeciesAsync();
+                await CargarPlanetasAsync();
+                await CargarPeliculasAsync();
+                await CargarVehiculosAsync();
+            }
+            finally
+            {
+                combosCargados = false;
+                cargando = false;
+            }
         }
 
 
