@@ -333,7 +333,7 @@ namespace StarWars
             }
         }
 
-        
+
 
         //SelectionChanged del DataGridView para mostrar detalles de las tablas
         private async void dtgpersona_SelectionChanged(object sender, EventArgs e)
@@ -369,10 +369,10 @@ namespace StarWars
                 case "Peliculas":
                     textBox1.Text = fila.Cells["Titulo"]?.Value?.ToString() ?? "";
                     textBox2.Text = fila.Cells["Episode_id"]?.Value?.ToString() ?? "";
-                    textBox3.Text = fila.Cells["Avance"]?.Value?.ToString() ?? "";
-                    textBox4.Text = fila.Cells["Director"]?.Value?.ToString() ?? "";
-                    textBox5.Text = fila.Cells["Productor"]?.Value?.ToString() ?? "";
-                    textBox6.Text = fila.Cells["FechaDeLanzamiento"]?.Value?.ToString() ?? "";
+                    textBox3.Text = fila.Cells["Director"]?.Value?.ToString() ?? "";
+                    textBox4.Text = fila.Cells["Productor"]?.Value?.ToString() ?? "";
+                    textBox5.Text = fila.Cells["FechaDeLanzamiento"]?.Value?.ToString() ?? "";
+                    textBox6.Text = fila.Cells["Avance"]?.Value?.ToString() ?? "";
 
                     CargarImagen(fila);
                     break;
@@ -659,11 +659,18 @@ namespace StarWars
 
             lblname.Text = "PELICULAS";
             label1.Text = "Titulo:";
+            textBox1.Size = new Size(250, textBox1.Height);
             label2.Text = "Episodio:";
-            label3.Text = "Avance:";
-            label4.Text = "Director:";
-            label5.Text = "Productor:";
-            label6.Text = "Fecha de Lanzamiento:";
+            textBox2.Size = new Size(250, textBox2.Height);
+            label3.Text = "Director:";
+            textBox3.Size = new Size(250, textBox3.Height);
+            label4.Text = "Productor:";
+            textBox4.Size = new Size(250, textBox4.Height);
+            label5.Text = "Lanzamiento:";
+            textBox5.Size = new Size(250, textBox5.Height);
+            label6.Text = "Avance:";
+            textBox6.Multiline = true;
+            textBox6.Size = new Size(250, 200);
 
             textBox7.Visible = false;
 
@@ -680,9 +687,12 @@ namespace StarWars
             comboBox2.Visible = false;
 
             label11.Text = "";
-            //comboBox5.Visible = false;
+            checkedListBox1.Visible = false;
 
             label12.Text = "";
+            checkedListBox2.Visible = false;
+
+            groupBox1.Visible = false;
 
             this.ResumeLayout();
         }
@@ -859,7 +869,6 @@ namespace StarWars
             comboBox1.Items.Add("male");
             comboBox1.Items.Add("female");
             comboBox1.Items.Add("n/a");
-            comboBox1.Items.Add("unknown");
         }
         private async Task CargarEspeciesAsync()
         {
@@ -981,6 +990,9 @@ namespace StarWars
             }
         }
 
+        private void label11_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

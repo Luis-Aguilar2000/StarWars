@@ -383,6 +383,7 @@
             label11.Size = new Size(72, 20);
             label11.TabIndex = 111;
             label11.Text = "Pelicula:";
+            label11.Click += label11_Click;
             // 
             // label12
             // 
