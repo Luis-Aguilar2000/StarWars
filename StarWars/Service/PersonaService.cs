@@ -124,6 +124,7 @@ namespace StarWars.Services
             personaBD.ColorDePelo = persona.ColorDePelo;
             personaBD.Cumpleaños = persona.Cumpleaños;
             personaBD.Genero = persona.Genero;
+            personaBD.Picture = persona.Picture;
             personaBD.PlanetaId = persona.PlanetaId;
 
             personaBD.Especie.Clear();

@@ -40,6 +40,7 @@
             panel2 = new Panel();
             panel4 = new Panel();
             paneldata = new Panel();
+            textBox12 = new TextBox();
             textBox10 = new TextBox();
             label12 = new Label();
             textBox11 = new TextBox();
@@ -91,7 +92,6 @@
             richTextBox1 = new RichTextBox();
             textBox8 = new TextBox();
             textBox9 = new TextBox();
-            textBox12 = new TextBox();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             paneldata.SuspendLayout();
@@ -323,6 +323,16 @@
             paneldata.Name = "paneldata";
             paneldata.Size = new Size(1486, 948);
             paneldata.TabIndex = 2;
+            // 
+            // textBox12
+            // 
+            textBox12.BackColor = SystemColors.Window;
+            textBox12.BorderStyle = BorderStyle.FixedSingle;
+            textBox12.Enabled = false;
+            textBox12.Location = new Point(791, 681);
+            textBox12.Name = "textBox12";
+            textBox12.Size = new Size(181, 27);
+            textBox12.TabIndex = 131;
             // 
             // textBox10
             // 
@@ -819,6 +829,7 @@
             btnimagen.TabIndex = 79;
             btnimagen.Text = "Subir Archivo";
             btnimagen.UseVisualStyleBackColor = true;
+            btnimagen.Click += btnimagen_Click;
             // 
             // dtgpersona
             // 
@@ -906,16 +917,6 @@
             textBox9.Size = new Size(181, 27);
             textBox9.TabIndex = 124;
             textBox9.Visible = false;
-            // 
-            // textBox12
-            // 
-            textBox12.BackColor = SystemColors.Window;
-            textBox12.BorderStyle = BorderStyle.FixedSingle;
-            textBox12.Enabled = false;
-            textBox12.Location = new Point(791, 681);
-            textBox12.Name = "textBox12";
-            textBox12.Size = new Size(181, 27);
-            textBox12.TabIndex = 131;
             // 
             // Form1
             // 

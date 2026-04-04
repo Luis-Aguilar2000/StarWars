@@ -33,6 +33,7 @@ namespace StarWars
         private int ultimoId = -1;
         private string vistaActual = "Personas";
         private bool cancelado = false;
+        private string rutaImagen = "";
 
         public Form1(
             ApplicationDbContext context,
@@ -239,6 +240,76 @@ namespace StarWars
             cancelado = false;
         }
 
+        //SUBIR IMAGEN
+        private void btnimagen_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog abrir = new OpenFileDialog();
+                abrir.Filter = "Archivos de imagen|*.jpg;*.jpeg;*.png;*.bmp";
+
+                if (abrir.ShowDialog() == DialogResult.OK)
+                {
+                    string rutaOrigen = abrir.FileName;
+                    string nombreArchivo = Path.GetFileName(rutaOrigen);
+
+                    string carpetaDestino = "";
+
+                    switch (vistaActual)
+                    {
+                        case "Personas":
+                            carpetaDestino = Path.Combine(Application.StartupPath, "Imagenes", "Personas");
+                            break;
+
+                        case "Peliculas":
+                            carpetaDestino = Path.Combine(Application.StartupPath, "Imagenes", "Peliculas");
+                            break;
+
+                        case "Planetas":
+                            carpetaDestino = Path.Combine(Application.StartupPath, "Imagenes", "Planetas");
+                            break;
+
+                        case "Especies":
+                            carpetaDestino = Path.Combine(Application.StartupPath, "Imagenes", "Especies");
+                            break;
+
+                        case "Transportes":
+                            carpetaDestino = Path.Combine(Application.StartupPath, "Imagenes", "Transportes");
+                            break;
+
+                        default:
+                            MessageBox.Show("Seleccione una vista válida antes de subir imagen.");
+                            return;
+                    }
+
+                    if (!Directory.Exists(carpetaDestino))
+                        Directory.CreateDirectory(carpetaDestino);
+
+                    string rutaDestino = Path.Combine(carpetaDestino, nombreArchivo);
+
+                    File.Copy(rutaOrigen, rutaDestino, true);
+
+                    rutaImagen = Path.Combine("Imagenes", vistaActual, nombreArchivo);
+
+                    if (Picture1.Image != null)
+                    {
+                        Picture1.Image.Dispose();
+                        Picture1.Image = null;
+                    }
+
+                    using (FileStream fs = new FileStream(rutaDestino, FileMode.Open, FileAccess.Read))
+                    {
+                        Picture1.Image = new Bitmap(Image.FromStream(fs));
+                    }
+
+                    MessageBox.Show("Imagen cargada correctamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar imagen: " + ex.Message);
+            }
+        }
         // ACTUALIZAR
         private async void btnactualizar_Click(object sender, EventArgs e)
         {
@@ -265,7 +336,15 @@ namespace StarWars
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al actualizar: " + ex.Message);
+                var msg = ex.ToString();
+
+                if (ex.InnerException != null)
+                    msg += "\n\nINNER:\n" + ex.InnerException;
+
+                if (ex.InnerException?.InnerException != null)
+                    msg += "\n\nINNER 2:\n" + ex.InnerException.InnerException;
+
+                MessageBox.Show(msg);
             }
         }
 
@@ -351,6 +430,7 @@ namespace StarWars
                 return;
 
             ultimoId = idActual;
+            rutaImagen = fila.Cells["Picture"]?.Value?.ToString() ?? "";
 
             switch (vistaActual)
             {
@@ -646,7 +726,7 @@ namespace StarWars
                 label1, label2, label3, label4, label5, label6, label7,
                 label8, label9, label10, label11, label12, label13,
                 lbPelicula, lbTransporte,
-                textBox7,textBox10, textBox11, textBox12,
+                textBox7, textBox10, textBox11, textBox12,
                 comboBox1, comboBox2, comboBox3, comboBox4,
                 richTextBox1,
                 checkedListBox1, checkedListBox2,
@@ -661,7 +741,7 @@ namespace StarWars
             _vistaHelper.ConfigurarVistaPeliculas(
                 lblname,
                 label1, label2, label3, label4, label5, label6, label7,
-                label8, label9, label10, label11,label12, label13,
+                label8, label9, label10, label11, label12, label13,
                 lbPelicula, lbTransporte,
                 textBox6, textBox7,
                 comboBox1, comboBox2, comboBox3, comboBox4,
@@ -677,7 +757,7 @@ namespace StarWars
             _vistaHelper.ConfigurarVistaPlanetas(
                 lblname,
                 label1, label2, label3, label4, label5, label6, label7,
-                label8, label9, label10, label11, label12,label13,
+                label8, label9, label10, label11, label12, label13,
                 lbPelicula, lbTransporte,
                 textBox6, textBox7, textBox8, textBox9,
                 comboBox1, comboBox2, comboBox3, comboBox4,
@@ -694,7 +774,7 @@ namespace StarWars
                 label1, label2, label3, label4, label5, label6, label7,
                 label8, label9, label10, label11, label12, label13,
                 lbPelicula, lbTransporte,
-                textBox6, textBox7,textBox8,textBox9,
+                textBox6, textBox7, textBox8, textBox9,
                 comboBox1, comboBox2, comboBox3, comboBox4,
                 richTextBox1,
                 checkedListBox1, checkedListBox2,
@@ -724,8 +804,8 @@ namespace StarWars
         private void LimpiarControles()
         {
             _vistaHelper.LimpiarControles(
-                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7,textBox8, textBox9,textBox10, textBox11, textBox12,
-                comboBox1, comboBox2, comboBox3,comboBox4,
+                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9, textBox10, textBox11, textBox12,
+                comboBox1, comboBox2, comboBox3, comboBox4,
                 richTextBox1,
                 checkedListBox1, checkedListBox2,
                 Picture1
@@ -735,8 +815,8 @@ namespace StarWars
         private void HabilitarControles()
         {
             _vistaHelper.HabilitarControles(
-                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7,textBox8, textBox9,textBox10, textBox11, textBox12,
-                comboBox1, comboBox2, comboBox3,comboBox4,
+                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9, textBox10, textBox11, textBox12,
+                comboBox1, comboBox2, comboBox3, comboBox4,
                 richTextBox1,
                 checkedListBox1, checkedListBox2,
                 btneditar, btnnuevo, btncancelar, btnimagen, btneliminar
@@ -746,8 +826,8 @@ namespace StarWars
         private void DeshabilitarControles()
         {
             _vistaHelper.DeshabilitarControles(
-                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7,textBox8, textBox9,textBox10, textBox11, textBox12,
-                comboBox1, comboBox2, comboBox3,comboBox4,
+                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9, textBox10, textBox11, textBox12,
+                comboBox1, comboBox2, comboBox3, comboBox4,
                 checkedListBox1, checkedListBox2,
                 btnimagen, btnnuevo, btneliminar, btneditar, btnactualizar
             );
@@ -887,7 +967,8 @@ namespace StarWars
                 Text11 = textBox11.Text,
                 Text12 = textBox12.Text,
                 Combo1 = comboBox1.Text,
-                richTextBox = richTextBox1.Text
+                richTextBox = richTextBox1.Text,
+                Picture = rutaImagen
             };
 
             if (comboBox2.SelectedValue != null)

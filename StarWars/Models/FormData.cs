@@ -21,6 +21,7 @@
     public int? Combo4Value { get; set; }
 
     public string richTextBox { get; set; } = "";
+    public string Picture { get; set; } = "";
 
     public List<int> PeliculasSeleccionadas { get; set; } = new();
     public List<int> TransportesSeleccionados { get; set; } = new();
