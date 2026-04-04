@@ -66,6 +66,7 @@ namespace StarWars.Helpers
                 ColorDePelo = datos.Text6,
                 Cumpleaños = datos.Text7,
                 Genero = datos.Combo1,
+                Picture = datos.Picture,
                 PlanetaId = datos.Combo3Value
             };
 
@@ -86,7 +87,8 @@ namespace StarWars.Helpers
                 Director = datos.Text3,
                 Productor = datos.Text4,
                 FechaDeLanzamiento = datos.Text5,
-                Avance = datos.richTextBox
+                Avance = datos.richTextBox,
+                Picture = datos.Picture
             };
 
             await _peliculaService.CrearPelicula(pelicula);
@@ -105,6 +107,7 @@ namespace StarWars.Helpers
                 Terreno = datos.Text7,
                 AguaSuperficial = datos.Text8,
                 Poblacion = datos.Text9,
+                Picture = datos.Picture
             };
 
             await _planetaService.CrearPlaneta(planeta);
@@ -120,7 +123,10 @@ namespace StarWars.Helpers
                 AlturaPromedio = datos.Text4,
                 ColoresDePiel = datos.Text5,
                 ColoresDePelo = datos.Text6,
-                ColoresDeOjos = datos.Text7
+                ColoresDeOjos = datos.Text7,
+                EsperanzaDeVida = datos.Text8,
+                Idioma = datos.Text9,
+                Picture = datos.Picture
             };
 
             await _especieService.CrearEspecie(especie);
@@ -142,6 +148,7 @@ namespace StarWars.Helpers
                 Consumibles = datos.Text10,
                 MGLT = datos.Text11,
                 Clase = datos.Text12,
+                Picture = datos.Picture,
                 TipoTransporteId = datos.Combo4Value ?? 0
             };
 

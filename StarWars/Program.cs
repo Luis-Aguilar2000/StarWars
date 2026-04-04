@@ -29,8 +29,6 @@ namespace StarWars
                     opt.UseSqlServer("Server=HM-2518;Database=StarWars;Trusted_Connection=true;MultipleActiveResultsets=true;TrustServerCertificate=true")
                     );
                     services.AddScoped<DbContext, ApplicationDbContext>();
-                    services.AddScoped<IRepository, Repository>();
-
                     //Servicios
                     services.AddScoped<IPersonaService, PersonaService>();
                     services.AddScoped<IPeliculaService, PeliculaService>();

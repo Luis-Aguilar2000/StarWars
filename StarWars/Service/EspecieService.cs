@@ -35,33 +35,33 @@ namespace StarWars.Services
             if (result?.Results == null || !result.Results.Any())
                 return;
 
-            var nuevasEspecies = new List<Especie>();
+            var nombresApi = result.Results
+                .Select(x => x.Name)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToList();
 
-            foreach (var item in result.Results)
-            {
-                bool existe = await _context.Especies
-                    .AnyAsync(e => e.Nombre == item.Name);
+            var nombresExistentes = await _context.Especies
+                .Where(e => nombresApi.Contains(e.Nombre))
+                .Select(e => e.Nombre)
+                .ToListAsync();
 
-                if (!existe)
+            var nuevasEspecies = result.Results
+                .Where(item => !nombresExistentes.Contains(item.Name))
+                .Select(item => new Especie
                 {
-                    var especie = new Especie
-                    {
-                        Nombre = item.Name,
-                        Clasificacion = item.Classification,
-                        Designacion = item.Designation,
-                        AlturaPromedio = item.AverageHeight,
-                        ColoresDePiel = item.SkinColors,
-                        ColoresDePelo = item.HairColors,
-                        ColoresDeOjos = item.EyeColors,
-                        EsperanzaDeVida = item.AverageLifespan,
-                        Idioma = item.Language,
-                        Picture = "",
-                        Url = item.Url
-                    };
-
-                    nuevasEspecies.Add(especie);
-                }
-            }
+                    Nombre = item.Name,
+                    Clasificacion = item.Classification,
+                    Designacion = item.Designation,
+                    AlturaPromedio = item.AverageHeight,
+                    ColoresDePiel = item.SkinColors,
+                    ColoresDePelo = item.HairColors,
+                    ColoresDeOjos = item.EyeColors,
+                    EsperanzaDeVida = item.AverageLifespan,
+                    Idioma = item.Language,
+                    Picture = "",
+                    Url = item.Url
+                })
+                .ToList();
 
             if (nuevasEspecies.Any())
             {

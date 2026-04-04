@@ -35,33 +35,33 @@ namespace StarWars.Services
             if (result?.Results == null || !result.Results.Any())
                 return;
 
-            var nuevosPlanetas = new List<Planeta>();
+            var nombresApi = result.Results
+                .Select(x => x.Name)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToList();
 
-            foreach (var item in result.Results)
-            {
-                bool existe = await _context.Planetas
-                    .AnyAsync(p => p.Nombre == item.Name);
+            var nombresExistentes = await _context.Planetas
+                .Where(p => nombresApi.Contains(p.Nombre))
+                .Select(p => p.Nombre)
+                .ToListAsync();
 
-                if (!existe)
+            var nuevosPlanetas = result.Results
+                .Where(item => !nombresExistentes.Contains(item.Name))
+                .Select(item => new Planeta
                 {
-                    var planeta = new Planeta
-                    {
-                        Nombre = item.Name,
-                        PeriodoDeRotación = item.RotationPeriod,
-                        PeriodoOrbital = item.OrbitalPeriod,
-                        Diametro = item.Diameter,
-                        Clima = item.Climate,
-                        Gravedad = item.Gravity,
-                        Terreno = item.Terrain,
-                        AguaSuperficial = item.SurfaceWater,
-                        Poblacion = item.Population,
-                        Picture = "",
-                        Url = item.Url
-                    };
-
-                    nuevosPlanetas.Add(planeta);
-                }
-            }
+                    Nombre = item.Name,
+                    PeriodoDeRotación = item.RotationPeriod,
+                    PeriodoOrbital = item.OrbitalPeriod,
+                    Diametro = item.Diameter,
+                    Clima = item.Climate,
+                    Gravedad = item.Gravity,
+                    Terreno = item.Terrain,
+                    AguaSuperficial = item.SurfaceWater,
+                    Poblacion = item.Population,
+                    Picture = "",
+                    Url = item.Url
+                })
+                .ToList();
 
             if (nuevosPlanetas.Any())
             {
