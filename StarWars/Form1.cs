@@ -634,7 +634,7 @@ namespace StarWars
                 label1, label2, label3, label4, label5, label6, label7,
                 label8, label9, label10, label11, label12, label13,
                 lbPelicula, lbTransporte,
-                textBox7,textBox10, textBox11, textBox12,
+                textBox7, textBox10, textBox11, textBox12,
                 comboBox1, comboBox2, comboBox3, comboBox4,
                 richTextBox1,
                 checkedListBox1, checkedListBox2,
@@ -649,7 +649,7 @@ namespace StarWars
             _vistaHelper.ConfigurarVistaPeliculas(
                 lblname,
                 label1, label2, label3, label4, label5, label6, label7,
-                label8, label9, label10, label11,label12, label13,
+                label8, label9, label10, label11, label12, label13,
                 lbPelicula, lbTransporte,
                 textBox6, textBox7,
                 comboBox1, comboBox2, comboBox3, comboBox4,
@@ -665,7 +665,7 @@ namespace StarWars
             _vistaHelper.ConfigurarVistaPlanetas(
                 lblname,
                 label1, label2, label3, label4, label5, label6, label7,
-                label8, label9, label10, label11, label12,label13,
+                label8, label9, label10, label11, label12, label13,
                 lbPelicula, lbTransporte,
                 textBox6, textBox7, textBox8, textBox9,
                 comboBox1, comboBox2, comboBox3, comboBox4,
@@ -682,7 +682,7 @@ namespace StarWars
                 label1, label2, label3, label4, label5, label6, label7,
                 label8, label9, label10, label11, label12, label13,
                 lbPelicula, lbTransporte,
-                textBox6, textBox7,textBox8,textBox9,
+                textBox6, textBox7, textBox8, textBox9,
                 comboBox1, comboBox2, comboBox3, comboBox4,
                 richTextBox1,
                 checkedListBox1, checkedListBox2,
@@ -712,8 +712,8 @@ namespace StarWars
         private void LimpiarControles()
         {
             _vistaHelper.LimpiarControles(
-                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7,textBox8, textBox9,textBox10, textBox11, textBox12,
-                comboBox1, comboBox2, comboBox3,comboBox4,
+                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9, textBox10, textBox11, textBox12,
+                comboBox1, comboBox2, comboBox3, comboBox4,
                 richTextBox1,
                 checkedListBox1, checkedListBox2,
                 Picture1
@@ -723,8 +723,8 @@ namespace StarWars
         private void HabilitarControles()
         {
             _vistaHelper.HabilitarControles(
-                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7,textBox8, textBox9,textBox10, textBox11, textBox12,
-                comboBox1, comboBox2, comboBox3,comboBox4,
+                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9, textBox10, textBox11, textBox12,
+                comboBox1, comboBox2, comboBox3, comboBox4,
                 richTextBox1,
                 checkedListBox1, checkedListBox2,
                 btneditar, btnnuevo, btncancelar, btnimagen, btneliminar
@@ -734,8 +734,8 @@ namespace StarWars
         private void DeshabilitarControles()
         {
             _vistaHelper.DeshabilitarControles(
-                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7,textBox8, textBox9,textBox10, textBox11, textBox12,
-                comboBox1, comboBox2, comboBox3,comboBox4,
+                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9, textBox10, textBox11, textBox12,
+                comboBox1, comboBox2, comboBox3, comboBox4,
                 checkedListBox1, checkedListBox2,
                 btnimagen, btnnuevo, btneliminar, btneditar, btnactualizar
             );
@@ -902,6 +902,12 @@ namespace StarWars
             return datos;
         }
 
+        private async void btbuscar_Click(object sender, EventArgs e)
+        {
+            string searchText = txtbuscar.Text;
+            var resultado = await _personaService.BuscarAsync(searchText);
 
+            SetDataInGrid(resultado);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic.ApplicationServices;
 using RestLibrary.Interfaces;
 using StarWars.Data;
 using StarWars.Dtos;
@@ -168,6 +169,14 @@ namespace StarWars.Services
 
             _context.Personas.Remove(persona);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Persona>> BuscarAsync(string filtro)
+        {
+            return await _context.Personas
+            .Where(x => x.FirstName.Contains(filtro) ||
+                      x.LastName.Contains(filtro))
+            .ToListAsync();
         }
     }
 }
