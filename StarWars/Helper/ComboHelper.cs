@@ -59,6 +59,18 @@ namespace StarWars.Helpers
             combo.SelectedIndex = -1;
         }
 
+        public async Task CargarTipoTransporteAsync(ComboBox comboBox4)
+        {
+            var tipos = await _transporteService.ObtenerTiposTransporte();
+
+            comboBox4.DataSource = null;
+            comboBox4.Items.Clear();
+
+            comboBox4.DataSource = tipos;
+            comboBox4.DisplayMember = "Nombre";
+            comboBox4.ValueMember = "Id";
+        }
+
         public async Task CargarPeliculasAsync(CheckedListBox check)
         {
             var peliculas = await _peliculaService.ObtenerPeliculas();

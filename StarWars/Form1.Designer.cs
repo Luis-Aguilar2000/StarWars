@@ -40,13 +40,19 @@
             panel2 = new Panel();
             panel4 = new Panel();
             paneldata = new Panel();
+            textBox10 = new TextBox();
+            label12 = new Label();
+            textBox11 = new TextBox();
+            label13 = new Label();
+            comboBox4 = new ComboBox();
+            label11 = new Label();
             btncancelar = new Button();
             btnactualizar = new Button();
             groupBox1 = new GroupBox();
             checkedListBox1 = new CheckedListBox();
             checkedListBox2 = new CheckedListBox();
-            label11 = new Label();
-            label12 = new Label();
+            lbPelicula = new Label();
+            lbTransporte = new Label();
             comboBox2 = new ComboBox();
             comboBox3 = new ComboBox();
             textBox7 = new TextBox();
@@ -68,13 +74,13 @@
             label2 = new Label();
             textBox1 = new TextBox();
             label1 = new Label();
-            btnimagen = new Button();
             btneliminar = new Button();
             btncrear = new Button();
             lblname = new Label();
             btneditar = new Button();
             gbimage = new GroupBox();
             Picture1 = new PictureBox();
+            btnimagen = new Button();
             dtgpersona = new DataGridView();
             cbtransporte = new ComboBox();
             cbespecies = new ComboBox();
@@ -85,6 +91,7 @@
             richTextBox1 = new RichTextBox();
             textBox8 = new TextBox();
             textBox9 = new TextBox();
+            textBox12 = new TextBox();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             paneldata.SuspendLayout();
@@ -266,6 +273,13 @@
             // 
             // paneldata
             // 
+            paneldata.Controls.Add(textBox12);
+            paneldata.Controls.Add(textBox10);
+            paneldata.Controls.Add(label12);
+            paneldata.Controls.Add(textBox11);
+            paneldata.Controls.Add(label13);
+            paneldata.Controls.Add(comboBox4);
+            paneldata.Controls.Add(label11);
             paneldata.Controls.Add(btncancelar);
             paneldata.Controls.Add(btnactualizar);
             paneldata.Controls.Add(groupBox1);
@@ -310,6 +324,71 @@
             paneldata.Size = new Size(1486, 948);
             paneldata.TabIndex = 2;
             // 
+            // textBox10
+            // 
+            textBox10.BackColor = SystemColors.Window;
+            textBox10.BorderStyle = BorderStyle.FixedSingle;
+            textBox10.Enabled = false;
+            textBox10.Location = new Point(791, 594);
+            textBox10.Name = "textBox10";
+            textBox10.Size = new Size(181, 27);
+            textBox10.TabIndex = 130;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.BackColor = Color.Transparent;
+            label12.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label12.ForeColor = Color.FromArgb(251, 204, 60);
+            label12.Location = new Point(621, 681);
+            label12.Name = "label12";
+            label12.Size = new Size(68, 20);
+            label12.TabIndex = 129;
+            label12.Text = "Label12";
+            // 
+            // textBox11
+            // 
+            textBox11.BackColor = SystemColors.Window;
+            textBox11.BorderStyle = BorderStyle.FixedSingle;
+            textBox11.Enabled = false;
+            textBox11.Location = new Point(791, 637);
+            textBox11.Name = "textBox11";
+            textBox11.Size = new Size(181, 27);
+            textBox11.TabIndex = 128;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.BackColor = Color.Transparent;
+            label13.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label13.ForeColor = Color.FromArgb(251, 204, 60);
+            label13.Location = new Point(624, 730);
+            label13.Name = "label13";
+            label13.Size = new Size(68, 20);
+            label13.TabIndex = 127;
+            label13.Text = "Label13";
+            // 
+            // comboBox4
+            // 
+            comboBox4.Enabled = false;
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(791, 727);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(181, 28);
+            comboBox4.TabIndex = 126;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.BackColor = Color.Transparent;
+            label11.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label11.ForeColor = Color.FromArgb(251, 204, 60);
+            label11.Location = new Point(623, 642);
+            label11.Name = "label11";
+            label11.Size = new Size(68, 20);
+            label11.TabIndex = 125;
+            label11.Text = "Label11";
+            // 
             // btncancelar
             // 
             btncancelar.BackColor = Color.FromArgb(251, 204, 60);
@@ -352,8 +431,8 @@
             // 
             groupBox1.Controls.Add(checkedListBox1);
             groupBox1.Controls.Add(checkedListBox2);
-            groupBox1.Controls.Add(label11);
-            groupBox1.Controls.Add(label12);
+            groupBox1.Controls.Add(lbPelicula);
+            groupBox1.Controls.Add(lbTransporte);
             groupBox1.Location = new Point(1041, 503);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(416, 326);
@@ -378,29 +457,29 @@
             checkedListBox2.Size = new Size(185, 246);
             checkedListBox2.TabIndex = 118;
             // 
-            // label11
+            // lbPelicula
             // 
-            label11.AutoSize = true;
-            label11.BackColor = Color.Transparent;
-            label11.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label11.ForeColor = Color.FromArgb(251, 204, 60);
-            label11.Location = new Point(70, 289);
-            label11.Name = "label11";
-            label11.Size = new Size(72, 20);
-            label11.TabIndex = 111;
-            label11.Text = "Pelicula:";
+            lbPelicula.AutoSize = true;
+            lbPelicula.BackColor = Color.Transparent;
+            lbPelicula.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbPelicula.ForeColor = Color.FromArgb(251, 204, 60);
+            lbPelicula.Location = new Point(70, 289);
+            lbPelicula.Name = "lbPelicula";
+            lbPelicula.Size = new Size(72, 20);
+            lbPelicula.TabIndex = 111;
+            lbPelicula.Text = "Pelicula:";
             // 
-            // label12
+            // lbTransporte
             // 
-            label12.AutoSize = true;
-            label12.BackColor = Color.Transparent;
-            label12.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label12.ForeColor = Color.FromArgb(251, 204, 60);
-            label12.Location = new Point(278, 289);
-            label12.Name = "label12";
-            label12.Size = new Size(78, 20);
-            label12.TabIndex = 103;
-            label12.Text = "Vehiculo:";
+            lbTransporte.AutoSize = true;
+            lbTransporte.BackColor = Color.Transparent;
+            lbTransporte.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbTransporte.ForeColor = Color.FromArgb(251, 204, 60);
+            lbTransporte.Location = new Point(278, 289);
+            lbTransporte.Name = "lbTransporte";
+            lbTransporte.Size = new Size(78, 20);
+            lbTransporte.TabIndex = 103;
+            lbTransporte.Text = "Vehiculo:";
             // 
             // comboBox2
             // 
@@ -638,17 +717,6 @@
             label1.TabIndex = 86;
             label1.Text = "Nombre:";
             // 
-            // btnimagen
-            // 
-            btnimagen.Enabled = false;
-            btnimagen.ImageAlign = ContentAlignment.MiddleLeft;
-            btnimagen.Location = new Point(32, 246);
-            btnimagen.Name = "btnimagen";
-            btnimagen.Size = new Size(118, 39);
-            btnimagen.TabIndex = 79;
-            btnimagen.Text = "Subir Archivo";
-            btnimagen.UseVisualStyleBackColor = true;
-            // 
             // btneliminar
             // 
             btneliminar.BackColor = Color.FromArgb(251, 204, 60);
@@ -741,6 +809,17 @@
             Picture1.TabIndex = 0;
             Picture1.TabStop = false;
             // 
+            // btnimagen
+            // 
+            btnimagen.Enabled = false;
+            btnimagen.ImageAlign = ContentAlignment.MiddleLeft;
+            btnimagen.Location = new Point(32, 246);
+            btnimagen.Name = "btnimagen";
+            btnimagen.Size = new Size(118, 39);
+            btnimagen.TabIndex = 79;
+            btnimagen.Text = "Subir Archivo";
+            btnimagen.UseVisualStyleBackColor = true;
+            // 
             // dtgpersona
             // 
             dtgpersona.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -803,7 +882,7 @@
             // richTextBox1
             // 
             richTextBox1.Enabled = false;
-            richTextBox1.Location = new Point(844, 503);
+            richTextBox1.Location = new Point(791, 509);
             richTextBox1.Name = "richTextBox1";
             richTextBox1.Size = new Size(370, 214);
             richTextBox1.TabIndex = 122;
@@ -827,6 +906,16 @@
             textBox9.Size = new Size(181, 27);
             textBox9.TabIndex = 124;
             textBox9.Visible = false;
+            // 
+            // textBox12
+            // 
+            textBox12.BackColor = SystemColors.Window;
+            textBox12.BorderStyle = BorderStyle.FixedSingle;
+            textBox12.Enabled = false;
+            textBox12.Location = new Point(791, 681);
+            textBox12.Name = "textBox12";
+            textBox12.Size = new Size(181, 27);
+            textBox12.TabIndex = 131;
             // 
             // Form1
             // 
@@ -868,9 +957,9 @@
         private TextBox txtbuscar;
         private ComboBox cbplaneta;
         private Button btbuscar;
-        private Label label11;
+        private Label lbPelicula;
         private ComboBox comboBox1;
-        private Label label12;
+        private Label lbTransporte;
         private Label label10;
         private Label label9;
         private Label label8;
@@ -911,5 +1000,12 @@
         private RichTextBox richTextBox1;
         private TextBox textBox8;
         private TextBox textBox9;
+        private TextBox textBox10;
+        private Label label12;
+        private TextBox textBox11;
+        private Label label13;
+        private ComboBox comboBox4;
+        private Label label11;
+        private TextBox textBox12;
     }
 }

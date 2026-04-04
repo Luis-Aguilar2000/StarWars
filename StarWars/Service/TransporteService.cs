@@ -181,5 +181,9 @@ namespace StarWars.Services
             _context.Transportes.Remove(transporte);
             await _context.SaveChangesAsync();
         }
+        public async Task<List<TipoTransporte>> ObtenerTiposTransporte()
+        {
+            return await _context.TipoTransporte.ToListAsync();
+        }
     }
 }

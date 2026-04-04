@@ -132,6 +132,12 @@ namespace StarWars.Helpers
 
         private async Task EditarTransporte(FormData datos)
         {
+            if (datos.Combo4Value == null)
+            {
+                MessageBox.Show("Seleccione un tipo de transporte.");
+                return;
+            }
+
             Transporte transporte = new Transporte
             {
                 Id = datos.Id,
@@ -141,7 +147,13 @@ namespace StarWars.Helpers
                 CostoEnCreditos = datos.Text4,
                 Longitud = datos.Text5,
                 VelocidadMaximaAtmosfera = datos.Text6,
-                Tripulacion = datos.Text7
+                Tripulacion = datos.Text7,
+                Pasajeros = datos.Text8,
+                CapacidadCarga = datos.Text9,
+                Consumibles = datos.Text10,
+                MGLT = datos.Text11,
+                Clase = datos.Text12,
+                TipoTransporteId = datos.Combo4Value.Value
             };
 
             await _transporteService.ActualizarTransporte(transporte);

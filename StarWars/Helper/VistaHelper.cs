@@ -19,11 +19,17 @@ namespace StarWars.Helpers
             Label label10,
             Label label11,
             Label label12,
-            TextBox textBox6,
+            Label label13,
+            Label lbPeliculas,
+            Label lbVehiculos,
             TextBox textBox7,
+            TextBox textBox10,
+            TextBox textBox11,
+            TextBox textBox12,
             ComboBox comboBox1,
             ComboBox comboBox2,
             ComboBox comboBox3,
+            ComboBox comboBox4,
             RichTextBox richTextBox1,
             CheckedListBox checkedListBox1,
             CheckedListBox checkedListBox2,
@@ -41,26 +47,29 @@ namespace StarWars.Helpers
             label5.Text = "Color de Ojos:";
             label6.Text = "Color de Pelo:";
             label7.Text = "Cumpleaños:";
+            label8.Text = "Genero:";
+            label9.Text = "Especie:";
+            label10.Text = "Planeta:";
+            label11.Text = "";
+            label12.Text = "";
+            label13.Text = "";
 
             textBox7.Visible = true;
+            textBox10.Visible = false;
+            textBox11.Visible = false;
+            textBox12.Visible = false;
+
             comboBox1.Visible = true;
-            label8.Text = "Genero:";
-
             comboBox2.Visible = true;
-            label9.Text = "Especie:";
-
             comboBox3.Visible = true;
-            label10.Text = "Planeta:";
+            comboBox4.Visible = false;
 
             richTextBox1.Visible = false;
-
             groupBox1.Visible = true;
-
             checkedListBox1.Visible = true;
-            label11.Text = "Películas:";
-
+            lbPeliculas.Text = "Peliculas:";
             checkedListBox2.Visible = true;
-            label12.Text = "Vehículos:";
+            lbVehiculos.Text = "Vehiculos:";
 
             await cargarCombosPersonasAsync();
 
@@ -81,11 +90,15 @@ namespace StarWars.Helpers
             Label label10,
             Label label11,
             Label label12,
+            Label label13,
+            Label lbPeliculas,
+            Label lbVehiculos,
             TextBox textBox6,
             TextBox textBox7,
             ComboBox comboBox1,
             ComboBox comboBox2,
             ComboBox comboBox3,
+            ComboBox comboBox4,
             RichTextBox richTextBox1,
             CheckedListBox checkedListBox1,
             CheckedListBox checkedListBox2,
@@ -109,6 +122,7 @@ namespace StarWars.Helpers
             comboBox1.Visible = false;
             comboBox2.Visible = false;
             comboBox3.Visible = false;
+            comboBox4.Visible = false;
 
             richTextBox1.Visible = true;
 
@@ -121,7 +135,9 @@ namespace StarWars.Helpers
 
             label11.Text = "";
             label12.Text = "";
-
+            label13.Text = "";
+            lbVehiculos.Text = "";
+            lbPeliculas.Text = "";
             groupBox1.Visible = false;
 
             form.ResumeLayout();
@@ -141,6 +157,9 @@ namespace StarWars.Helpers
             Label label10,
             Label label11,
             Label label12,
+            Label label13,
+            Label lbPeliculas,
+            Label lbVehiculos,
             TextBox textBox6,
             TextBox textBox7,
             TextBox textBox8,
@@ -148,6 +167,7 @@ namespace StarWars.Helpers
             ComboBox comboBox1,
             ComboBox comboBox2,
             ComboBox comboBox3,
+            ComboBox comboBox4,
             RichTextBox richTextBox1,
 
             CheckedListBox checkedListBox1,
@@ -174,6 +194,7 @@ namespace StarWars.Helpers
             comboBox1.Visible = false;
             comboBox2.Visible = false;
             comboBox3.Visible = false;
+            comboBox4.Visible = false;
 
             label8.Text = "Agua Superficial";
             label9.Text = "Poblacion";
@@ -185,30 +206,182 @@ namespace StarWars.Helpers
 
             label11.Text = "";
             label12.Text = "";
+            label13.Text = "";
+            lbPeliculas.Text = "";
+            lbVehiculos.Text = "";
+
+            groupBox1.Visible = false;
+
+            form.ResumeLayout();
+        }
+        public void ConfigurarVistaEspecies(
+          Label lblname,
+          Label label1,
+          Label label2,
+          Label label3,
+          Label label4,
+          Label label5,
+          Label label6,
+          Label label7,
+          Label label8,
+          Label label9,
+          Label label10,
+          Label label11,
+          Label label12,
+          Label label13,
+          Label lbPeliculas,
+          Label lbVehiculos,
+          TextBox textBox6,
+          TextBox textBox7,
+          TextBox textBox8,
+          TextBox textBox9,
+          ComboBox comboBox1,
+          ComboBox comboBox2,
+          ComboBox comboBox3,
+          ComboBox comboBox4,
+          RichTextBox richTextBox1,
+
+          CheckedListBox checkedListBox1,
+          CheckedListBox checkedListBox2,
+          GroupBox groupBox1,
+          Form form)
+        {
+            form.SuspendLayout();
+            lblname.Text = "ESPECIES";
+            label1.Text = "Nombre:";
+            label2.Text = "Clasificacion:";
+            label3.Text = "Designacion:";
+            label4.Text = "Altura Promedio:";
+            label5.Text = "Colores de Piel:";
+            label6.Text = "Colores de Pelo:";
+            label7.Text = "Colores de Ojos:";
+            label8.Text = "Esperanza de Vida";
+            label9.Text = "Idioma";
+            label10.Text = "";
+
+            textBox6.Visible = true;
+            textBox7.Visible = true;
+            textBox8.Visible = true;
+            textBox9.Visible = true;
+
+            comboBox1.Visible = false;
+            comboBox2.Visible = false;
+            comboBox3.Visible = false;
+            comboBox4.Visible = false;
+
+            richTextBox1.Visible = false;
+
+            checkedListBox1.Visible = false;
+            checkedListBox2.Visible = false;
+
+            label11.Text = "";
+            label12.Text = "";
+            label13.Text = "";
+            lbVehiculos.Visible = false;
+            lbPeliculas.Visible = false;
 
             groupBox1.Visible = false;
 
             form.ResumeLayout();
         }
 
-        public void LimpiarControles(
-    TextBox textBox1,
-    TextBox textBox2,
-    TextBox textBox3,
-    TextBox textBox4,
-    TextBox textBox5,
-    TextBox textBox6,
-    TextBox textBox7,
-    TextBox textBox8,
-    TextBox textBox9,
-    ComboBox comboBox1,
-    ComboBox comboBox2,
-    ComboBox comboBox3,
-    RichTextBox richTextBox1,
-    CheckedListBox checkedListBox1,
-    CheckedListBox checkedListBox2,
-    PictureBox picture1)
+        public void ConfigurarVistaTransporte(
+          Label lblname,
+          Label label1,
+          Label label2,
+          Label label3,
+          Label label4,
+          Label label5,
+          Label label6,
+          Label label7,
+          Label label8,
+          Label label9,
+          Label label10,
+          Label label11,
+          Label label12,
+          Label label13,
+          Label lbPeliculas,
+          Label lbVehiculos,
+          TextBox textBox6,
+          TextBox textBox7,
+          TextBox textBox8,
+          TextBox textBox9,
+          TextBox textBox10,
+          TextBox textBox11,
+          TextBox textBox12,
+          ComboBox comboBox1,
+          ComboBox comboBox2,
+          ComboBox comboBox3,
+          ComboBox comboBox4,
+          RichTextBox richTextBox1,
+
+          CheckedListBox checkedListBox1,
+          CheckedListBox checkedListBox2,
+          GroupBox groupBox1,
+          Form form)
         {
+            form.SuspendLayout();
+            lblname.Text = "TRANSPORTES";
+            label1.Text = "Nombre:";
+            label2.Text = "Modelo:";
+            label3.Text = "Fabricante:";
+            label4.Text = "CostoenCreditos:";
+            label5.Text = "Longitud:";
+            label6.Text = "VelocidadMaximaAtmosfera:";
+            label7.Text = "Tripulacion:";
+            label8.Text = "Pasajeros";
+            label9.Text = "CapacidaddeCarga";
+            label10.Text = "Consumibles";
+            label11.Text = "MGLT";
+            label12.Text = "Clase";
+            label13.Text = "Tipo";
+            lbPeliculas.Text = "";
+            lbVehiculos.Text = "";
+
+            textBox6.Visible = true;
+            textBox7.Visible = true;
+            textBox8.Visible = true;
+            textBox9.Visible = true;
+            textBox10.Visible = true;
+            textBox11.Visible = true;
+            textBox12.Visible = true;
+
+            comboBox1.Visible = false;
+            comboBox2.Visible = false;
+            comboBox3.Visible = false;
+            comboBox4.Visible = true;
+
+            richTextBox1.Visible = false;
+
+            checkedListBox1.Visible = false;
+            checkedListBox2.Visible = false;
+
+            groupBox1.Visible = false;
+
+            form.ResumeLayout();
+        }
+        public void LimpiarControles(
+            TextBox textBox1,
+            TextBox textBox2,
+            TextBox textBox3,
+            TextBox textBox4,
+            TextBox textBox5,
+            TextBox textBox6,
+            TextBox textBox7,
+            TextBox textBox8,
+            TextBox textBox9,
+            TextBox textBox10,
+            TextBox textBox11,
+            TextBox textBox12,
+            ComboBox comboBox1,
+            ComboBox comboBox2,
+            ComboBox comboBox3,
+            ComboBox comboBox4,
+            RichTextBox richTextBox1,
+            CheckedListBox checkedListBox1,
+            CheckedListBox checkedListBox2,
+            PictureBox picture1)
+                {
             textBox1.Text = "";
             textBox2.Text = "";
             textBox3.Text = "";
@@ -218,10 +391,15 @@ namespace StarWars.Helpers
             textBox7.Text = "";
             textBox8.Text = "";
             textBox9.Text = "";
+            textBox10.Text = "";
+            textBox11.Text = "";
+            textBox12.Text = "";
+
 
             comboBox1.SelectedIndex = -1;
             comboBox2.SelectedIndex = -1;
             comboBox3.SelectedIndex = -1;
+            comboBox4.SelectedIndex = -1;
             richTextBox1.Text = "";
 
             comboBox1.Text = "";
@@ -251,9 +429,13 @@ namespace StarWars.Helpers
             TextBox textBox7,
             TextBox textBox8,
             TextBox textBox9,
+            TextBox textBox10,
+            TextBox textBox11,
+            TextBox textBox12,
             ComboBox comboBox1,
             ComboBox comboBox2,
             ComboBox comboBox3,
+            ComboBox comboBox4,
             RichTextBox richTextBox1,
             CheckedListBox checkedListBox1,
             CheckedListBox checkedListBox2,
@@ -272,10 +454,14 @@ namespace StarWars.Helpers
             textBox7.Enabled = true;
             textBox8.Enabled = true;
             textBox9.Enabled = true;
+            textBox10.Enabled = true;
+            textBox11.Enabled = true;
+            textBox12.Enabled = true;
 
             comboBox1.Enabled = true;
             comboBox2.Enabled = true;
             comboBox3.Enabled = true;
+            comboBox4.Enabled = true;
             richTextBox1.Enabled = true;
 
             checkedListBox1.Enabled = true;
@@ -298,9 +484,13 @@ namespace StarWars.Helpers
             TextBox textBox7,
             TextBox textBox8,
             TextBox textBox9,
+            TextBox textBox10,
+            TextBox textBox11,
+            TextBox textBox12,
             ComboBox comboBox1,
             ComboBox comboBox2,
             ComboBox comboBox3,
+            ComboBox comboBox4,
             CheckedListBox checkedListBox1,
             CheckedListBox checkedListBox2,
             Button btnimagen,
@@ -318,11 +508,15 @@ namespace StarWars.Helpers
             textBox7.Enabled = false;
             textBox8.Enabled = false;
             textBox9.Enabled = false;
+            textBox10.Enabled = false;
+            textBox11.Enabled = false;
+            textBox12.Enabled = false;
 
 
             comboBox1.Enabled = false;
             comboBox2.Enabled = false;
             comboBox3.Enabled = false;
+            comboBox4.Enabled = false;
 
             checkedListBox1.Enabled = false;
             checkedListBox2.Enabled = false;
