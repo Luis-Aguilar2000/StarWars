@@ -88,7 +88,7 @@ namespace StarWars.Helpers
                 Director = datos.Text3,
                 Productor = datos.Text4,
                 FechaDeLanzamiento = datos.Text5,
-                Avance = datos.Text6
+                Avance = datos.richTextBox
             };
 
             await _peliculaService.ActualizarPelicula(pelicula);
@@ -105,7 +105,9 @@ namespace StarWars.Helpers
                 Diametro = datos.Text4,
                 Clima = datos.Text5,
                 Gravedad = datos.Text6,
-                Terreno = datos.Text7
+                Terreno = datos.Text7,
+                AguaSuperficial = datos.Text8,
+                Poblacion = datos.Text9
             };
 
             await _planetaService.ActualizarPlaneta(planeta);

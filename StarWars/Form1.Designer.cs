@@ -82,6 +82,9 @@
             txtbuscar = new TextBox();
             cbplaneta = new ComboBox();
             btbuscar = new Button();
+            richTextBox1 = new RichTextBox();
+            textBox8 = new TextBox();
+            textBox9 = new TextBox();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             paneldata.SuspendLayout();
@@ -287,7 +290,6 @@
             paneldata.Controls.Add(label2);
             paneldata.Controls.Add(textBox1);
             paneldata.Controls.Add(label1);
-            paneldata.Controls.Add(btnimagen);
             paneldata.Controls.Add(btneliminar);
             paneldata.Controls.Add(btncrear);
             paneldata.Controls.Add(lblname);
@@ -300,9 +302,12 @@
             paneldata.Controls.Add(txtbuscar);
             paneldata.Controls.Add(cbplaneta);
             paneldata.Controls.Add(btbuscar);
+            paneldata.Controls.Add(richTextBox1);
+            paneldata.Controls.Add(textBox8);
+            paneldata.Controls.Add(textBox9);
             paneldata.Location = new Point(179, 22);
             paneldata.Name = "paneldata";
-            paneldata.Size = new Size(1390, 948);
+            paneldata.Size = new Size(1486, 948);
             paneldata.TabIndex = 2;
             // 
             // btncancelar
@@ -334,13 +339,14 @@
             btnactualizar.ForeColor = SystemColors.Window;
             btnactualizar.Image = (Image)resources.GetObject("btnactualizar.Image");
             btnactualizar.ImageAlign = ContentAlignment.MiddleLeft;
-            btnactualizar.Location = new Point(902, 883);
+            btnactualizar.Location = new Point(1011, 883);
             btnactualizar.Name = "btnactualizar";
             btnactualizar.Size = new Size(162, 45);
             btnactualizar.TabIndex = 120;
             btnactualizar.Text = "ACTUALIZAR";
             btnactualizar.TextAlign = ContentAlignment.MiddleRight;
             btnactualizar.UseVisualStyleBackColor = false;
+            btnactualizar.Click += btnactualizar_Click;
             // 
             // groupBox1
             // 
@@ -348,7 +354,7 @@
             groupBox1.Controls.Add(checkedListBox2);
             groupBox1.Controls.Add(label11);
             groupBox1.Controls.Add(label12);
-            groupBox1.Location = new Point(941, 509);
+            groupBox1.Location = new Point(1041, 503);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(416, 326);
             groupBox1.TabIndex = 119;
@@ -383,7 +389,6 @@
             label11.Size = new Size(72, 20);
             label11.TabIndex = 111;
             label11.Text = "Pelicula:";
-            label11.Click += label11_Click;
             // 
             // label12
             // 
@@ -401,7 +406,7 @@
             // 
             comboBox2.Enabled = false;
             comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(744, 552);
+            comboBox2.Location = new Point(791, 550);
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new Size(181, 28);
             comboBox2.TabIndex = 115;
@@ -410,7 +415,7 @@
             // 
             comboBox3.Enabled = false;
             comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(744, 594);
+            comboBox3.Location = new Point(791, 593);
             comboBox3.Name = "comboBox3";
             comboBox3.Size = new Size(181, 28);
             comboBox3.TabIndex = 114;
@@ -448,7 +453,7 @@
             // 
             comboBox1.Enabled = false;
             comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(744, 509);
+            comboBox1.Location = new Point(791, 508);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(181, 28);
             comboBox1.TabIndex = 105;
@@ -495,7 +500,7 @@
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.ForeColor = Color.FromArgb(251, 204, 60);
-            label7.Location = new Point(265, 769);
+            label7.Location = new Point(250, 765);
             label7.Name = "label7";
             label7.Size = new Size(105, 20);
             label7.TabIndex = 98;
@@ -517,7 +522,7 @@
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.FromArgb(251, 204, 60);
-            label6.Location = new Point(265, 727);
+            label6.Location = new Point(250, 723);
             label6.Name = "label6";
             label6.Size = new Size(116, 20);
             label6.TabIndex = 96;
@@ -539,7 +544,7 @@
             label5.BackColor = Color.Transparent;
             label5.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = Color.FromArgb(251, 204, 60);
-            label5.Location = new Point(265, 683);
+            label5.Location = new Point(250, 679);
             label5.Name = "label5";
             label5.Size = new Size(117, 20);
             label5.TabIndex = 94;
@@ -561,7 +566,7 @@
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.FromArgb(251, 204, 60);
-            label4.Location = new Point(265, 641);
+            label4.Location = new Point(250, 637);
             label4.Name = "label4";
             label4.Size = new Size(111, 20);
             label4.TabIndex = 92;
@@ -583,7 +588,7 @@
             label3.BackColor = Color.Transparent;
             label3.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FromArgb(251, 204, 60);
-            label3.Location = new Point(265, 596);
+            label3.Location = new Point(250, 592);
             label3.Name = "label3";
             label3.Size = new Size(57, 20);
             label3.TabIndex = 90;
@@ -605,7 +610,7 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.FromArgb(251, 204, 60);
-            label2.Location = new Point(265, 552);
+            label2.Location = new Point(250, 548);
             label2.Name = "label2";
             label2.Size = new Size(59, 20);
             label2.TabIndex = 88;
@@ -627,7 +632,7 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.FromArgb(251, 204, 60);
-            label1.Location = new Point(265, 505);
+            label1.Location = new Point(250, 501);
             label1.Name = "label1";
             label1.Size = new Size(74, 20);
             label1.TabIndex = 86;
@@ -636,11 +641,10 @@
             // btnimagen
             // 
             btnimagen.Enabled = false;
-            btnimagen.Image = (Image)resources.GetObject("btnimagen.Image");
             btnimagen.ImageAlign = ContentAlignment.MiddleLeft;
-            btnimagen.Location = new Point(62, 837);
+            btnimagen.Location = new Point(32, 246);
             btnimagen.Name = "btnimagen";
-            btnimagen.Size = new Size(168, 38);
+            btnimagen.Size = new Size(118, 39);
             btnimagen.TabIndex = 79;
             btnimagen.Text = "Subir Archivo";
             btnimagen.UseVisualStyleBackColor = true;
@@ -655,7 +659,7 @@
             btneliminar.ForeColor = SystemColors.Window;
             btneliminar.Image = (Image)resources.GetObject("btneliminar.Image");
             btneliminar.ImageAlign = ContentAlignment.MiddleLeft;
-            btneliminar.Location = new Point(1212, 883);
+            btneliminar.Location = new Point(1321, 883);
             btneliminar.Name = "btneliminar";
             btneliminar.Size = new Size(136, 45);
             btneliminar.TabIndex = 84;
@@ -675,7 +679,7 @@
             btncrear.ForeColor = SystemColors.Window;
             btncrear.Image = (Image)resources.GetObject("btncrear.Image");
             btncrear.ImageAlign = ContentAlignment.MiddleLeft;
-            btncrear.Location = new Point(1070, 883);
+            btncrear.Location = new Point(1179, 883);
             btncrear.Name = "btncrear";
             btncrear.Size = new Size(136, 45);
             btncrear.TabIndex = 83;
@@ -718,11 +722,12 @@
             // 
             gbimage.BackColor = Color.Transparent;
             gbimage.Controls.Add(Picture1);
+            gbimage.Controls.Add(btnimagen);
             gbimage.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             gbimage.ForeColor = Color.FromArgb(251, 204, 60);
             gbimage.Location = new Point(38, 514);
             gbimage.Name = "gbimage";
-            gbimage.Size = new Size(207, 304);
+            gbimage.Size = new Size(192, 304);
             gbimage.TabIndex = 80;
             gbimage.TabStop = false;
             gbimage.Text = "Imagen";
@@ -731,7 +736,7 @@
             // 
             Picture1.Location = new Point(19, 39);
             Picture1.Name = "Picture1";
-            Picture1.Size = new Size(173, 235);
+            Picture1.Size = new Size(153, 194);
             Picture1.SizeMode = PictureBoxSizeMode.StretchImage;
             Picture1.TabIndex = 0;
             Picture1.TabStop = false;
@@ -742,7 +747,7 @@
             dtgpersona.Location = new Point(12, 132);
             dtgpersona.Name = "dtgpersona";
             dtgpersona.RowHeadersWidth = 51;
-            dtgpersona.Size = new Size(1366, 339);
+            dtgpersona.Size = new Size(1455, 339);
             dtgpersona.TabIndex = 78;
             // 
             // cbtransporte
@@ -795,13 +800,41 @@
             btbuscar.Text = "Buscar";
             btbuscar.UseVisualStyleBackColor = true;
             // 
+            // richTextBox1
+            // 
+            richTextBox1.Enabled = false;
+            richTextBox1.Location = new Point(844, 503);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new Size(370, 214);
+            richTextBox1.TabIndex = 122;
+            richTextBox1.Text = "";
+            richTextBox1.Visible = false;
+            // 
+            // textBox8
+            // 
+            textBox8.Enabled = false;
+            textBox8.Location = new Point(791, 509);
+            textBox8.Name = "textBox8";
+            textBox8.Size = new Size(181, 27);
+            textBox8.TabIndex = 123;
+            textBox8.Visible = false;
+            // 
+            // textBox9
+            // 
+            textBox9.Enabled = false;
+            textBox9.Location = new Point(791, 551);
+            textBox9.Name = "textBox9";
+            textBox9.Size = new Size(181, 27);
+            textBox9.TabIndex = 124;
+            textBox9.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1614, 997);
+            ClientSize = new Size(1677, 997);
             Controls.Add(panel2);
             Controls.Add(paneldata);
             Controls.Add(panel1);
@@ -875,5 +908,8 @@
         private GroupBox groupBox1;
         private Button btnactualizar;
         private Button btncancelar;
+        private RichTextBox richTextBox1;
+        private TextBox textBox8;
+        private TextBox textBox9;
     }
 }

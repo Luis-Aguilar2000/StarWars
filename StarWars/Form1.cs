@@ -25,12 +25,14 @@ namespace StarWars
         private readonly CrearHelper _crearHelper;
         private readonly EliminarHelper _eliminarHelper;
         private readonly VistaHelper _vistaHelper;
+        private readonly ComboHelper _comboHelper;
 
-        private bool cargando = true;
+        private bool combosCargados = false;
+        private bool cargando = false;
         private int ultimoId = -1;
         private string vistaActual = "Personas";
         private bool cancelado = false;
-        private bool combosCargados = false;
+
         public Form1(
             ApplicationDbContext context,
             IRestApi restApi,
@@ -57,6 +59,7 @@ namespace StarWars
                 _especieService,
                 _transporteService
             );
+
             _editarHelper = new EditarHelper(
                 _personaService,
                 _peliculaService,
@@ -64,6 +67,7 @@ namespace StarWars
                 _especieService,
                 _transporteService
             );
+
             _eliminarHelper = new EliminarHelper(
                 _personaService,
                 _peliculaService,
@@ -71,10 +75,19 @@ namespace StarWars
                 _especieService,
                 _transporteService
             );
+
             _vistaHelper = new VistaHelper();
+
+            _comboHelper = new ComboHelper(
+                _especieService,
+                _planetaService,
+                _peliculaService,
+                _transporteService
+            );
 
             InitializeComponent();
         }
+
         private async void Form1_Load(object sender, EventArgs e)
         {
             colorpanel();
@@ -86,6 +99,7 @@ namespace StarWars
             await _planetaService.SincronizarPlanetas();
             await _especieService.SincronizarEspecies();
             await _transporteService.SincronizarTransportes();
+
             await ObtenerPersonasBD();
 
             dtgpersona.ClearSelection();
@@ -95,10 +109,9 @@ namespace StarWars
             cargando = false;
         }
 
-        //Botonera NA
+        // Botonera principal
         private async void btnpersona_Click(object sender, EventArgs e)
         {
-
             await ObtenerPersonasBD();
             await clickPersonas();
         }
@@ -107,16 +120,14 @@ namespace StarWars
         {
             await ObtenerPeliculasBD();
             clickPeliculas();
-
         }
 
         private async void btplanetas_Click(object sender, EventArgs e)
         {
             clickPlanetas();
             await ObtenerPlanetasBD();
-
-
         }
+
         private async void btespecies_Click(object sender, EventArgs e)
         {
             await ObtenerEspeciesBD();
@@ -127,50 +138,75 @@ namespace StarWars
             await ObtenerTransportesBD();
         }
 
-        //botonera del crud
-        //editar
+        // EDITAR
         private async void btneditar_Click(object sender, EventArgs e)
         {
             if (dtgpersona.CurrentRow == null || dtgpersona.CurrentRow.Index < 0)
             {
-                MessageBox.Show("Seleccione un personaje.");
+                MessageBox.Show("Seleccione un registro.");
                 return;
             }
 
-            if (vistaActual == "Personas")
+            try
             {
-                var fila = dtgpersona.CurrentRow;
+                if (vistaActual == "Personas")
+                {
+                    var fila = dtgpersona.CurrentRow;
 
-                await CargarCombosPersonasAsync();
+                    await CargarCombosPersonasAsync();
+                    await MarcarRelacionadosAsync(fila);
+                }
 
-                comboBox1.Text = fila.Cells["Genero"]?.Value?.ToString() ?? "";
-                comboBox2.Text = fila.Cells["Especie"]?.Value?.ToString() ?? "";
-                comboBox3.Text = fila.Cells["Planeta"]?.Value?.ToString() ?? "";
+                // SOLO activar modo edición
+                HabilitarControles();
 
-                await MarcarPeliculasSeleccionadasAsync(fila);
-                await MarcarVehiculosSeleccionadosAsync(fila);
+                btncrear.Enabled = false;
+                btnactualizar.Enabled = true;
+                dtgpersona.Enabled = false;
+                richTextBox1.Enabled = true;
             }
-
-            btncrear.Enabled = false;
-            HabilitarControles();
-            btnactualizar.Enabled = true;
-            dtgpersona.Enabled = false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al preparar edición: " + ex.Message);
+            }
         }
-        //nuevo
+
+        // NUEVO
         private async void btnnuevo_Click(object sender, EventArgs e)
         {
-            HabilitarControles();
-            dtgpersona.Enabled = false;
-            btncrear.Enabled = true;
-
-            LimpiarControles();
-
-            if (vistaActual == "Personas")
+            try
             {
-                await CargarCombosPersonasAsync();
+                LimpiarControles();
+                HabilitarControles();
+
+                btncrear.Enabled = true;
+                btnactualizar.Enabled = false;
+                dtgpersona.Enabled = false;
+                if (vistaActual == "Personas")
+                {
+                    await CargarCombosPersonasAsync();
+
+                    comboBox1.Visible = true;
+                    comboBox2.Visible = true;
+                    comboBox3.Visible = true;
+                    checkedListBox1.Visible = true;
+                    checkedListBox2.Visible = true;
+                }
+                else
+                {
+                    comboBox1.Visible = false;
+                    comboBox2.Visible = false;
+                    comboBox3.Visible = false;
+                    checkedListBox1.Visible = false;
+                    checkedListBox2.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al preparar nuevo registro: " + ex.Message);
             }
         }
-        //cancelar
+        // CANCELAR
         private void btncancelar_Click(object sender, EventArgs e)
         {
             cancelado = true;
@@ -182,12 +218,6 @@ namespace StarWars
 
             LimpiarControles();
 
-            checkedListBox1.DataSource = null;
-            checkedListBox1.Items.Clear();
-
-            checkedListBox2.DataSource = null;
-            checkedListBox2.Items.Clear();
-
             dtgpersona.ClearSelection();
             dtgpersona.CurrentCell = null;
             ultimoId = -1;
@@ -195,7 +225,7 @@ namespace StarWars
             cancelado = false;
         }
 
-        //actualizar
+        // ACTUALIZAR
         private async void btnactualizar_Click(object sender, EventArgs e)
         {
             try
@@ -224,7 +254,8 @@ namespace StarWars
                 MessageBox.Show("Error al actualizar: " + ex.Message);
             }
         }
-        //CREAR
+
+        // CREAR
         private async void btncrear_Click(object sender, EventArgs e)
         {
             try
@@ -247,7 +278,8 @@ namespace StarWars
                 MessageBox.Show("Error al crear: " + ex.Message);
             }
         }
-        //ELIMINAR
+
+        // ELIMINAR
         private async void btneliminar_Click(object sender, EventArgs e)
         {
             if (dtgpersona.CurrentRow == null)
@@ -284,7 +316,8 @@ namespace StarWars
                 MessageBox.Show("Error al eliminar: " + ex.Message);
             }
         }
-        //SelectionChanged del DataGridView para mostrar detalles de las tablas
+
+        // SelectionChanged del DataGridView
         private async void dtgpersona_SelectionChanged(object sender, EventArgs e)
         {
             if (cargando || cancelado) return;
@@ -320,9 +353,7 @@ namespace StarWars
                     comboBox2.Text = fila.Cells["Especie"]?.Value?.ToString() ?? "";
                     comboBox3.Text = fila.Cells["Planeta"]?.Value?.ToString() ?? "";
 
-                    await MarcarPeliculasSeleccionadasAsync(fila);
-                    await MarcarVehiculosSeleccionadosAsync(fila);
-
+                    await MarcarRelacionadosAsync(fila);
                     CargarImagen(fila);
                     break;
 
@@ -332,8 +363,7 @@ namespace StarWars
                     textBox3.Text = fila.Cells["Director"]?.Value?.ToString() ?? "";
                     textBox4.Text = fila.Cells["Productor"]?.Value?.ToString() ?? "";
                     textBox5.Text = fila.Cells["FechaDeLanzamiento"]?.Value?.ToString() ?? "";
-                    textBox6.Text = fila.Cells["Avance"]?.Value?.ToString() ?? "";
-
+                    richTextBox1.Text = fila.Cells["Avance"]?.Value?.ToString() ?? "";
                     CargarImagen(fila);
                     break;
 
@@ -345,7 +375,8 @@ namespace StarWars
                     textBox5.Text = fila.Cells["Clima"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["Gravedad"]?.Value?.ToString() ?? "";
                     textBox7.Text = fila.Cells["Terreno"]?.Value?.ToString() ?? "";
-
+                    textBox8.Text = fila.Cells["AguaSuperficial"]?.Value?.ToString() ?? "";
+                    textBox9.Text = fila.Cells["Poblacion"]?.Value?.ToString() ?? "";
                     CargarImagen(fila);
                     break;
 
@@ -357,7 +388,6 @@ namespace StarWars
                     textBox5.Text = fila.Cells["ColoresDePiel"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["ColoresDeOjos"]?.Value?.ToString() ?? "";
                     textBox7.Text = fila.Cells["Idioma"]?.Value?.ToString() ?? "";
-
                     CargarImagen(fila);
                     break;
 
@@ -369,14 +399,12 @@ namespace StarWars
                     textBox5.Text = fila.Cells["Longitud"]?.Value?.ToString() ?? "";
                     textBox6.Text = fila.Cells["VelocidadMaximaAtmosfera"]?.Value?.ToString() ?? "";
                     textBox7.Text = fila.Cells["Tripulacion"]?.Value?.ToString() ?? "";
-
                     CargarImagen(fila);
                     break;
             }
         }
 
-        // Métodos para cargar, guardar y mostrar datos de las tablas
-        //PERSONAS
+        // PERSONAS
         private async Task ObtenerPersonasBD()
         {
             try
@@ -398,7 +426,6 @@ namespace StarWars
                     p.Cumpleaños,
                     p.Genero,
                     p.Picture,
-
                     Pelicula = string.Join(", ", p.Peliculas.Select(x => x.Titulo)),
                     Planeta = p.Planeta != null ? p.Planeta.Nombre : "",
                     Especie = string.Join(", ", p.Especie.Select(x => x.Nombre)),
@@ -420,7 +447,8 @@ namespace StarWars
                 cargando = false;
             }
         }
-        //PELÍCULAS
+
+        // PELÍCULAS
         private async Task ObtenerPeliculasBD()
         {
             try
@@ -458,7 +486,7 @@ namespace StarWars
             }
         }
 
-        //PLANETAS
+        // PLANETAS
         private async Task ObtenerPlanetasBD()
         {
             try
@@ -500,6 +528,7 @@ namespace StarWars
             }
         }
 
+        // ESPECIES
         private async Task ObtenerEspeciesBD()
         {
             try
@@ -541,6 +570,7 @@ namespace StarWars
             }
         }
 
+        // TRANSPORTES
         private async Task ObtenerTransportesBD()
         {
             try
@@ -585,10 +615,7 @@ namespace StarWars
             }
         }
 
-        //OTROS METODOS
-
-        //Cambio de campo de texto al hacer click en un boton
-        //PERSONAS
+        // VISTAS
         private async Task clickPersonas()
         {
             await _vistaHelper.ConfigurarVistaPersonasAsync(
@@ -597,13 +624,14 @@ namespace StarWars
                 label8, label9, label10, label11, label12,
                 textBox6, textBox7,
                 comboBox1, comboBox2, comboBox3,
+                richTextBox1,
                 checkedListBox1, checkedListBox2,
                 groupBox1,
                 CargarCombosPersonasAsync,
                 this
             );
         }
-        //PELICULAS
+
         private void clickPeliculas()
         {
             _vistaHelper.ConfigurarVistaPeliculas(
@@ -612,107 +640,61 @@ namespace StarWars
                 label8, label9, label10, label11, label12,
                 textBox6, textBox7,
                 comboBox1, comboBox2, comboBox3,
+                richTextBox1,
                 checkedListBox1, checkedListBox2,
                 groupBox1,
                 this
             );
         }
 
-        //PLANETAS
         private void clickPlanetas()
         {
             _vistaHelper.ConfigurarVistaPlanetas(
                 lblname,
                 label1, label2, label3, label4, label5, label6, label7,
                 label8, label9, label10, label11, label12,
-                textBox6, textBox7,
+                textBox6, textBox7, textBox8, textBox9,
                 comboBox1, comboBox2, comboBox3,
+                richTextBox1,
                 checkedListBox1, checkedListBox2,
                 groupBox1,
                 this
             );
         }
 
-        // Método para limpiar los controles de detalle
+        // LIMPIAR
         private void LimpiarControles()
         {
-            textBox1.Text = "";
-            textBox2.Text = "";
-            textBox3.Text = "";
-            textBox4.Text = "";
-            textBox5.Text = "";
-            textBox6.Text = "";
-            textBox7.Text = "";
-
-            comboBox1.SelectedIndex = -1;
-            comboBox2.SelectedIndex = -1;
-            comboBox3.SelectedIndex = -1;
-
-            comboBox1.Text = "";
-            comboBox2.Text = "";
-            comboBox3.Text = "";
-
-            for (int i = 0; i < checkedListBox1.Items.Count; i++)
-                checkedListBox1.SetItemChecked(i, false);
-
-            for (int i = 0; i < checkedListBox2.Items.Count; i++)
-                checkedListBox2.SetItemChecked(i, false);
-
-            if (Picture1.Image != null)
-            {
-                Picture1.Image.Dispose();
-                Picture1.Image = null;
-            }
+            _vistaHelper.LimpiarControles(
+                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7,textBox8, textBox9,
+                comboBox1, comboBox2, comboBox3,
+                richTextBox1,
+                checkedListBox1, checkedListBox2,
+                Picture1
+            );
         }
+
         private void HabilitarControles()
         {
-            textBox1.Enabled = true;
-            textBox2.Enabled = true;
-            textBox3.Enabled = true;
-            textBox4.Enabled = true;
-            textBox5.Enabled = true;
-            textBox6.Enabled = true;
-            textBox7.Enabled = true;
-
-            comboBox1.Enabled = true;
-            comboBox2.Enabled = true;
-            comboBox3.Enabled = true;
-
-            checkedListBox1.Enabled = true;
-            checkedListBox2.Enabled = true;
-
-            btneditar.Enabled = false;
-            btnnuevo.Enabled = false;
-            btncancelar.Enabled = true;
-            btnimagen.Enabled = true;
-            btneliminar.Enabled = false;
-
+            _vistaHelper.HabilitarControles(
+                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7,textBox8, textBox9,
+                comboBox1, comboBox2, comboBox3,
+                richTextBox1,
+                checkedListBox1, checkedListBox2,
+                btneditar, btnnuevo, btncancelar, btnimagen, btneliminar
+            );
         }
-       private void DeshabilitarControles()
+
+        private void DeshabilitarControles()
         {
-            textBox1.Enabled = false;
-            textBox2.Enabled = false;
-            textBox3.Enabled = false;
-            textBox4.Enabled = false;
-            textBox5.Enabled = false;
-            textBox6.Enabled = false;
-            textBox7.Enabled = false;
-
-            comboBox1.Enabled = false;
-            comboBox2.Enabled = false;
-            comboBox3.Enabled = false;
-
-            checkedListBox1.Enabled = false;
-            checkedListBox2.Enabled = false;
-
-            btnimagen.Enabled = false;
-            btnnuevo.Enabled = true;
-            btneliminar.Enabled = true;
-            btneditar.Enabled = true;
-            btnactualizar.Enabled = false;
-
+            _vistaHelper.DeshabilitarControles(
+                textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7,textBox8, textBox9,
+                comboBox1, comboBox2, comboBox3,
+                checkedListBox1, checkedListBox2,
+                btnimagen, btnnuevo, btneliminar, btneditar, btnactualizar
+            );
         }
-        // Método para establecer colores con transparencia en los paneles
+
         private void colorpanel()
         {
             panel1.BackColor = Color.FromArgb(60, 100, 100, 100);
@@ -720,7 +702,7 @@ namespace StarWars
             paneldata.BackColor = Color.FromArgb(28, 100, 100, 100);
         }
 
-        //Cargar imagen seleccionada 
+        // CARGAR IMAGEN
         private void CargarImagen(DataGridViewRow fila)
         {
             string ruta = fila.Cells["Picture"]?.Value?.ToString() ?? "";
@@ -741,7 +723,7 @@ namespace StarWars
             }
         }
 
-        // Método para configurar el DataGridView de forma genérica
+        // CONFIGURAR GRID
         private void ConfigurarGrid(object datos, params string[] columnasOcultas)
         {
             dtgpersona.DataSource = null;
@@ -758,70 +740,7 @@ namespace StarWars
             }
         }
 
-
-        //Combox de Personas
-
-        private void CargarGeneros()
-        {
-            comboBox1.DataSource = null;
-            comboBox1.Items.Clear();
-
-            comboBox1.Items.Add("male");
-            comboBox1.Items.Add("female");
-            comboBox1.Items.Add("n/a");
-        }
-        private async Task CargarEspeciesAsync()
-        {
-            var especies = await _especieService.ObtenerEspecies();
-
-            comboBox2.DataSource = null;
-
-            comboBox2.DataSource = especies;
-            comboBox2.DisplayMember = "Nombre";
-            comboBox2.ValueMember = "Id";
-        }
-        private async Task CargarPlanetasAsync()
-        {
-            var planetas = await _planetaService.ObtenerPlanetas();
-
-            comboBox3.DataSource = null;
-
-            comboBox3.DataSource = planetas;
-            comboBox3.DisplayMember = "Nombre";
-            comboBox3.ValueMember = "Id";
-        }
-        private async Task CargarPeliculasAsync()
-        {
-            var peliculas = await _peliculaService.ObtenerPeliculas();
-
-            checkedListBox1.DataSource = null;
-            checkedListBox1.Items.Clear();
-
-            foreach (var pelicula in peliculas)
-            {
-                checkedListBox1.Items.Add(pelicula);
-            }
-
-            checkedListBox1.DisplayMember = "Titulo";
-            checkedListBox1.ValueMember = "Id";
-        }
-
-        private async Task CargarVehiculosAsync()
-        {
-            var vehiculos = await _transporteService.ObtenerTransportes();
-
-            checkedListBox2.DataSource = null;
-            checkedListBox2.Items.Clear();
-
-            foreach (var vehiculo in vehiculos)
-            {
-                checkedListBox2.Items.Add(vehiculo);
-            }
-
-            checkedListBox2.DisplayMember = "Nombre";
-            checkedListBox2.ValueMember = "Id";
-        }
-
+        // COMBOS PERSONAS
         private async Task CargarCombosPersonasAsync()
         {
             if (combosCargados) return;
@@ -831,85 +750,41 @@ namespace StarWars
                 combosCargados = true;
                 cargando = true;
 
-                CargarGeneros();
-                await CargarEspeciesAsync();
-                await CargarPlanetasAsync();
-                await CargarPeliculasAsync();
-                await CargarVehiculosAsync();
+                await _comboHelper.CargarCombosPersonasAsync(
+                    comboBox1,
+                    comboBox2,
+                    comboBox3,
+                    checkedListBox1,
+                    checkedListBox2
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar combos: " + ex.Message);
             }
             finally
             {
-                combosCargados = false;
                 cargando = false;
+                combosCargados = false;
             }
         }
 
-
-        // Método para marcar las películas seleccionadas en el CheckedListBox al seleccionar una persona
-        private async Task MarcarPeliculasSeleccionadasAsync(DataGridViewRow fila)
+        // MARCAR RELACIONADOS
+        private async Task MarcarRelacionadosAsync(DataGridViewRow fila)
         {
-            if (checkedListBox1.Items.Count == 0)
-                await CargarPeliculasAsync();
+            if (checkedListBox1.Items.Count == 0 || checkedListBox2.Items.Count == 0)
+            {
+                await CargarCombosPersonasAsync();
+            }
 
             string peliculasTexto = fila.Cells["Pelicula"]?.Value?.ToString() ?? "";
-
-            for (int i = 0; i < checkedListBox1.Items.Count; i++)
-                checkedListBox1.SetItemChecked(i, false);
-
-            if (!string.IsNullOrWhiteSpace(peliculasTexto))
-            {
-                var peliculasSeleccionadas = peliculasTexto
-                    .Split(',')
-                    .Select(x => x.Trim())
-                    .ToList();
-
-                for (int i = 0; i < checkedListBox1.Items.Count; i++)
-                {
-                    if (checkedListBox1.Items[i] is Pelicula pelicula &&
-                        peliculasSeleccionadas.Contains(pelicula.Titulo))
-                    {
-                        checkedListBox1.SetItemChecked(i, true);
-                    }
-                }
-            }
-        }
-
-        // Método para marcar los vehículos seleccionados en el CheckedListBox al seleccionar una persona
-        private async Task MarcarVehiculosSeleccionadosAsync(DataGridViewRow fila)
-        {
-            if (checkedListBox2.Items.Count == 0)
-                await CargarVehiculosAsync();
-
             string vehiculosTexto = fila.Cells["Vehiculo"]?.Value?.ToString() ?? "";
 
-            for (int i = 0; i < checkedListBox2.Items.Count; i++)
-                checkedListBox2.SetItemChecked(i, false);
-
-            if (!string.IsNullOrWhiteSpace(vehiculosTexto))
-            {
-                var vehiculosSeleccionados = vehiculosTexto
-                    .Split(',')
-                    .Select(x => x.Trim())
-                    .ToList();
-
-                for (int i = 0; i < checkedListBox2.Items.Count; i++)
-                {
-                    if (checkedListBox2.Items[i] is Transporte vehiculo &&
-                        vehiculosSeleccionados.Contains(vehiculo.Nombre))
-                    {
-                        checkedListBox2.SetItemChecked(i, true);
-                    }
-                }
-            }
+            _comboHelper.MarcarPeliculasSeleccionadas(checkedListBox1, peliculasTexto);
+            _comboHelper.MarcarVehiculosSeleccionados(checkedListBox2, vehiculosTexto);
         }
 
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        //Ordenar despues
-        //despues de transportebd
+        // RECARGAR VISTA
         private async Task RecargarVistaActual()
         {
             switch (vistaActual)
@@ -935,7 +810,9 @@ namespace StarWars
                     break;
             }
         }
-                private FormData ObtenerDatosFormulario()
+
+        // OBTENER DATOS FORMULARIO
+        private FormData ObtenerDatosFormulario()
         {
             var datos = new FormData
             {
@@ -946,7 +823,8 @@ namespace StarWars
                 Text5 = textBox5.Text,
                 Text6 = textBox6.Text,
                 Text7 = textBox7.Text,
-                Combo1 = comboBox1.Text
+                Combo1 = comboBox1.Text,
+                richTextBox = richTextBox1.Text
             };
 
             if (comboBox2.SelectedValue != null)
@@ -969,5 +847,7 @@ namespace StarWars
 
             return datos;
         }
+
+
     }
 }

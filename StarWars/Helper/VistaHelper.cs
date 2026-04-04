@@ -24,6 +24,7 @@ namespace StarWars.Helpers
             ComboBox comboBox1,
             ComboBox comboBox2,
             ComboBox comboBox3,
+            RichTextBox richTextBox1,
             CheckedListBox checkedListBox1,
             CheckedListBox checkedListBox2,
             GroupBox groupBox1,
@@ -42,9 +43,6 @@ namespace StarWars.Helpers
             label7.Text = "Cumpleaños:";
 
             textBox7.Visible = true;
-            textBox6.Multiline = false;
-            textBox6.Size = new Size(textBox6.Width, 20);
-
             comboBox1.Visible = true;
             label8.Text = "Genero:";
 
@@ -53,6 +51,8 @@ namespace StarWars.Helpers
 
             comboBox3.Visible = true;
             label10.Text = "Planeta:";
+
+            richTextBox1.Visible = false;
 
             groupBox1.Visible = true;
 
@@ -86,6 +86,7 @@ namespace StarWars.Helpers
             ComboBox comboBox1,
             ComboBox comboBox2,
             ComboBox comboBox3,
+            RichTextBox richTextBox1,
             CheckedListBox checkedListBox1,
             CheckedListBox checkedListBox2,
             GroupBox groupBox1,
@@ -99,18 +100,19 @@ namespace StarWars.Helpers
             label3.Text = "Director:";
             label4.Text = "Productor:";
             label5.Text = "Lanzamiento:";
-            label6.Text = "Avance:";
+            label6.Text = "";
             label7.Text = "";
 
-            textBox6.Multiline = true;
-            textBox6.Size = new Size(textBox6.Width, 200);
+            textBox6.Visible = false;
             textBox7.Visible = false;
 
             comboBox1.Visible = false;
             comboBox2.Visible = false;
             comboBox3.Visible = false;
 
-            label8.Text = "";
+            richTextBox1.Visible = true;
+
+            label8.Text = "Avance:";
             label9.Text = "";
             label10.Text = "";
 
@@ -141,9 +143,13 @@ namespace StarWars.Helpers
             Label label12,
             TextBox textBox6,
             TextBox textBox7,
+            TextBox textBox8,
+            TextBox textBox9,
             ComboBox comboBox1,
             ComboBox comboBox2,
             ComboBox comboBox3,
+            RichTextBox richTextBox1,
+
             CheckedListBox checkedListBox1,
             CheckedListBox checkedListBox2,
             GroupBox groupBox1,
@@ -160,17 +166,19 @@ namespace StarWars.Helpers
             label6.Text = "Gravedad:";
             label7.Text = "Terreno:";
 
+            textBox6.Visible = true;
             textBox7.Visible = true;
-            textBox6.Multiline = false;
-            textBox6.Size = new Size(textBox6.Width, 20);
+            textBox8.Visible = true;
+            textBox9.Visible = true;
 
             comboBox1.Visible = false;
             comboBox2.Visible = false;
             comboBox3.Visible = false;
 
-            label8.Text = "";
-            label9.Text = "";
+            label8.Text = "Agua Superficial";
+            label9.Text = "Poblacion";
             label10.Text = "";
+            richTextBox1.Visible = false;
 
             checkedListBox1.Visible = false;
             checkedListBox2.Visible = false;
@@ -181,6 +189,149 @@ namespace StarWars.Helpers
             groupBox1.Visible = false;
 
             form.ResumeLayout();
+        }
+
+        public void LimpiarControles(
+    TextBox textBox1,
+    TextBox textBox2,
+    TextBox textBox3,
+    TextBox textBox4,
+    TextBox textBox5,
+    TextBox textBox6,
+    TextBox textBox7,
+    TextBox textBox8,
+    TextBox textBox9,
+    ComboBox comboBox1,
+    ComboBox comboBox2,
+    ComboBox comboBox3,
+    RichTextBox richTextBox1,
+    CheckedListBox checkedListBox1,
+    CheckedListBox checkedListBox2,
+    PictureBox picture1)
+        {
+            textBox1.Text = "";
+            textBox2.Text = "";
+            textBox3.Text = "";
+            textBox4.Text = "";
+            textBox5.Text = "";
+            textBox6.Text = "";
+            textBox7.Text = "";
+            textBox8.Text = "";
+            textBox9.Text = "";
+
+            comboBox1.SelectedIndex = -1;
+            comboBox2.SelectedIndex = -1;
+            comboBox3.SelectedIndex = -1;
+            richTextBox1.Text = "";
+
+            comboBox1.Text = "";
+            comboBox2.Text = "";
+            comboBox3.Text = "";
+
+            for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                checkedListBox1.SetItemChecked(i, false);
+
+            for (int i = 0; i < checkedListBox2.Items.Count; i++)
+                checkedListBox2.SetItemChecked(i, false);
+
+            if (picture1.Image != null)
+            {
+                picture1.Image.Dispose();
+                picture1.Image = null;
+            }
+        }
+
+        public void HabilitarControles(
+            TextBox textBox1,
+            TextBox textBox2,
+            TextBox textBox3,
+            TextBox textBox4,
+            TextBox textBox5,
+            TextBox textBox6,
+            TextBox textBox7,
+            TextBox textBox8,
+            TextBox textBox9,
+            ComboBox comboBox1,
+            ComboBox comboBox2,
+            ComboBox comboBox3,
+            RichTextBox richTextBox1,
+            CheckedListBox checkedListBox1,
+            CheckedListBox checkedListBox2,
+            Button btneditar,
+            Button btnnuevo,
+            Button btncancelar,
+            Button btnimagen,
+            Button btneliminar)
+        {
+            textBox1.Enabled = true;
+            textBox2.Enabled = true;
+            textBox3.Enabled = true;
+            textBox4.Enabled = true;
+            textBox5.Enabled = true;
+            textBox6.Enabled = true;
+            textBox7.Enabled = true;
+            textBox8.Enabled = true;
+            textBox9.Enabled = true;
+
+            comboBox1.Enabled = true;
+            comboBox2.Enabled = true;
+            comboBox3.Enabled = true;
+            richTextBox1.Enabled = true;
+
+            checkedListBox1.Enabled = true;
+            checkedListBox2.Enabled = true;
+
+            btneditar.Enabled = false;
+            btnnuevo.Enabled = false;
+            btncancelar.Enabled = true;
+            btnimagen.Enabled = true;
+            btneliminar.Enabled = false;
+        }
+
+        public void DeshabilitarControles(
+            TextBox textBox1,
+            TextBox textBox2,
+            TextBox textBox3,
+            TextBox textBox4,
+            TextBox textBox5,
+            TextBox textBox6,
+            TextBox textBox7,
+            TextBox textBox8,
+            TextBox textBox9,
+            ComboBox comboBox1,
+            ComboBox comboBox2,
+            ComboBox comboBox3,
+            CheckedListBox checkedListBox1,
+            CheckedListBox checkedListBox2,
+            Button btnimagen,
+            Button btnnuevo,
+            Button btneliminar,
+            Button btneditar,
+            Button btnactualizar)
+        {
+            textBox1.Enabled = false;
+            textBox2.Enabled = false;
+            textBox3.Enabled = false;
+            textBox4.Enabled = false;
+            textBox5.Enabled = false;
+            textBox6.Enabled = false;
+            textBox7.Enabled = false;
+            textBox8.Enabled = false;
+            textBox9.Enabled = false;
+
+
+            comboBox1.Enabled = false;
+            comboBox2.Enabled = false;
+            comboBox3.Enabled = false;
+
+            checkedListBox1.Enabled = false;
+            checkedListBox2.Enabled = false;
+
+            btnimagen.Enabled = false;
+            btnnuevo.Enabled = true;
+            btneliminar.Enabled = true;
+            btneditar.Enabled = true;
+            btnactualizar.Enabled = false;
         }
     }
 }

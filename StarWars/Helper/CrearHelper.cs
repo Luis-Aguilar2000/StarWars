@@ -83,10 +83,10 @@ namespace StarWars.Helpers
             {
                 Titulo = datos.Text1,
                 Episode_id = int.TryParse(datos.Text2, out int episodio) ? episodio : 0,
-                Avance = datos.Text3,
-                Director = datos.Text4,
-                Productor = datos.Text5,
-                FechaDeLanzamiento = datos.Text6
+                Director = datos.Text3,
+                Productor = datos.Text4,
+                FechaDeLanzamiento = datos.Text5,
+                Avance = datos.richTextBox
             };
 
             await _peliculaService.CrearPelicula(pelicula);
@@ -102,7 +102,9 @@ namespace StarWars.Helpers
                 Diametro = datos.Text4,
                 Clima = datos.Text5,
                 Gravedad = datos.Text6,
-                Terreno = datos.Text7
+                Terreno = datos.Text7,
+                AguaSuperficial = datos.Text8,
+                Poblacion = datos.Text9,
             };
 
             await _planetaService.CrearPlaneta(planeta);
