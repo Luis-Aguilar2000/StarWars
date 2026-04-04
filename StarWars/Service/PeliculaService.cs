@@ -35,30 +35,30 @@ namespace StarWars.Services
             if (result?.Results == null || !result.Results.Any())
                 return;
 
-            var nuevasPeliculas = new List<Pelicula>();
+            var titulosApi = result.Results
+                .Select(x => x.Title)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToList();
 
-            foreach (var item in result.Results)
-            {
-                bool existe = await _context.Peliculas
-                    .AnyAsync(p => p.Titulo == item.Title);
+            var titulosExistentes = await _context.Peliculas
+                .Where(p => titulosApi.Contains(p.Titulo))
+                .Select(p => p.Titulo)
+                .ToListAsync();
 
-                if (!existe)
+            var nuevasPeliculas = result.Results
+                .Where(item => !titulosExistentes.Contains(item.Title))
+                .Select(item => new Pelicula
                 {
-                    var pelicula = new Pelicula
-                    {
-                        Titulo = item.Title,
-                        Episode_id = item.EpisodeId,
-                        Avance = item.OpeningCrawl,
-                        Director = item.Director,
-                        Productor = item.Producer,
-                        FechaDeLanzamiento = item.ReleaseDate,
-                        Picture = "",
-                        Url = item.Url
-                    };
-
-                    nuevasPeliculas.Add(pelicula);
-                }
-            }
+                    Titulo = item.Title,
+                    Episode_id = item.EpisodeId,
+                    Avance = item.OpeningCrawl,
+                    Director = item.Director,
+                    Productor = item.Producer,
+                    FechaDeLanzamiento = item.ReleaseDate,
+                    Picture = "",
+                    Url = item.Url
+                })
+                .ToList();
 
             if (nuevasPeliculas.Any())
             {

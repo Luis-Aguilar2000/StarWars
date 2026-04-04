@@ -41,20 +41,22 @@ namespace StarWars.Services
         {
             await InicializarTipos();
 
-            var tipoNave = await _context.TipoTransporte
-                .FirstOrDefaultAsync(t => t.Nombre == "Nave");
+            var tipos = await _context.TipoTransporte.ToListAsync();
 
-            var tipoVehiculo = await _context.TipoTransporte
-                .FirstOrDefaultAsync(t => t.Nombre == "Vehículo");
+            var tipoNave = tipos.FirstOrDefault(t => t.Nombre == "Nave");
+            var tipoVehiculo = tipos.FirstOrDefault(t => t.Nombre == "Vehículo");
 
             if (tipoNave == null || tipoVehiculo == null)
                 return;
 
             var urlsGuardadas = await _context.Transportes
+                .Where(t => !string.IsNullOrWhiteSpace(t.Url))
                 .Select(t => t.Url)
                 .ToListAsync();
 
-            var setUrls = new HashSet<string>(urlsGuardadas.Where(x => !string.IsNullOrWhiteSpace(x)));
+            var setUrls = new HashSet<string>(urlsGuardadas);
+
+            var nuevosTransportes = new List<Transporte>();
 
             // NAVES
             var naves = await _restApi.Get<PeopleResponse<TransporteJsonModel>>(
@@ -70,7 +72,7 @@ namespace StarWars.Services
 
                     if (!string.IsNullOrWhiteSpace(url) && !setUrls.Contains(url))
                     {
-                        var transporte = new Transporte
+                        nuevosTransportes.Add(new Transporte
                         {
                             Nombre = item.Name ?? "",
                             Modelo = item.Model ?? "",
@@ -87,9 +89,8 @@ namespace StarWars.Services
                             Picture = "",
                             Url = url,
                             TipoTransporteId = tipoNave.Id
-                        };
+                        });
 
-                        _context.Transportes.Add(transporte);
                         setUrls.Add(url);
                     }
                 }
@@ -109,7 +110,7 @@ namespace StarWars.Services
 
                     if (!string.IsNullOrWhiteSpace(url) && !setUrls.Contains(url))
                     {
-                        var transporte = new Transporte
+                        nuevosTransportes.Add(new Transporte
                         {
                             Nombre = item.Name ?? "",
                             Modelo = item.Model ?? "",
@@ -126,15 +127,18 @@ namespace StarWars.Services
                             Picture = "",
                             Url = url,
                             TipoTransporteId = tipoVehiculo.Id
-                        };
+                        });
 
-                        _context.Transportes.Add(transporte);
                         setUrls.Add(url);
                     }
                 }
             }
 
-            await _context.SaveChangesAsync();
+            if (nuevosTransportes.Any())
+            {
+                await _context.Transportes.AddRangeAsync(nuevosTransportes);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task CrearTransporte(Transporte transporte)

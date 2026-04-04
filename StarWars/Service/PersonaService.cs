@@ -38,31 +38,31 @@ namespace StarWars.Services
             if (result?.Results == null || !result.Results.Any())
                 return;
 
-            var nuevasPersonas = new List<Persona>();
+            var nombresApi = result.Results
+                .Select(x => x.Name)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToList();
 
-            foreach (var item in result.Results)
-            {
-                bool existe = await _context.Personas
-                    .AnyAsync(p => p.Nombre == item.Name);
+            var nombresExistentes = await _context.Personas
+                .Where(p => nombresApi.Contains(p.Nombre))
+                .Select(p => p.Nombre)
+                .ToListAsync();
 
-                if (!existe)
+            var nuevasPersonas = result.Results
+                .Where(item => !nombresExistentes.Contains(item.Name))
+                .Select(item => new Persona
                 {
-                    var persona = new Persona
-                    {
-                        Nombre = item.Name,
-                        Altura = item.Height,
-                        Masa = item.Mass,
-                        ColorDePiel = item.SkinColor,
-                        ColorDeOjos = item.EyeColor,
-                        ColorDePelo = item.HairColor,
-                        Cumpleaños = item.BirthYear,
-                        Genero = item.Gender,
-                        Picture = ""
-                    };
-
-                    nuevasPersonas.Add(persona);
-                }
-            }
+                    Nombre = item.Name,
+                    Altura = item.Height,
+                    Masa = item.Mass,
+                    ColorDePiel = item.SkinColor,
+                    ColorDeOjos = item.EyeColor,
+                    ColorDePelo = item.HairColor,
+                    Cumpleaños = item.BirthYear,
+                    Genero = item.Gender,
+                    Picture = ""
+                })
+                .ToList();
 
             if (nuevasPersonas.Any())
             {

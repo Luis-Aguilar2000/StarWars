@@ -91,23 +91,34 @@ namespace StarWars
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            await clickPersonas();
-            colorpanel();
+            try
+            {
+                cargando = true;
 
-            dtgpersona.SelectionChanged += dtgpersona_SelectionChanged;
+                colorpanel();
+                dtgpersona.SelectionChanged += dtgpersona_SelectionChanged;
 
-            await _personaService.SincronizarPersonas();
-            await _peliculaService.SincronizarPeliculas();
-            await _planetaService.SincronizarPlanetas();
-            await _especieService.SincronizarEspecies();
-            await _transporteService.SincronizarTransportes();
+                await _personaService.SincronizarPersonas();
+                await _peliculaService.SincronizarPeliculas();
+                await _planetaService.SincronizarPlanetas();
+                await _especieService.SincronizarEspecies();
+                await _transporteService.SincronizarTransportes();
 
-            await ObtenerPersonasBD();
-            dtgpersona.ClearSelection();
-            dtgpersona.CurrentCell = null;
-            LimpiarControles();
+                await ObtenerPersonasBD();
+                await clickPersonas();
 
-            cargando = false;
+                dtgpersona.ClearSelection();
+                dtgpersona.CurrentCell = null;
+                LimpiarControles();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar el formulario: " + ex.Message);
+            }
+            finally
+            {
+                cargando = false;
+            }
         }
 
         // Botonera principal
@@ -619,10 +630,11 @@ namespace StarWars
             }
             finally
             {
-                cargando = false;
                 dtgpersona.ClearSelection();
+                dtgpersona.CurrentCell = null;
                 ultimoId = -1;
-                Picture1.Image = null;
+                LimpiarControles();
+                cargando = false;
             }
         }
 
