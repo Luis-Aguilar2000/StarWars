@@ -3,8 +3,10 @@ using PersistenceLibrary.Interfaces;
 using RestLibrary.Interfaces;
 using StarWars.Data;
 using StarWars.Dtos;
+using StarWars.Helpers;
 using StarWars.Models;
 using StarWars.Services;
+using System.Drawing.Text;
 
 namespace StarWars
 {
@@ -19,12 +21,18 @@ namespace StarWars
         private readonly IEspecieService _especieService;
         private readonly ITransporteService _transporteService;
 
+        private readonly EditarHelper _editarHelper;
+        private readonly CrearHelper _crearHelper;
+        private readonly EliminarHelper _eliminarHelper;
+        private readonly VistaHelper _vistaHelper;
+
         private bool cargando = true;
         private int ultimoId = -1;
         private string vistaActual = "Personas";
         private bool cancelado = false;
         private bool combosCargados = false;
-        public Form1(ApplicationDbContext context,
+        public Form1(
+            ApplicationDbContext context,
             IRestApi restApi,
             IRepository repository,
             IPersonaService personaService,
@@ -41,8 +49,31 @@ namespace StarWars
             _context = context;
             _restApi = restApi;
             _repository = repository;
-            InitializeComponent();
 
+            _crearHelper = new CrearHelper(
+                _personaService,
+                _peliculaService,
+                _planetaService,
+                _especieService,
+                _transporteService
+            );
+            _editarHelper = new EditarHelper(
+                _personaService,
+                _peliculaService,
+                _planetaService,
+                _especieService,
+                _transporteService
+            );
+            _eliminarHelper = new EliminarHelper(
+                _personaService,
+                _peliculaService,
+                _planetaService,
+                _especieService,
+                _transporteService
+            );
+            _vistaHelper = new VistaHelper();
+
+            InitializeComponent();
         }
         private async void Form1_Load(object sender, EventArgs e)
         {
@@ -167,274 +198,92 @@ namespace StarWars
         //actualizar
         private async void btnactualizar_Click(object sender, EventArgs e)
         {
-            if (dtgpersona.CurrentRow == null) return;
-
-            int id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
-
-            switch (vistaActual)
+            try
             {
-                case "Personas":
-                    var peliculasSeleccionadas = new List<int>();
-                    var transportesSeleccionados = new List<int>();
+                if (dtgpersona.CurrentRow == null)
+                {
+                    MessageBox.Show("Seleccione un registro.");
+                    return;
+                }
 
-                    foreach (var item in checkedListBox1.CheckedItems)
-                    {
-                        if (item is Pelicula peliculaItem)
-                            peliculasSeleccionadas.Add(peliculaItem.Id);
-                    }
+                var datos = ObtenerDatosFormulario();
+                datos.Id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
 
-                    foreach (var item in checkedListBox2.CheckedItems)
-                    {
-                        if (item is Transporte transporteItem)
-                            transportesSeleccionados.Add(transporteItem.Id);
-                    }
+                await _editarHelper.EditarAsync(vistaActual, datos);
 
-                    int? planetaId = null;
-                    if (comboBox3.SelectedValue != null)
-                        planetaId = Convert.ToInt32(comboBox3.SelectedValue);
+                await RecargarVistaActual();
 
-                    int? especieId = null;
-                    if (comboBox2.SelectedValue != null)
-                        especieId = Convert.ToInt32(comboBox2.SelectedValue);
+                MessageBox.Show("Registro actualizado correctamente");
 
-                    Persona persona = new Persona
-                    {
-                        Id = id,
-                        Nombre = textBox1.Text,
-                        Altura = textBox2.Text,
-                        Masa = textBox3.Text,
-                        ColorDePiel = textBox4.Text,
-                        ColorDeOjos = textBox5.Text,
-                        ColorDePelo = textBox6.Text,
-                        Cumpleaños = textBox7.Text,
-                        Genero = comboBox1.Text,
-                        PlanetaId = planetaId
-                    };
-
-                    await _personaService.ActualizarPersona(
-                        persona,
-                        especieId,
-                        peliculasSeleccionadas,
-                        transportesSeleccionados
-                    );
-
-                    await ObtenerPersonasBD();
-                    break;
+                LimpiarControles();
+                DeshabilitarControles();
+                dtgpersona.Enabled = true;
             }
-
-            DeshabilitarControles();
-            dtgpersona.Enabled = true;
-            LimpiarControles();
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar: " + ex.Message);
+            }
         }
         //CREAR
         private async void btncrear_Click(object sender, EventArgs e)
         {
             try
             {
-                bool creado = false;
+                var datos = ObtenerDatosFormulario();
 
-                switch (vistaActual)
-                {
-                    case "Personas":
-                        var peliculasSeleccionadas = new List<int>();
-                        var transportesSeleccionados = new List<int>();
+                await _crearHelper.CrearAsync(vistaActual, datos);
 
-                        foreach (var item in checkedListBox1.CheckedItems)
-                        {
-                            if (item is Pelicula peliculaItem)
-                                peliculasSeleccionadas.Add(peliculaItem.Id);
-                        }
+                MessageBox.Show("Registro creado correctamente");
 
-                        foreach (var item in checkedListBox2.CheckedItems)
-                        {
-                            if (item is Transporte transporteItem)
-                                transportesSeleccionados.Add(transporteItem.Id);
-                        }
-
-                        int? planetaId = null;
-                        if (comboBox3.SelectedValue != null)
-                            planetaId = Convert.ToInt32(comboBox3.SelectedValue);
-
-                        int? especieId = null;
-                        if (comboBox2.SelectedValue != null)
-                            especieId = Convert.ToInt32(comboBox2.SelectedValue);
-
-                        Persona persona = new Persona
-                        {
-                            Nombre = textBox1.Text,
-                            Altura = textBox2.Text,
-                            Masa = textBox3.Text,
-                            ColorDePiel = textBox4.Text,
-                            ColorDeOjos = textBox5.Text,
-                            ColorDePelo = textBox6.Text,
-                            Cumpleaños = textBox7.Text,
-                            Genero = comboBox1.Text,
-                            PlanetaId = planetaId
-                        };
-
-                        await _personaService.CrearPersona(
-                            persona,
-                            especieId,
-                            peliculasSeleccionadas,
-                            transportesSeleccionados
-                        );
-
-                        await ObtenerPersonasBD();
-                        creado = true;
-                        break;
-
-                    case "Peliculas":
-                        Pelicula pelicula = new Pelicula
-                        {
-                            Titulo = textBox1.Text,
-                            Episode_id = int.TryParse(textBox2.Text, out int episodio) ? episodio : 0,
-                            Director = textBox3.Text,
-                            Productor = textBox4.Text,
-                            FechaDeLanzamiento = textBox5.Text,
-                            Avance = textBox6.Text
-                        };
-
-                        await _peliculaService.CrearPelicula(pelicula);
-                        await ObtenerPeliculasBD();
-                        creado = true;
-                        break;
-
-                    case "Planetas":
-                        Planeta planeta = new Planeta
-                        {
-                            Nombre = textBox1.Text,
-                            PeriodoDeRotación = textBox2.Text,
-                            PeriodoOrbital = textBox3.Text,
-                            Diametro = textBox4.Text,
-                            Clima = textBox5.Text,
-                            Gravedad = textBox6.Text,
-                            Terreno = textBox7.Text
-                        };
-
-                        await _planetaService.CrearPlaneta(planeta);
-                        await ObtenerPlanetasBD();
-                        creado = true;
-                        break;
-
-                    case "Especies":
-                        Especie especie = new Especie
-                        {
-                            Nombre = textBox1.Text,
-                            Clasificacion = textBox2.Text,
-                            Designacion = textBox3.Text,
-                            AlturaPromedio = textBox4.Text,
-                            ColoresDePiel = textBox5.Text,
-                            ColoresDeOjos = textBox6.Text,
-                            Idioma = textBox7.Text
-                        };
-
-                        await _especieService.CrearEspecie(especie);
-                        await ObtenerEspeciesBD();
-                        creado = true;
-                        break;
-
-                    case "Transportes":
-                        Transporte transporte = new Transporte
-                        {
-                            Nombre = textBox1.Text,
-                            Modelo = textBox2.Text,
-                            Fabricante = textBox3.Text,
-                            CostoEnCreditos = textBox4.Text,
-                            Longitud = textBox5.Text,
-                            VelocidadMaximaAtmosfera = textBox6.Text,
-                            Tripulacion = textBox7.Text
-                        };
-
-                        await _transporteService.CrearTransporte(transporte);
-                        await ObtenerTransportesBD();
-                        creado = true;
-                        break;
-                }
-
-                if (creado)
-                    MessageBox.Show("Registro creado correctamente ✅");
-                else
-                    MessageBox.Show("No se creó el registro ❌");
+                await RecargarVistaActual();
 
                 LimpiarControles();
                 DeshabilitarControles();
                 dtgpersona.Enabled = true;
                 btncrear.Enabled = false;
-                btnactualizar.Enabled = false;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al crear: " + ex.Message);
             }
         }
-
-
-
         //ELIMINAR
         private async void btneliminar_Click(object sender, EventArgs e)
         {
-            if (dtgpersona.CurrentRow == null || dtgpersona.CurrentRow.Index < 0)
+            if (dtgpersona.CurrentRow == null)
             {
-                MessageBox.Show("Seleccione un registro para eliminar.");
+                MessageBox.Show("Seleccione un registro.");
                 return;
             }
 
-            DialogResult resultado = MessageBox.Show(
-                "¿Está seguro que desea eliminar este registro?",
-                "Confirmar eliminación",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
+            var confirm = MessageBox.Show(
+                "¿Desea eliminar este registro?",
+                "Confirmación",
+                MessageBoxButtons.YesNo
             );
 
-            if (resultado != DialogResult.Yes)
+            if (confirm != DialogResult.Yes)
                 return;
 
             try
             {
                 int id = Convert.ToInt32(dtgpersona.CurrentRow.Cells["Id"].Value);
 
-                switch (vistaActual)
-                {
-                    case "Personas":
-                        await _personaService.EliminarPersona(id);
-                        await ObtenerPersonasBD();
-                        break;
+                await _eliminarHelper.EliminarAsync(vistaActual, id);
 
-                    case "Peliculas":
-                        await _peliculaService.EliminarPelicula(id);
-                        await ObtenerPeliculasBD();
-                        break;
+                await RecargarVistaActual();
 
-                    case "Planetas":
-                        await _planetaService.EliminarPlaneta(id);
-                        await ObtenerPlanetasBD();
-                        break;
-
-                    case "Especies":
-                        await _especieService.EliminarEspecie(id);
-                        await ObtenerEspeciesBD();
-                        break;
-
-                        //case "Transportes":
-                        //    await _transporteService.EliminarTransporteAsync(id);
-                        //    await CargarMostrarTransportesAsync();
-                        //    break;
-                }
+                MessageBox.Show("Eliminado correctamente");
 
                 LimpiarControles();
                 DeshabilitarControles();
                 dtgpersona.Enabled = true;
-
-                MessageBox.Show("Registro eliminado correctamente.");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al eliminar: " + ex.Message);
             }
         }
-
-
-
         //SelectionChanged del DataGridView para mostrar detalles de las tablas
         private async void dtgpersona_SelectionChanged(object sender, EventArgs e)
         {
@@ -742,110 +591,46 @@ namespace StarWars
         //PERSONAS
         private async Task clickPersonas()
         {
-            this.SuspendLayout();
-
-            lblname.Text = "PERSONAS";
-            label1.Text = "Nombre:";
-            label2.Text = "Altura:";
-            label3.Text = "Masa:";
-            label4.Text = "Color de Piel:";
-            label5.Text = "Color de Ojos:";
-            label6.Text = "Color de Pelo:";
-            label7.Text = "Cumpleaños:";
-
-            comboBox1.Visible = true;
-            label8.Text = "Genero:";
-
-            comboBox2.Visible = true;
-            label9.Text = "Especie:";
-
-            comboBox3.Visible = true;
-            label10.Text = "Planeta:";
-
-            groupBox1.Visible = true;
-            checkedListBox1.Visible = true;
-            label11.Text = "Películas:";
-
-            checkedListBox2.Visible = true;
-            label12.Text = "Vehículos:";
-
-            await CargarCombosPersonasAsync();
-
-            this.ResumeLayout();
+            await _vistaHelper.ConfigurarVistaPersonasAsync(
+                lblname,
+                label1, label2, label3, label4, label5, label6, label7,
+                label8, label9, label10, label11, label12,
+                textBox6, textBox7,
+                comboBox1, comboBox2, comboBox3,
+                checkedListBox1, checkedListBox2,
+                groupBox1,
+                CargarCombosPersonasAsync,
+                this
+            );
         }
         //PELICULAS
         private void clickPeliculas()
         {
-            this.SuspendLayout();
-
-            lblname.Text = "PELICULAS";
-            label1.Text = "Titulo:";
-            label2.Text = "Episodio:";
-            label3.Text = "Director:";
-            label4.Text = "Productor:";
-            label5.Text = "Lanzamiento:";
-            label6.Text = "Avance:";
-            textBox6.Multiline = true;
-            textBox6.Size = new Size(textBox6.Width, 200);
-
-            textBox7.Visible = false;
-
-            label7.Text = "";
-            comboBox1.Visible = false;
-
-            label8.Text = "";
-            comboBox2.Visible = false;
-
-            label9.Text = "";
-            comboBox3.Visible = false;
-
-            label10.Text = "";
-            comboBox2.Visible = false;
-
-            label11.Text = "";
-            checkedListBox1.Visible = false;
-
-            label12.Text = "";
-            checkedListBox2.Visible = false;
-
-            groupBox1.Visible = false;
-
-            this.ResumeLayout();
+            _vistaHelper.ConfigurarVistaPeliculas(
+                lblname,
+                label1, label2, label3, label4, label5, label6, label7,
+                label8, label9, label10, label11, label12,
+                textBox6, textBox7,
+                comboBox1, comboBox2, comboBox3,
+                checkedListBox1, checkedListBox2,
+                groupBox1,
+                this
+            );
         }
 
         //PLANETAS
         private void clickPlanetas()
         {
-            this.SuspendLayout();
-
-            lblname.Text = "PLANETAS";
-            label1.Text = "Nombre:";
-            label2.Text = "Periodo de Rotacion:";
-            label3.Text = "Periodo Orbital:";
-            label4.Text = "Diametro:";
-            label5.Text = "Clima:";
-            label6.Text = "Gravedad:";
-
-            textBox7.Visible = false;
-
-            label7.Text = "Terreno:";
-            comboBox1.Visible = false;
-
-            label8.Text = "Agua Superficial:";
-            comboBox2.Visible = false;
-
-            label9.Text = "Poblacion:";
-            comboBox3.Visible = false;
-
-            label10.Text = "";
-            comboBox2.Visible = false;
-
-            label11.Text = "";
-            //comboBox5.Visible = false;
-
-            label12.Text = "";
-
-            this.ResumeLayout();
+            _vistaHelper.ConfigurarVistaPlanetas(
+                lblname,
+                label1, label2, label3, label4, label5, label6, label7,
+                label8, label9, label10, label11, label12,
+                textBox6, textBox7,
+                comboBox1, comboBox2, comboBox3,
+                checkedListBox1, checkedListBox2,
+                groupBox1,
+                this
+            );
         }
 
         // Método para limpiar los controles de detalle
@@ -903,8 +688,7 @@ namespace StarWars
             btneliminar.Enabled = false;
 
         }
-
-        private void DeshabilitarControles()
+       private void DeshabilitarControles()
         {
             textBox1.Enabled = false;
             textBox2.Enabled = false;
@@ -1122,6 +906,68 @@ namespace StarWars
         private void label11_Click(object sender, EventArgs e)
         {
 
+        }
+
+        //Ordenar despues
+        //despues de transportebd
+        private async Task RecargarVistaActual()
+        {
+            switch (vistaActual)
+            {
+                case "Personas":
+                    await ObtenerPersonasBD();
+                    break;
+
+                case "Peliculas":
+                    await ObtenerPeliculasBD();
+                    break;
+
+                case "Planetas":
+                    await ObtenerPlanetasBD();
+                    break;
+
+                case "Especies":
+                    await ObtenerEspeciesBD();
+                    break;
+
+                case "Transportes":
+                    await ObtenerTransportesBD();
+                    break;
+            }
+        }
+                private FormData ObtenerDatosFormulario()
+        {
+            var datos = new FormData
+            {
+                Text1 = textBox1.Text,
+                Text2 = textBox2.Text,
+                Text3 = textBox3.Text,
+                Text4 = textBox4.Text,
+                Text5 = textBox5.Text,
+                Text6 = textBox6.Text,
+                Text7 = textBox7.Text,
+                Combo1 = comboBox1.Text
+            };
+
+            if (comboBox2.SelectedValue != null)
+                datos.Combo2Value = Convert.ToInt32(comboBox2.SelectedValue);
+
+            if (comboBox3.SelectedValue != null)
+                datos.Combo3Value = Convert.ToInt32(comboBox3.SelectedValue);
+
+            foreach (var item in checkedListBox1.CheckedItems)
+            {
+                if (item is Pelicula pelicula)
+                    datos.PeliculasSeleccionadas.Add(pelicula.Id);
+            }
+
+            foreach (var item in checkedListBox2.CheckedItems)
+            {
+                if (item is Transporte transporte)
+                    datos.TransportesSeleccionados.Add(transporte.Id);
+            }
+
+            return datos;
         }
     }
 }
