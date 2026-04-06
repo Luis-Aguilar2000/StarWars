@@ -516,7 +516,7 @@ namespace StarWars
                     break;
             }
         }
-
+        //OBTENER DATOS DE BASE DE DATOS
         // PERSONAS
         private async Task ObtenerPersonasBD()
         {
@@ -546,6 +546,7 @@ namespace StarWars
                 }).ToList();
 
                 ConfigurarGrid(datos, "Id", "Picture", "Url");
+                await AutocomplementarBusqueda();
             }
             catch (Exception ex)
             {
@@ -585,6 +586,7 @@ namespace StarWars
                 }).ToList();
 
                 ConfigurarGrid(datos, "Id", "Picture", "Url");
+                await AutocomplementarBusqueda();
             }
             catch (Exception ex)
             {
@@ -626,6 +628,7 @@ namespace StarWars
                 }).ToList();
 
                 ConfigurarGrid(datos, "Id", "Picture", "Url");
+                await AutocomplementarBusqueda();
             }
             catch (Exception ex)
             {
@@ -668,6 +671,7 @@ namespace StarWars
                 }).ToList();
 
                 ConfigurarGrid(datos, "Id", "Picture", "Url");
+                await AutocomplementarBusqueda();
             }
             catch (Exception ex)
             {
@@ -714,6 +718,7 @@ namespace StarWars
                 }).ToList();
 
                 ConfigurarGrid(datos, "Id", "Picture", "Url");
+                await AutocomplementarBusqueda();
             }
             catch (Exception ex)
             {
@@ -1009,17 +1014,47 @@ namespace StarWars
         private async void btbuscar_Click(object sender, EventArgs e)
         {
             try
-    {
-                string searchText = txtbuscar.Text;
+            {
+                string filtro = txtbuscar.Text.Trim();
 
-                var resultado = await _buscarHelper.BuscarAsync(vistaActual, searchText);
+                var resultado = await _buscarHelper.BuscarAsync(vistaActual, filtro);
+                var datos = _buscarHelper.ResultadoGrip(vistaActual, resultado);
 
-                dtgpersona.DataSource = resultado; 
+                ConfigurarGrid(datos, "Id", "Picture", "Url");
             }
             catch (Exception ex)
-    {
+            {
                 MessageBox.Show("Error al buscar: " + ex.Message);
+            }
+        }
+
+        private async Task AutocomplementarBusqueda()
+        {
+            try
+            {
+                var sugerencias = await _buscarHelper.ObtenerSugerenciasAsync(vistaActual);
+
+                AutoCompleteStringCollection coleccion = new AutoCompleteStringCollection();
+                coleccion.AddRange(sugerencias.ToArray());
+
+                txtbuscar.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                txtbuscar.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                txtbuscar.AutoCompleteCustomSource = coleccion;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar autocompletado: " + ex.Message);
+            }
+        }
+
+        private void txtbuscar_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                btbuscar.PerformClick();
             }
         }
     }
 }
+

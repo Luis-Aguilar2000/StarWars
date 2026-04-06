@@ -1,10 +1,9 @@
-﻿using StarWars.Services;
+﻿using StarWars.Models;
+using StarWars.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
-
-
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace StarWars.Helper
 {
@@ -54,17 +53,157 @@ namespace StarWars.Helper
             }
         }
 
-        public static List<string> ObtenerPalabras(string texto)
+        public async Task<List<string>> ObtenerSugerenciasAsync(string vista)
         {
-            if (string.IsNullOrWhiteSpace(texto))
-                return new List<string>();
+            switch (vista)
+            {
+                case "Personas":
+                    var personas = await _personaService.ObtenerPersonas();
+                    return personas
+                        .Where(x => !string.IsNullOrWhiteSpace(x.Nombre))
+                        .Select(x => x.Nombre)
+                        .Distinct()
+                        .OrderBy(x => x)
+                        .ToList();
 
-            return texto
-                .ToLower()
-                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                .Select(p => p.Trim())
-                .Where(p => !string.IsNullOrWhiteSpace(p))
-                .ToList();
+                case "Planetas":
+                    var planetas = await _planetaService.ObtenerPlanetas();
+                    return planetas
+                        .Where(x => !string.IsNullOrWhiteSpace(x.Nombre))
+                        .Select(x => x.Nombre)
+                        .Distinct()
+                        .OrderBy(x => x)
+                        .ToList();
+
+                case "Peliculas":
+                    var peliculas = await _peliculaService.ObtenerPeliculas();
+                    return peliculas
+                        .Where(x => !string.IsNullOrWhiteSpace(x.Titulo))
+                        .Select(x => x.Titulo)
+                        .Distinct()
+                        .OrderBy(x => x)
+                        .ToList();
+
+                case "Especies":
+                    var especies = await _especieService.ObtenerEspecies();
+                    return especies
+                        .Where(x => !string.IsNullOrWhiteSpace(x.Nombre))
+                        .Select(x => x.Nombre)
+                        .Distinct()
+                        .OrderBy(x => x)
+                        .ToList();
+
+                case "Transportes":
+                    var transportes = await _transporteService.ObtenerTransportes();
+                    return transportes
+                        .Where(x => !string.IsNullOrWhiteSpace(x.Nombre))
+                        .Select(x => x.Nombre)
+                        .Distinct()
+                        .OrderBy(x => x)
+                        .ToList();
+
+                default:
+                    return new List<string>();
+            }
+        }
+
+
+        public object ResultadoGrip(string vista, object resultado)
+        {
+            switch (vista)
+            {
+                case "Personas":
+                    var personas = resultado as List<Persona>;
+                    return personas.Select(p => new
+                    {
+                        p.Id,
+                        p.Nombre,
+                        p.Altura,
+                        p.Masa,
+                        p.ColorDePiel,
+                        p.ColorDeOjos,
+                        p.ColorDePelo,
+                        p.Cumpleaños,
+                        p.Genero,
+                        p.Picture,
+                        Pelicula = string.Join(", ", p.Peliculas.Select(x => x.Titulo)),
+                        Planeta = p.Planeta != null ? p.Planeta.Nombre : "",
+                        Especie = string.Join(", ", p.Especie.Select(x => x.Nombre)),
+                        Vehiculo = string.Join(", ", p.Transportes.Select(x => x.Nombre)),
+                    }).ToList();
+
+                case "Peliculas":
+                    var peliculas = resultado as List<Pelicula>;
+                    return peliculas.Select(p => new
+                    {
+                        p.Id,
+                        p.Titulo,
+                        p.Episode_id,
+                        p.Director,
+                        p.Productor,
+                        p.FechaDeLanzamiento,
+                        p.Avance,
+                        p.Picture
+                    }).ToList();
+
+                case "Planetas":
+                    var planetas = resultado as List<Planeta>;
+                    return planetas.Select(p => new
+                    {
+                        p.Id,
+                        p.Nombre,
+                        p.PeriodoDeRotación,
+                        p.PeriodoOrbital,
+                        p.Diametro,
+                        p.Clima,
+                        p.Gravedad,
+                        p.Terreno,
+                        p.AguaSuperficial,
+                        p.Poblacion,
+                        p.Picture
+                    }).ToList();
+
+                case "Especies":
+                    var especies = resultado as List<Especie>;
+                    return especies.Select(e => new
+                    {
+                        e.Id,
+                        e.Nombre,
+                        e.Clasificacion,
+                        e.Designacion,
+                        e.AlturaPromedio,
+                        e.ColoresDePiel,
+                        e.ColoresDePelo,
+                        e.ColoresDeOjos,
+                        e.EsperanzaDeVida,
+                        e.Idioma,
+                        e.Picture
+                    }).ToList();
+
+                case "Transportes":
+                    var transportes = resultado as List<Transporte>;
+                    return transportes.Select(t => new
+                    {
+                        t.Id,
+                        t.Nombre,
+                        t.Modelo,
+                        t.Fabricante,
+                        t.CostoEnCreditos,
+                        t.Longitud,
+                        t.VelocidadMaximaAtmosfera,
+                        t.Tripulacion,
+                        t.Pasajeros,
+                        t.CapacidadCarga,
+                        t.Consumibles,
+                        t.MGLT,
+                        t.Clase,
+                        Tipo = t.TipoTransporte != null ? t.TipoTransporte.Nombre : "",
+                        t.Picture
+                    }).ToList();
+
+                default:
+                    throw new Exception("Vista no válida");
+            }
         }
     }
 }

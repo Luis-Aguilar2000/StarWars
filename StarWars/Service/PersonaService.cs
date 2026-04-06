@@ -176,43 +176,25 @@ namespace StarWars.Services
 
         public async Task<List<Persona>> BuscarAsync(string filtro)
         {
-            var query = _context.Personas.AsQueryable();
+            var query = _context.Personas
+                .Include(p => p.Planeta)
+                .Include(p => p.Peliculas)
+                .Include(p => p.Especie)
+                .Include(p => p.Transportes)
+                .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(filtro))
             {
-                var palabras = BuscarHelper.ObtenerPalabras(filtro.ToLower());
+                filtro = filtro.ToLower();
 
-                foreach (var palabra in palabras)
-                {
-                    var p1 = palabra;
-
-                    query = query.Where(p =>
-
-                        (p.Nombre != null && p.Nombre.ToLower().Contains(p1)) ||
-
-                        (p.ColorDeOjos != null && p.ColorDeOjos.ToLower().Contains(p1)) ||
-                        (p.ColorDePiel != null && p.ColorDePiel.ToLower().Contains(p1)) ||
-                        (p.ColorDePelo != null && p.ColorDePelo.ToLower().Contains(p1)) ||
-                        (p.Genero != null && p.Genero.ToLower().Contains(p1)) ||
-                        (p.Cumpleaños != null && p.Cumpleaños.ToLower().Contains(p1)) ||
-
-                        (p.Altura != null && p.Altura.Contains(p1)) ||
-                        (p.Masa != null && p.Masa.Contains(p1)) ||
-
-                        (p.Planeta != null && p.Planeta.Nombre.ToLower().Contains(p1)) ||
-                        p.Especie.Any(e => e.Nombre.ToLower().Contains(p1)) ||
-                        p.Peliculas.Any(pe => pe.Titulo.ToLower().Contains(p1)) ||
-                        p.Transportes.Any(t => t.Nombre.ToLower().Contains(p1))
-                    );
-                }
+                query = query.Where(p =>
+                    p.Nombre.ToLower().Contains(filtro) ||
+                    p.Genero.ToLower().Contains(filtro) ||
+                    p.ColorDeOjos.ToLower().Contains(filtro) ||
+                    p.ColorDePelo.ToLower().Contains(filtro));
             }
 
-            return await query
-                .Include(p => p.Planeta)
-                .Include(p => p.Especie)
-                .Include(p => p.Peliculas)
-                .Include(p => p.Transportes)
-                .ToListAsync();
+            return await query.ToListAsync();
         }
     }
 }

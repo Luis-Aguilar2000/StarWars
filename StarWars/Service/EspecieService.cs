@@ -120,24 +120,10 @@ namespace StarWars.Services
 
             if (!string.IsNullOrWhiteSpace(filtro))
             {
-                var palabras = BuscarHelper.ObtenerPalabras(filtro.ToLower());
+                filtro = filtro.ToLower();
 
-                foreach (var palabra in palabras)
-                {
-                    var p1 = palabra;
-
-                    query = query.Where(e =>
-                        (e.Nombre != null && e.Nombre.ToLower().Contains(p1)) ||
-                        (e.Clasificacion != null && e.Clasificacion.ToLower().Contains(p1)) ||
-                        (e.Designacion != null && e.Designacion.ToLower().Contains(p1)) ||
-                        (e.AlturaPromedio != null && e.AlturaPromedio.Contains(p1)) ||
-                        (e.ColoresDePelo != null && e.ColoresDePelo.ToLower().Contains(p1)) ||
-                        (e.ColoresDePiel != null && e.ColoresDePiel.ToLower().Contains(p1)) ||
-                        (e.ColoresDeOjos != null && e.ColoresDeOjos.ToLower().Contains(p1)) ||
-                        (e.EsperanzaDeVida != null && e.EsperanzaDeVida.Contains(p1)) ||
-                        (e.Idioma != null && e.Idioma.ToLower().Contains(p1))
-                    );
-                }
+                query = query.Where(e =>
+                    e.Nombre.ToLower().Contains(filtro));
             }
 
             return await query.ToListAsync();

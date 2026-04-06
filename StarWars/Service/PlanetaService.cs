@@ -120,19 +120,11 @@ namespace StarWars.Services
 
             if (!string.IsNullOrWhiteSpace(filtro))
             {
-                var palabras = BuscarHelper.ObtenerPalabras(filtro.ToLower());
+                filtro = filtro.ToLower();
 
-                foreach (var palabra in palabras)
-                {
-                    var p1 = palabra;
-
-                    query = query.Where(p =>
-                        (p.Nombre != null && p.Nombre.ToLower().Contains(p1)) ||
-                        (p.Clima != null && p.Clima.ToLower().Contains(p1)) ||
-                        (p.Terreno != null && p.Terreno.ToLower().Contains(p1)) ||
-                        (p.Poblacion != null && p.Poblacion.Contains(p1))
-                    );
-                }
+                query = query.Where(p =>
+                    p.Nombre.ToLower().Contains(filtro) ||
+                    p.Clima.ToLower().Contains(filtro));
             }
 
             return await query.ToListAsync();
