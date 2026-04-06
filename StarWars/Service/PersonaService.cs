@@ -3,7 +3,9 @@ using Microsoft.VisualBasic.ApplicationServices;
 using RestLibrary.Interfaces;
 using StarWars.Data;
 using StarWars.Dtos;
+using StarWars.Helper;
 using StarWars.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace StarWars.Services
 {
@@ -174,10 +176,43 @@ namespace StarWars.Services
 
         public async Task<List<Persona>> BuscarAsync(string filtro)
         {
-            return await _context.Personas
-            .Where(x => x.FirstName.Contains(filtro) ||
-                      x.LastName.Contains(filtro))
-            .ToListAsync();
+            var query = _context.Personas.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filtro))
+            {
+                var palabras = BuscarHelper.ObtenerPalabras(filtro.ToLower());
+
+                foreach (var palabra in palabras)
+                {
+                    var p1 = palabra;
+
+                    query = query.Where(p =>
+
+                        (p.Nombre != null && p.Nombre.ToLower().Contains(p1)) ||
+
+                        (p.ColorDeOjos != null && p.ColorDeOjos.ToLower().Contains(p1)) ||
+                        (p.ColorDePiel != null && p.ColorDePiel.ToLower().Contains(p1)) ||
+                        (p.ColorDePelo != null && p.ColorDePelo.ToLower().Contains(p1)) ||
+                        (p.Genero != null && p.Genero.ToLower().Contains(p1)) ||
+                        (p.Cumpleaños != null && p.Cumpleaños.ToLower().Contains(p1)) ||
+
+                        (p.Altura != null && p.Altura.Contains(p1)) ||
+                        (p.Masa != null && p.Masa.Contains(p1)) ||
+
+                        (p.Planeta != null && p.Planeta.Nombre.ToLower().Contains(p1)) ||
+                        p.Especie.Any(e => e.Nombre.ToLower().Contains(p1)) ||
+                        p.Peliculas.Any(pe => pe.Titulo.ToLower().Contains(p1)) ||
+                        p.Transportes.Any(t => t.Nombre.ToLower().Contains(p1))
+                    );
+                }
+            }
+
+            return await query
+                .Include(p => p.Planeta)
+                .Include(p => p.Especie)
+                .Include(p => p.Peliculas)
+                .Include(p => p.Transportes)
+                .ToListAsync();
         }
     }
 }

@@ -9,5 +9,7 @@ namespace StarWars.Services
         Task CrearEspecie(Especie especie);
         Task ActualizarEspecie(Especie especie);
         Task EliminarEspecie(int id);
+
+        Task<List<Especie>> BuscarAsync(string filtro);
     }
 }

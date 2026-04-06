@@ -2,6 +2,7 @@
 using RestLibrary.Interfaces;
 using StarWars.Data;
 using StarWars.Dtos;
+using StarWars.Helper;
 using StarWars.Models;
 
 namespace StarWars.Services
@@ -188,6 +189,31 @@ namespace StarWars.Services
         public async Task<List<TipoTransporte>> ObtenerTiposTransporte()
         {
             return await _context.TipoTransporte.ToListAsync();
+        }
+
+        public async Task<List<Transporte>> BuscarAsync(string filtro)
+        {
+            var query = _context.Transportes.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filtro))
+            {
+                var palabras = BuscarHelper.ObtenerPalabras(filtro.ToLower());
+
+                foreach (var palabra in palabras)
+                {
+                    var p1 = palabra;
+
+                    query = query.Where(t =>
+                        (t.Nombre != null && t.Nombre.ToLower().Contains(p1)) ||
+                        (t.Modelo != null && t.Modelo.ToLower().Contains(p1)) ||
+                        (t.Fabricante != null && t.Fabricante.ToLower().Contains(p1)) ||
+                        (t.CostoEnCreditos != null && t.CostoEnCreditos.Contains(p1)) ||
+                        (t.Clase != null && t.Clase.ToLower().Contains(p1))
+                    );
+                }
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

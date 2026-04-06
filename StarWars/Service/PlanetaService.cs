@@ -2,6 +2,7 @@
 using RestLibrary.Interfaces;
 using StarWars.Data;
 using StarWars.Dtos;
+using StarWars.Helper;
 using StarWars.Models;
 
 namespace StarWars.Services
@@ -111,6 +112,30 @@ namespace StarWars.Services
 
             _context.Planetas.Remove(planeta);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Planeta>> BuscarAsync(string filtro)
+        {
+            var query = _context.Planetas.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filtro))
+            {
+                var palabras = BuscarHelper.ObtenerPalabras(filtro.ToLower());
+
+                foreach (var palabra in palabras)
+                {
+                    var p1 = palabra;
+
+                    query = query.Where(p =>
+                        (p.Nombre != null && p.Nombre.ToLower().Contains(p1)) ||
+                        (p.Clima != null && p.Clima.ToLower().Contains(p1)) ||
+                        (p.Terreno != null && p.Terreno.ToLower().Contains(p1)) ||
+                        (p.Poblacion != null && p.Poblacion.Contains(p1))
+                    );
+                }
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

@@ -3,6 +3,7 @@ using PersistenceLibrary.Interfaces;
 using RestLibrary.Interfaces;
 using StarWars.Data;
 using StarWars.Dtos;
+using StarWars.Helper;
 using StarWars.Helpers;
 using StarWars.Models;
 using StarWars.Services;
@@ -21,12 +22,14 @@ namespace StarWars
         private readonly IPlanetaService _planetaService;
         private readonly IEspecieService _especieService;
         private readonly ITransporteService _transporteService;
+      
 
         private readonly EditarHelper _editarHelper;
         private readonly CrearHelper _crearHelper;
         private readonly EliminarHelper _eliminarHelper;
         private readonly VistaHelper _vistaHelper;
         private readonly ComboHelper _comboHelper;
+        private readonly BuscarHelper _buscarHelper;
 
         private bool combosCargados = false;
         private bool cargando = false;
@@ -77,6 +80,14 @@ namespace StarWars
                 _especieService,
                 _transporteService
             );
+
+            _buscarHelper = new BuscarHelper(
+                _personaService,
+                _planetaService,
+                _peliculaService,
+                _especieService,
+                _transporteService
+);
 
             _vistaHelper = new VistaHelper();
 
@@ -997,10 +1008,18 @@ namespace StarWars
 
         private async void btbuscar_Click(object sender, EventArgs e)
         {
-            string searchText = txtbuscar.Text;
-            var resultado = await _personaService.BuscarAsync(searchText);
+            try
+    {
+                string searchText = txtbuscar.Text;
 
-            SetDataInGrid(resultado);
+                var resultado = await _buscarHelper.BuscarAsync(vistaActual, searchText);
+
+                dtgpersona.DataSource = resultado; 
+            }
+            catch (Exception ex)
+    {
+                MessageBox.Show("Error al buscar: " + ex.Message);
+            }
         }
     }
 }

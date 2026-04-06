@@ -9,5 +9,7 @@ namespace StarWars.Services
         Task CrearPlaneta(Planeta planeta);
         Task ActualizarPlaneta(Planeta planeta);
         Task EliminarPlaneta(int id);
+
+        Task<List<Planeta>> BuscarAsync(string filtro);
     }
 }
