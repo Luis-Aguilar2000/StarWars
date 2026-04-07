@@ -193,18 +193,39 @@ namespace StarWars.Services
 
         public async Task<List<Transporte>> BuscarAsync(string filtro)
         {
-            var query = _context.Transportes.AsQueryable();
+            var lista = await _context.Transportes
+                .Include(t => t.TipoTransporte)
+                .ToListAsync();
 
-            if (!string.IsNullOrWhiteSpace(filtro))
+            if (string.IsNullOrWhiteSpace(filtro))
+                return lista;
+
+            var palabras = filtro
+                .ToLower()
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var palabra in palabras)
             {
-                filtro = filtro.ToLower();
+                var p = palabra;
 
-                query = query.Where(t =>
-                    t.Nombre.ToLower().Contains(filtro) ||
-                    t.Modelo.ToLower().Contains(filtro));
+                lista = lista.Where(x =>
+                    (x.Nombre ?? "").ToLower().Contains(p) ||
+                    (x.Modelo ?? "").ToLower().Contains(p) ||
+                    (x.Fabricante ?? "").ToLower().Contains(p) ||
+                    (x.CostoEnCreditos ?? "").ToLower().Contains(p) ||
+                    (x.Longitud ?? "").ToLower().Contains(p) ||
+                    (x.VelocidadMaximaAtmosfera ?? "").ToLower().Contains(p) ||
+                    (x.Tripulacion ?? "").ToLower().Contains(p) ||
+                    (x.Pasajeros ?? "").ToLower().Contains(p) ||
+                    (x.CapacidadCarga ?? "").ToLower().Contains(p) ||
+                    (x.Consumibles ?? "").ToLower().Contains(p) ||
+                    (x.MGLT ?? "").ToLower().Contains(p) ||
+                    (x.Clase ?? "").ToLower().Contains(p) ||
+                    (x.TipoTransporte != null && (x.TipoTransporte.Nombre ?? "").ToLower().Contains(p))
+                ).ToList();
             }
 
-            return await query.ToListAsync();
+            return lista;
         }
     }
 }

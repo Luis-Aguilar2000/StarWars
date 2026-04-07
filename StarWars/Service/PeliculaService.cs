@@ -110,18 +110,30 @@ namespace StarWars.Services
 
         public async Task<List<Pelicula>> BuscarAsync(string filtro)
         {
-            var query = _context.Peliculas.AsQueryable();
+            var lista = await _context.Peliculas.ToListAsync();
 
-            if (!string.IsNullOrWhiteSpace(filtro))
+            if (string.IsNullOrWhiteSpace(filtro))
+                return lista;
+
+            var palabras = filtro
+                .ToLower()
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var palabra in palabras)
             {
-                filtro = filtro.ToLower();
+                var p = palabra;
 
-                query = query.Where(p =>
-                    p.Titulo.ToLower().Contains(filtro) ||
-                    p.Director.ToLower().Contains(filtro));
+                lista = lista.Where(x =>
+                    (x.Titulo ?? "").ToLower().Contains(p) ||
+                    x.Episode_id.ToString().Contains(p) ||
+                    (x.Director ?? "").ToLower().Contains(p) ||
+                    (x.Productor ?? "").ToLower().Contains(p) ||
+                    (x.FechaDeLanzamiento ?? "").ToLower().Contains(p) ||
+                    (x.Avance ?? "").ToLower().Contains(p)
+                ).ToList();
             }
 
-            return await query.ToListAsync();
+            return lista;
         }
 
 

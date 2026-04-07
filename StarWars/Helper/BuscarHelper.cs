@@ -59,45 +59,111 @@ namespace StarWars.Helper
             {
                 case "Personas":
                     var personas = await _personaService.ObtenerPersonas();
+
                     return personas
-                        .Where(x => !string.IsNullOrWhiteSpace(x.Nombre))
-                        .Select(x => x.Nombre)
+                        .SelectMany(p => new List<string>()
+                        {
+                    p.Nombre ?? "",
+                    p.Altura ?? "",
+                    p.Masa ?? "",
+                    p.ColorDePiel ?? "",
+                    p.ColorDeOjos ?? "",
+                    p.ColorDePelo ?? "",
+                    p.Cumpleaños ?? "",
+                    p.Genero ?? "",
+                    p.Planeta != null ? p.Planeta.Nombre ?? "" : "",
+                    string.Join(", ", p.Especie.Select(e => e.Nombre)),
+                    string.Join(", ", p.Peliculas.Select(pe => pe.Titulo)),
+                    string.Join(", ", p.Transportes.Select(t => t.Nombre))
+                        })
+                        .SelectMany(x => x.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                        .Select(x => x.Trim())
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
                         .Distinct()
                         .OrderBy(x => x)
                         .ToList();
 
                 case "Planetas":
                     var planetas = await _planetaService.ObtenerPlanetas();
+
                     return planetas
-                        .Where(x => !string.IsNullOrWhiteSpace(x.Nombre))
-                        .Select(x => x.Nombre)
+                        .SelectMany(p => new List<string>()
+                        {
+                    p.Nombre ?? "",
+                    p.PeriodoDeRotación ?? "",
+                    p.PeriodoOrbital ?? "",
+                    p.Diametro ?? "",
+                    p.Clima ?? "",
+                    p.Gravedad ?? "",
+                    p.Terreno ?? "",
+                    p.AguaSuperficial ?? "",
+                    p.Poblacion ?? ""
+                        })
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
                         .Distinct()
                         .OrderBy(x => x)
                         .ToList();
 
                 case "Peliculas":
                     var peliculas = await _peliculaService.ObtenerPeliculas();
+
                     return peliculas
-                        .Where(x => !string.IsNullOrWhiteSpace(x.Titulo))
-                        .Select(x => x.Titulo)
+                        .SelectMany(p => new List<string>()
+                        {
+                    p.Titulo ?? "",
+                    p.Episode_id.ToString(),
+                    p.Director ?? "",
+                    p.Productor ?? "",
+                    p.FechaDeLanzamiento ?? "",
+                    p.Avance ?? ""
+                        })
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
                         .Distinct()
                         .OrderBy(x => x)
                         .ToList();
 
                 case "Especies":
                     var especies = await _especieService.ObtenerEspecies();
+
                     return especies
-                        .Where(x => !string.IsNullOrWhiteSpace(x.Nombre))
-                        .Select(x => x.Nombre)
+                        .SelectMany(e => new List<string>()
+                        {
+                    e.Nombre ?? "",
+                    e.Clasificacion ?? "",
+                    e.Designacion ?? "",
+                    e.AlturaPromedio ?? "",
+                    e.ColoresDePiel ?? "",
+                    e.ColoresDePelo ?? "",
+                    e.ColoresDeOjos ?? "",
+                    e.EsperanzaDeVida ?? "",
+                    e.Idioma ?? ""
+                        })
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
                         .Distinct()
                         .OrderBy(x => x)
                         .ToList();
 
                 case "Transportes":
                     var transportes = await _transporteService.ObtenerTransportes();
+
                     return transportes
-                        .Where(x => !string.IsNullOrWhiteSpace(x.Nombre))
-                        .Select(x => x.Nombre)
+                        .SelectMany(t => new List<string>()
+                        {
+                    t.Nombre ?? "",
+                    t.Modelo ?? "",
+                    t.Fabricante ?? "",
+                    t.CostoEnCreditos ?? "",
+                    t.Longitud ?? "",
+                    t.VelocidadMaximaAtmosfera ?? "",
+                    t.Tripulacion ?? "",
+                    t.Pasajeros ?? "",
+                    t.CapacidadCarga ?? "",
+                    t.Consumibles ?? "",
+                    t.MGLT ?? "",
+                    t.Clase ?? "",
+                    t.TipoTransporte != null ? t.TipoTransporte.Nombre ?? "" : ""
+                        })
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
                         .Distinct()
                         .OrderBy(x => x)
                         .ToList();

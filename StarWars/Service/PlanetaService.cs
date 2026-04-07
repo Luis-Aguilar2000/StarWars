@@ -116,18 +116,33 @@ namespace StarWars.Services
 
         public async Task<List<Planeta>> BuscarAsync(string filtro)
         {
-            var query = _context.Planetas.AsQueryable();
+            var lista = await _context.Planetas.ToListAsync();
 
-            if (!string.IsNullOrWhiteSpace(filtro))
+            if (string.IsNullOrWhiteSpace(filtro))
+                return lista;
+
+            var palabras = filtro
+                .ToLower()
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var palabra in palabras)
             {
-                filtro = filtro.ToLower();
+                var p = palabra;
 
-                query = query.Where(p =>
-                    p.Nombre.ToLower().Contains(filtro) ||
-                    p.Clima.ToLower().Contains(filtro));
+                lista = lista.Where(x =>
+                    (x.Nombre ?? "").ToLower().Contains(p) ||
+                    (x.PeriodoDeRotación ?? "").ToLower().Contains(p) ||
+                    (x.PeriodoOrbital ?? "").ToLower().Contains(p) ||
+                    (x.Diametro ?? "").ToLower().Contains(p) ||
+                    (x.Clima ?? "").ToLower().Contains(p) ||
+                    (x.Gravedad ?? "").ToLower().Contains(p) ||
+                    (x.Terreno ?? "").ToLower().Contains(p) ||
+                    (x.AguaSuperficial ?? "").ToLower().Contains(p) ||
+                    (x.Poblacion ?? "").ToLower().Contains(p)
+                ).ToList();
             }
 
-            return await query.ToListAsync();
+            return lista;
         }
     }
 }

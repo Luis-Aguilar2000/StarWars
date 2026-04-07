@@ -133,7 +133,7 @@ namespace StarWars
             }
         }
 
-        // Botonera principal
+        // BOTONERA NAVBAR
         private async void btnpersona_Click(object sender, EventArgs e)
         {
             await ObtenerPersonasBD();
@@ -163,7 +163,7 @@ namespace StarWars
             await ObtenerTransportesBD();
             await clickTransporte();
         }
-
+        //BOTONERA CRUD
         // EDITAR
         private async void btneditar_Click(object sender, EventArgs e)
         {
@@ -196,7 +196,6 @@ namespace StarWars
                 MessageBox.Show("Error al preparar edición: " + ex.Message);
             }
         }
-
         // NUEVO
         private async void btnnuevo_Click(object sender, EventArgs e)
         {
@@ -250,7 +249,6 @@ namespace StarWars
 
             cancelado = false;
         }
-
         //SUBIR IMAGEN
         private void btnimagen_Click(object sender, EventArgs e)
         {
@@ -358,7 +356,6 @@ namespace StarWars
                 MessageBox.Show(msg);
             }
         }
-
         // CREAR
         private async void btncrear_Click(object sender, EventArgs e)
         {
@@ -382,7 +379,6 @@ namespace StarWars
                 MessageBox.Show("Error al crear: " + ex.Message);
             }
         }
-
         // ELIMINAR
         private async void btneliminar_Click(object sender, EventArgs e)
         {
@@ -420,8 +416,7 @@ namespace StarWars
                 MessageBox.Show("Error al eliminar: " + ex.Message);
             }
         }
-
-        // SelectionChanged del DataGridView
+        //SELECCION DE TABLA PARA EL DATAGRIP BASE DE DATOS
         private async void dtgpersona_SelectionChanged(object sender, EventArgs e)
         {
             if (cargando || cancelado) return;
@@ -516,7 +511,6 @@ namespace StarWars
                     break;
             }
         }
-        //OBTENER DATOS DE BASE DE DATOS
         // PERSONAS
         private async Task ObtenerPersonasBD()
         {
@@ -561,7 +555,6 @@ namespace StarWars
                 cargando = false;
             }
         }
-
         // PELÍCULAS
         private async Task ObtenerPeliculasBD()
         {
@@ -600,7 +593,6 @@ namespace StarWars
                 cargando = false;
             }
         }
-
         // PLANETAS
         private async Task ObtenerPlanetasBD()
         {
@@ -643,7 +635,6 @@ namespace StarWars
                 cargando = false;
             }
         }
-
         // ESPECIES
         private async Task ObtenerEspeciesBD()
         {
@@ -686,7 +677,6 @@ namespace StarWars
                 cargando = false;
             }
         }
-
         // TRANSPORTES
         private async Task ObtenerTransportesBD()
         {
@@ -733,8 +723,7 @@ namespace StarWars
                 cargando = false;
             }
         }
-
-        // VISTAS
+        //CONTROL DE VISTAS PARA CONFIGURAR EL FORMULARIO
         private async Task clickPersonas()
         {
             await _vistaHelper.ConfigurarVistaPersonasAsync(
@@ -751,7 +740,6 @@ namespace StarWars
                 this
             );
         }
-
         private void clickPeliculas()
         {
             _vistaHelper.ConfigurarVistaPeliculas(
@@ -767,7 +755,6 @@ namespace StarWars
                 this
             );
         }
-
         private void clickPlanetas()
         {
             _vistaHelper.ConfigurarVistaPlanetas(
@@ -798,7 +785,6 @@ namespace StarWars
                 this
             );
         }
-
         private async Task clickTransporte()
         {
             _vistaHelper.ConfigurarVistaTransporte(
@@ -816,7 +802,6 @@ namespace StarWars
 
             await _comboHelper.CargarTipoTransporteAsync(comboBox4);
         }
-        // LIMPIAR
         private void LimpiarControles()
         {
             _vistaHelper.LimpiarControles(
@@ -827,7 +812,6 @@ namespace StarWars
                 Picture1
             );
         }
-
         private void HabilitarControles()
         {
             _vistaHelper.HabilitarControles(
@@ -838,7 +822,6 @@ namespace StarWars
                 btneditar, btnnuevo, btncancelar, btnimagen, btneliminar
             );
         }
-
         private void DeshabilitarControles()
         {
             _vistaHelper.DeshabilitarControles(
@@ -848,14 +831,12 @@ namespace StarWars
                 btnimagen, btnnuevo, btneliminar, btneditar, btnactualizar
             );
         }
-
         private void colorpanel()
         {
             panel1.BackColor = Color.FromArgb(60, 100, 100, 100);
             panel2.BackColor = Color.FromArgb(30, 100, 100, 100);
             paneldata.BackColor = Color.FromArgb(28, 100, 100, 100);
         }
-
         // CARGAR IMAGEN
         private void CargarImagen(DataGridViewRow fila)
         {
@@ -882,11 +863,9 @@ namespace StarWars
         {
             dtgpersona.DataSource = null;
             dtgpersona.DataSource = datos;
-
             dtgpersona.MultiSelect = false;
             dtgpersona.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtgpersona.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-
             foreach (string columna in columnasOcultas)
             {
                 if (dtgpersona.Columns[columna] != null)

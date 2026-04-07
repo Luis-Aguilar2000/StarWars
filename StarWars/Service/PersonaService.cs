@@ -173,28 +173,42 @@ namespace StarWars.Services
             _context.Personas.Remove(persona);
             await _context.SaveChangesAsync();
         }
-
         public async Task<List<Persona>> BuscarAsync(string filtro)
         {
-            var query = _context.Personas
+            var lista = await _context.Personas
                 .Include(p => p.Planeta)
-                .Include(p => p.Peliculas)
                 .Include(p => p.Especie)
+                .Include(p => p.Peliculas)
                 .Include(p => p.Transportes)
-                .AsQueryable();
+                .ToListAsync();
 
-            if (!string.IsNullOrWhiteSpace(filtro))
+            if (string.IsNullOrWhiteSpace(filtro))
+                return lista;
+
+            var palabras = filtro
+                .ToLower()
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var palabra in palabras)
             {
-                filtro = filtro.ToLower();
+                var p = palabra;
 
-                query = query.Where(p =>
-                    p.Nombre.ToLower().Contains(filtro) ||
-                    p.Genero.ToLower().Contains(filtro) ||
-                    p.ColorDeOjos.ToLower().Contains(filtro) ||
-                    p.ColorDePelo.ToLower().Contains(filtro));
+                lista = lista.Where(x =>
+                    (x.Nombre ?? "").ToLower().Contains(p) ||
+                    (x.Altura ?? "").ToLower().Contains(p) ||
+                    (x.Masa ?? "").ToLower().Contains(p) ||
+                    (x.ColorDeOjos ?? "").ToLower().Contains(p) ||
+                    (x.ColorDePiel ?? "").ToLower().Contains(p) ||
+                    (x.ColorDePelo ?? "").ToLower().Contains(p) ||
+                    (x.Genero ?? "").ToLower().Contains(p) ||
+                    (x.Planeta != null && (x.Planeta.Nombre ?? "").ToLower().Contains(p)) ||
+                    x.Especie.Any(e => (e.Nombre ?? "").ToLower().Contains(p)) ||
+                    x.Peliculas.Any(pe => (pe.Titulo ?? "").ToLower().Contains(p)) ||
+                    x.Transportes.Any(t => (t.Nombre ?? "").ToLower().Contains(p))
+                ).ToList();
             }
 
-            return await query.ToListAsync();
+            return lista;
         }
     }
 }

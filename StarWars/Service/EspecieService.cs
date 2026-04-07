@@ -116,17 +116,33 @@ namespace StarWars.Services
 
         public async Task<List<Especie>> BuscarAsync(string filtro)
         {
-            var query = _context.Especies.AsQueryable();
+            var lista = await _context.Especies.ToListAsync();
 
-            if (!string.IsNullOrWhiteSpace(filtro))
+            if (string.IsNullOrWhiteSpace(filtro))
+                return lista;
+
+            var palabras = filtro
+                .ToLower()
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var palabra in palabras)
             {
-                filtro = filtro.ToLower();
+                var p = palabra;
 
-                query = query.Where(e =>
-                    e.Nombre.ToLower().Contains(filtro));
+                lista = lista.Where(x =>
+                    (x.Nombre ?? "").ToLower().Contains(p) ||
+                    (x.Clasificacion ?? "").ToLower().Contains(p) ||
+                    (x.Designacion ?? "").ToLower().Contains(p) ||
+                    (x.AlturaPromedio ?? "").ToLower().Contains(p) ||
+                    (x.ColoresDePiel ?? "").ToLower().Contains(p) ||
+                    (x.ColoresDePelo ?? "").ToLower().Contains(p) ||
+                    (x.ColoresDeOjos ?? "").ToLower().Contains(p) ||
+                    (x.EsperanzaDeVida ?? "").ToLower().Contains(p) ||
+                    (x.Idioma ?? "").ToLower().Contains(p)
+                ).ToList();
             }
 
-            return await query.ToListAsync();
+            return lista;
         }
     }
 }
