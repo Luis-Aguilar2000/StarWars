@@ -111,13 +111,14 @@ namespace StarWars
                 dtgpersona.SelectionChanged += dtgpersona_SelectionChanged;
                 dtgpersona.CellDoubleClick += dtgpersona_CellDoubleClick;
 
-                await _personaService.SincronizarPersonas();
-                await _peliculaService.SincronizarPeliculas();
                 await _planetaService.SincronizarPlanetas();
+                await _peliculaService.SincronizarPeliculas();
                 await _especieService.SincronizarEspecies();
                 await _transporteService.SincronizarTransportes();
+                await _personaService.SincronizarPersonas();
+                await _personaService.RelacionarPersonasAsync();
 
-                await ObtenerPersonasBD();
+                await ObtenerPlanetasBD();
                 await clickPersonas();
 
                 dtgpersona.ClearSelection();

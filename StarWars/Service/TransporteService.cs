@@ -38,6 +38,66 @@ namespace StarWars.Services
                 .ToListAsync();
         }
 
+        private async Task<List<TransporteJsonModel>> ObtenerTodasLasNavesApi()
+        {
+            var todasLasNaves = new List<TransporteJsonModel>();
+            string endpoint = "starships/";
+
+            while (!string.IsNullOrWhiteSpace(endpoint))
+            {
+                var result = await _restApi.Get<PeopleResponse<TransporteJsonModel>>(
+                    "https://swapi.dev/api/",
+                    endpoint
+                );
+
+                if (result?.Results != null && result.Results.Any())
+                {
+                    todasLasNaves.AddRange(result.Results);
+                }
+
+                if (string.IsNullOrWhiteSpace(result?.Next))
+                {
+                    endpoint = null;
+                }
+                else
+                {
+                    endpoint = result.Next.Replace("https://swapi.dev/api/", "");
+                }
+            }
+
+            return todasLasNaves;
+        }
+
+        private async Task<List<TransporteJsonModel>> ObtenerTodosLosVehiculosApi()
+        {
+            var todosLosVehiculos = new List<TransporteJsonModel>();
+            string endpoint = "vehicles/";
+
+            while (!string.IsNullOrWhiteSpace(endpoint))
+            {
+                var result = await _restApi.Get<PeopleResponse<TransporteJsonModel>>(
+                    "https://swapi.dev/api/",
+                    endpoint
+                );
+
+                if (result?.Results != null && result.Results.Any())
+                {
+                    todosLosVehiculos.AddRange(result.Results);
+                }
+
+                if (string.IsNullOrWhiteSpace(result?.Next))
+                {
+                    endpoint = null;
+                }
+                else
+                {
+                    endpoint = result.Next.Replace("https://swapi.dev/api/", "");
+                }
+            }
+
+            return todosLosVehiculos;
+        }
+
         public async Task SincronizarTransportes()
         {
             await InicializarTipos();
@@ -59,15 +119,11 @@ namespace StarWars.Services
 
             var nuevosTransportes = new List<Transporte>();
 
-            // NAVES
-            var naves = await _restApi.Get<PeopleResponse<TransporteJsonModel>>(
-                "https://swapi.dev/api/",
-                "starships/"
-            );
+            var naves = await ObtenerTodasLasNavesApi();
 
-            if (naves?.Results != null && naves.Results.Any())
+            if (naves != null && naves.Any())
             {
-                foreach (var item in naves.Results)
+                foreach (var item in naves)
                 {
                     string url = item.Url ?? "";
 
@@ -97,15 +153,11 @@ namespace StarWars.Services
                 }
             }
 
-            // VEHÍCULOS
-            var vehiculos = await _restApi.Get<PeopleResponse<TransporteJsonModel>>(
-                "https://swapi.dev/api/",
-                "vehicles/"
-            );
+            var vehiculos = await ObtenerTodosLosVehiculosApi();
 
-            if (vehiculos?.Results != null && vehiculos.Results.Any())
+            if (vehiculos != null && vehiculos.Any())
             {
-                foreach (var item in vehiculos.Results)
+                foreach (var item in vehiculos)
                 {
                     string url = item.Url ?? "";
 

@@ -26,28 +26,55 @@ namespace StarWars.Services
                 .ToListAsync();
         }
 
+        private async Task<List<PlanetaJsonModel>> ObtenerTodosLosPlanetasApi()
+        {
+            var todosLosPlanetas = new List<PlanetaJsonModel>();
+            string endpoint = "planets/";
+
+            while (!string.IsNullOrEmpty(endpoint))
+            {
+                var result = await _restApi.Get<PeopleResponse<PlanetaJsonModel>>(
+                    "https://swapi.dev/api/",
+                    endpoint
+                );
+
+                if (result?.Results != null && result.Results.Any())
+                {
+                    todosLosPlanetas.AddRange(result.Results);
+                }
+
+                if (string.IsNullOrEmpty(result?.Next))
+                {
+                    endpoint = null;
+                }
+                else
+                {
+                    endpoint = result.Next.Replace("https://swapi.dev/api/", "");
+                }
+            }
+
+            return todosLosPlanetas;
+        }
+
         public async Task SincronizarPlanetas()
         {
-            var result = await _restApi.Get<PeopleResponse<PlanetaJsonModel>>(
-                "https://swapi.dev/api/",
-                "planets/"
-            );
+            var planetasApi = await ObtenerTodosLosPlanetasApi();
 
-            if (result?.Results == null || !result.Results.Any())
+            if (planetasApi == null || !planetasApi.Any())
                 return;
 
-            var nombresApi = result.Results
-                .Select(x => x.Name)
+            var urlsApi = planetasApi
+                .Select(x => x.Url)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .ToList();
 
-            var nombresExistentes = await _context.Planetas
-                .Where(p => nombresApi.Contains(p.Nombre))
-                .Select(p => p.Nombre)
+            var urlsExistentes = await _context.Planetas
+                .Where(p => urlsApi.Contains(p.Url))
+                .Select(p => p.Url)
                 .ToListAsync();
 
-            var nuevosPlanetas = result.Results
-                .Where(item => !nombresExistentes.Contains(item.Name))
+            var nuevosPlanetas = planetasApi
+                .Where(item => !urlsExistentes.Contains(item.Url))
                 .Select(item => new Planeta
                 {
                     Nombre = item.Name,
@@ -59,7 +86,6 @@ namespace StarWars.Services
                     Terreno = item.Terrain,
                     AguaSuperficial = item.SurfaceWater,
                     Poblacion = item.Population,
-                    Picture = "",
                     Url = item.Url
                 })
                 .ToList();

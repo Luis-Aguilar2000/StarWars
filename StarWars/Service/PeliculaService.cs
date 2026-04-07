@@ -26,28 +26,55 @@ namespace StarWars.Services
                 .ToListAsync();
         }
 
+        private async Task<List<PeliculaJsonModel>> ObtenerTodasLasPeliculasApi()
+        {
+            var todasLasPeliculas = new List<PeliculaJsonModel>();
+            string endpoint = "films/";
+
+            while (!string.IsNullOrEmpty(endpoint))
+            {
+                var result = await _restApi.Get<PeopleResponse<PeliculaJsonModel>>(
+                    "https://swapi.dev/api/",
+                    endpoint
+                );
+
+                if (result?.Results != null && result.Results.Any())
+                {
+                    todasLasPeliculas.AddRange(result.Results);
+                }
+
+                if (string.IsNullOrEmpty(result?.Next))
+                {
+                    endpoint = null;
+                }
+                else
+                {
+                    endpoint = result.Next.Replace("https://swapi.dev/api/", "");
+                }
+            }
+
+            return todasLasPeliculas;
+        }
+
         public async Task SincronizarPeliculas()
         {
-            var result = await _restApi.Get<PeopleResponse<PeliculaJsonModel>>(
-                "https://swapi.dev/api/",
-                "films/"
-            );
+            var peliculasApi = await ObtenerTodasLasPeliculasApi();
 
-            if (result?.Results == null || !result.Results.Any())
+            if (peliculasApi == null || !peliculasApi.Any())
                 return;
 
-            var titulosApi = result.Results
-                .Select(x => x.Title)
+            var urlsApi = peliculasApi
+                .Select(x => x.Url)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .ToList();
 
-            var titulosExistentes = await _context.Peliculas
-                .Where(p => titulosApi.Contains(p.Titulo))
-                .Select(p => p.Titulo)
+            var urlsExistentes = await _context.Peliculas
+                .Where(p => urlsApi.Contains(p.Url))
+                .Select(p => p.Url)
                 .ToListAsync();
 
-            var nuevasPeliculas = result.Results
-                .Where(item => !titulosExistentes.Contains(item.Title))
+            var nuevasPeliculas = peliculasApi
+                .Where(item => !urlsExistentes.Contains(item.Url))
                 .Select(item => new Pelicula
                 {
                     Titulo = item.Title,
@@ -56,8 +83,8 @@ namespace StarWars.Services
                     Director = item.Director,
                     Productor = item.Producer,
                     FechaDeLanzamiento = item.ReleaseDate,
-                    Picture = "",
-                    Url = item.Url
+                    Url = item.Url,
+                    Picture = ""
                 })
                 .ToList();
 
