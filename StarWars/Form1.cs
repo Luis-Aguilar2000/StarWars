@@ -109,6 +109,7 @@ namespace StarWars
 
                 colorpanel();
                 dtgpersona.SelectionChanged += dtgpersona_SelectionChanged;
+                dtgpersona.CellDoubleClick += dtgpersona_CellDoubleClick;
 
                 await _personaService.SincronizarPersonas();
                 await _peliculaService.SincronizarPeliculas();
@@ -1032,6 +1033,69 @@ namespace StarWars
             {
                 e.SuppressKeyPress = true;
                 btbuscar.PerformClick();
+            }
+        }
+
+        private void SeleccionarFilaPorTexto(string columna, string valor)
+        {
+            if (string.IsNullOrWhiteSpace(valor)) return;
+            if (!dtgpersona.Columns.Contains(columna)) return;
+
+            foreach (DataGridViewRow fila in dtgpersona.Rows)
+            {
+                string textoCelda = fila.Cells[columna].Value?.ToString() ?? "";
+
+                if (textoCelda.Equals(valor, StringComparison.OrdinalIgnoreCase))
+                {
+                    fila.Selected = true;
+                    dtgpersona.CurrentCell = fila.Cells[columna];
+                    dtgpersona.FirstDisplayedScrollingRowIndex = fila.Index;
+                    break;
+                }
+            }
+        }
+
+        private async void dtgpersona_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+                string nombreColumna = dtgpersona.Columns[e.ColumnIndex].Name;
+                string valor = dtgpersona.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString() ?? "";
+
+                if (string.IsNullOrWhiteSpace(valor)) return;
+
+                if (nombreColumna == "Pelicula" || nombreColumna == "Vehiculo")
+                    valor = valor.Split(',')[0].Trim();
+
+                var navegacion = _buscarHelper.ObtenerNavegacion(vistaActual, nombreColumna);
+
+                if (string.IsNullOrWhiteSpace(navegacion.vistaDestino))
+                    return;
+
+                vistaActual = navegacion.vistaDestino;
+
+                switch (navegacion.vistaDestino)
+                {
+                    case "Planetas":
+                        await ObtenerPlanetasBD();
+                        break;
+
+                    case "Peliculas":
+                        await ObtenerPeliculasBD();
+                        break;
+
+                    case "Transportes":
+                        await ObtenerTransportesBD();
+                        break;
+                }
+
+                SeleccionarFilaPorTexto(navegacion.columnaDestino, valor);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al navegar: " + ex.Message);
             }
         }
     }

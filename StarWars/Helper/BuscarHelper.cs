@@ -271,5 +271,26 @@ namespace StarWars.Helper
                     throw new Exception("Vista no válida");
             }
         }
+
+        public (string vistaDestino, string columnaDestino) ObtenerNavegacion(string vistaActual, string nombreColumna)
+        {
+            if (vistaActual != "Personas")
+                return ("", "");
+
+            switch (nombreColumna)
+            {
+                case "Planeta":
+                    return ("Planetas", "Nombre");
+
+                case "Pelicula":
+                    return ("Peliculas", "Titulo");
+
+                case "Vehiculo":
+                    return ("Transportes", "Nombre");
+
+                default:
+                    return ("", "");
+            }
+        }
     }
 }
