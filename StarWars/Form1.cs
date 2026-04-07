@@ -22,7 +22,7 @@ namespace StarWars
         private readonly IPlanetaService _planetaService;
         private readonly IEspecieService _especieService;
         private readonly ITransporteService _transporteService;
-      
+
 
         private readonly EditarHelper _editarHelper;
         private readonly CrearHelper _crearHelper;
@@ -1097,6 +1097,12 @@ namespace StarWars
             {
                 MessageBox.Show("Error al navegar: " + ex.Message);
             }
+        }
+
+        private async void btnrefesh_Click(object sender, EventArgs e)
+        {
+            txtbuscar.Text = "";
+            await RecargarVistaActual();
         }
     }
 }

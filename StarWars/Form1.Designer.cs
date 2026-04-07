@@ -88,6 +88,7 @@
             richTextBox1 = new RichTextBox();
             textBox8 = new TextBox();
             textBox9 = new TextBox();
+            btnrefesh = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             paneldata.SuspendLayout();
@@ -269,6 +270,7 @@
             // 
             // paneldata
             // 
+            paneldata.Controls.Add(btnrefesh);
             paneldata.Controls.Add(textBox12);
             paneldata.Controls.Add(textBox10);
             paneldata.Controls.Add(label12);
@@ -836,14 +838,14 @@
             // 
             txtbuscar.BackColor = SystemColors.Window;
             txtbuscar.BorderStyle = BorderStyle.FixedSingle;
-            txtbuscar.Location = new Point(999, 21);
+            txtbuscar.Location = new Point(959, 21);
             txtbuscar.Name = "txtbuscar";
             txtbuscar.Size = new Size(316, 27);
             txtbuscar.TabIndex = 72;
             // 
             // btbuscar
             // 
-            btbuscar.Location = new Point(1334, 19);
+            btbuscar.Location = new Point(1303, 19);
             btbuscar.Name = "btbuscar";
             btbuscar.Size = new Size(94, 29);
             btbuscar.TabIndex = 73;
@@ -878,6 +880,16 @@
             textBox9.Size = new Size(181, 27);
             textBox9.TabIndex = 124;
             textBox9.Visible = false;
+            // 
+            // btnrefesh
+            // 
+            btnrefesh.Location = new Point(1403, 19);
+            btnrefesh.Name = "btnrefesh";
+            btnrefesh.Size = new Size(80, 29);
+            btnrefesh.TabIndex = 132;
+            btnrefesh.Text = "Refresh";
+            btnrefesh.UseVisualStyleBackColor = true;
+            btnrefesh.Click += btnrefesh_Click;
             // 
             // Form1
             // 
@@ -965,5 +977,6 @@
         private ComboBox comboBox4;
         private Label label11;
         private TextBox textBox12;
+        private Button btnrefesh;
     }
 }
