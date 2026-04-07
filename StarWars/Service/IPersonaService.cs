@@ -12,5 +12,6 @@ namespace StarWars.Services
         Task EliminarPersona(int id);
 
         Task<List<Persona>> BuscarAsync(string filtro);
+        Task RelacionarPersonasAsync();
     }
 }

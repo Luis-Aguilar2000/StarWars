@@ -31,17 +31,44 @@ namespace StarWars.Services
                 .ToListAsync();
         }
 
+        private async Task<List<PersonajeJsonModel>> ObtenerTodasLasPersonasApi()
+        {
+            var todasLasPersonas = new List<PersonajeJsonModel>();
+            string endpoint = "people/";
+
+            while (!string.IsNullOrEmpty(endpoint))
+            {
+                var result = await _restApi.Get<PeopleResponse<PersonajeJsonModel>>(
+                    "https://swapi.dev/api/",
+                    endpoint
+                );
+
+                if (result?.Results != null && result.Results.Any())
+                {
+                    todasLasPersonas.AddRange(result.Results);
+                }
+
+                if (string.IsNullOrEmpty(result?.Next))
+                {
+                    endpoint = null;
+                }
+                else
+                {
+                    endpoint = result.Next.Replace("https://swapi.dev/api/", "");
+                }
+            }
+
+            return todasLasPersonas;
+        }
+
         public async Task SincronizarPersonas()
         {
-            var result = await _restApi.Get<PeopleResponse<PersonajeJsonModel>>(
-                "https://swapi.dev/api/",
-                "people/"
-            );
+            var personasApi = await ObtenerTodasLasPersonasApi();
 
-            if (result?.Results == null || !result.Results.Any())
+            if (personasApi == null || !personasApi.Any())
                 return;
 
-            var nombresApi = result.Results
+            var nombresApi = personasApi
                 .Select(x => x.Name)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .ToList();
@@ -51,7 +78,7 @@ namespace StarWars.Services
                 .Select(p => p.Nombre)
                 .ToListAsync();
 
-            var nuevasPersonas = result.Results
+            var nuevasPersonas = personasApi
                 .Where(item => !nombresExistentes.Contains(item.Name))
                 .Select(item => new Persona
                 {
@@ -209,6 +236,99 @@ namespace StarWars.Services
             }
 
             return lista;
+        }
+
+        public async Task RelacionarPersonasAsync()
+        {
+            var personasApi = await ObtenerTodasLasPersonasApi();
+
+            if (personasApi == null || !personasApi.Any())
+                return;
+
+            var personasBd = await _context.Personas
+                .Include(p => p.Planeta)
+                .Include(p => p.Peliculas)
+                .Include(p => p.Especie)
+                .Include(p => p.Transportes)
+                .ToListAsync();
+
+            foreach (var item in personasApi)
+            {
+                if (string.IsNullOrWhiteSpace(item.Name))
+                    continue;
+
+                var personaBd = personasBd.FirstOrDefault(p => p.Nombre == item.Name);
+
+                if (personaBd == null)
+                    continue;
+
+                // PLANETA
+                if (!string.IsNullOrWhiteSpace(item.Homeworld))
+                {
+                    var planeta = await _context.Planetas
+                        .FirstOrDefaultAsync(p => p.Url == item.Homeworld);
+
+                    if (planeta != null)
+                    {
+                        personaBd.PlanetaId = planeta.Id;
+                    }
+                }
+
+                // PELÍCULAS
+                if (item.Films != null && item.Films.Any())
+                {
+                    var peliculas = await _context.Peliculas
+                        .Where(p => item.Films.Contains(p.Url))
+                        .ToListAsync();
+
+                    personaBd.Peliculas.Clear();
+
+                    foreach (var pelicula in peliculas)
+                    {
+                        personaBd.Peliculas.Add(pelicula);
+                    }
+                }
+
+                // ESPECIES
+                if (item.Species != null && item.Species.Any())
+                {
+                    var especies = await _context.Especies
+                        .Where(e => item.Species.Contains(e.Url))
+                        .ToListAsync();
+
+                    personaBd.Especie.Clear();
+
+                    foreach (var especie in especies)
+                    {
+                        personaBd.Especie.Add(especie);
+                    }
+                }
+
+                // TRANSPORTES
+                var urlsTransportes = new List<string>();
+
+                if (item.Vehicles != null && item.Vehicles.Any())
+                    urlsTransportes.AddRange(item.Vehicles);
+
+                if (item.Starships != null && item.Starships.Any())
+                    urlsTransportes.AddRange(item.Starships);
+
+                if (urlsTransportes.Any())
+                {
+                    var transportes = await _context.Transportes
+                        .Where(t => urlsTransportes.Contains(t.Url))
+                        .ToListAsync();
+
+                    personaBd.Transportes.Clear();
+
+                    foreach (var transporte in transportes)
+                    {
+                        personaBd.Transportes.Add(transporte);
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

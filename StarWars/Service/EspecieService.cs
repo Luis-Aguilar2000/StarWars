@@ -26,28 +26,55 @@ namespace StarWars.Services
                 .ToListAsync();
         }
 
+        private async Task<List<EspecieJsonModel>> ObtenerTodasLasEspeciesApi()
+        {
+            var todasLasEspecies = new List<EspecieJsonModel>();
+            string endpoint = "species/";
+
+            while (!string.IsNullOrEmpty(endpoint))
+            {
+                var result = await _restApi.Get<PeopleResponse<EspecieJsonModel>>(
+                    "https://swapi.dev/api/",
+                    endpoint
+                );
+
+                if (result?.Results != null && result.Results.Any())
+                {
+                    todasLasEspecies.AddRange(result.Results);
+                }
+
+                if (string.IsNullOrEmpty(result?.Next))
+                {
+                    endpoint = null;
+                }
+                else
+                {
+                    endpoint = result.Next.Replace("https://swapi.dev/api/", "");
+                }
+            }
+
+            return todasLasEspecies;
+        }
+
         public async Task SincronizarEspecies()
         {
-            var result = await _restApi.Get<PeopleResponse<EspecieJsonModel>>(
-                "https://swapi.dev/api/",
-                "species/"
-            );
+            var especiesApi = await ObtenerTodasLasEspeciesApi();
 
-            if (result?.Results == null || !result.Results.Any())
+            if (especiesApi == null || !especiesApi.Any())
                 return;
 
-            var nombresApi = result.Results
-                .Select(x => x.Name)
+            var urlsApi = especiesApi
+                .Select(x => x.Url)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .ToList();
 
-            var nombresExistentes = await _context.Especies
-                .Where(e => nombresApi.Contains(e.Nombre))
-                .Select(e => e.Nombre)
+            var urlsExistentes = await _context.Especies
+                .Where(e => urlsApi.Contains(e.Url))
+                .Select(e => e.Url)
                 .ToListAsync();
 
-            var nuevasEspecies = result.Results
-                .Where(item => !nombresExistentes.Contains(item.Name))
+            var nuevasEspecies = especiesApi
+                .Where(item => !urlsExistentes.Contains(item.Url))
                 .Select(item => new Especie
                 {
                     Nombre = item.Name,
@@ -59,7 +86,6 @@ namespace StarWars.Services
                     ColoresDeOjos = item.EyeColors,
                     EsperanzaDeVida = item.AverageLifespan,
                     Idioma = item.Language,
-                    Picture = "",
                     Url = item.Url
                 })
                 .ToList();
