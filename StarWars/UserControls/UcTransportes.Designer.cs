@@ -101,6 +101,7 @@
             btncancelar.Text = "CANCELAR";
             btncancelar.TextAlign = ContentAlignment.MiddleRight;
             btncancelar.UseVisualStyleBackColor = false;
+            btncancelar.Click += btncancelar_Click;
             // 
             // btnnuevo
             // 
@@ -119,6 +120,7 @@
             btnnuevo.Text = "NUEVO";
             btnnuevo.TextAlign = ContentAlignment.MiddleRight;
             btnnuevo.UseVisualStyleBackColor = false;
+            btnnuevo.Click += btnnuevo_Click;
             // 
             // lblname
             // 
@@ -148,6 +150,7 @@
             btneditar.Text = "EDITAR";
             btneditar.TextAlign = ContentAlignment.MiddleRight;
             btneditar.UseVisualStyleBackColor = false;
+            btneditar.Click += btneditar_Click;
             // 
             // txtbuscar
             // 
@@ -182,7 +185,7 @@
             textBox12.BackColor = SystemColors.Window;
             textBox12.BorderStyle = BorderStyle.FixedSingle;
             textBox12.Enabled = false;
-            textBox12.Location = new Point(792, 684);
+            textBox12.Location = new Point(856, 686);
             textBox12.Name = "textBox12";
             textBox12.Size = new Size(181, 27);
             textBox12.TabIndex = 170;
@@ -192,7 +195,7 @@
             textBox10.BackColor = SystemColors.Window;
             textBox10.BorderStyle = BorderStyle.FixedSingle;
             textBox10.Enabled = false;
-            textBox10.Location = new Point(792, 597);
+            textBox10.Location = new Point(856, 599);
             textBox10.Name = "textBox10";
             textBox10.Size = new Size(181, 27);
             textBox10.TabIndex = 169;
@@ -203,7 +206,7 @@
             label12.BackColor = Color.Transparent;
             label12.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label12.ForeColor = Color.FromArgb(251, 204, 60);
-            label12.Location = new Point(622, 684);
+            label12.Location = new Point(686, 686);
             label12.Name = "label12";
             label12.Size = new Size(53, 20);
             label12.TabIndex = 168;
@@ -214,7 +217,7 @@
             textBox11.BackColor = SystemColors.Window;
             textBox11.BorderStyle = BorderStyle.FixedSingle;
             textBox11.Enabled = false;
-            textBox11.Location = new Point(792, 640);
+            textBox11.Location = new Point(856, 642);
             textBox11.Name = "textBox11";
             textBox11.Size = new Size(181, 27);
             textBox11.TabIndex = 167;
@@ -225,7 +228,7 @@
             label13.BackColor = Color.Transparent;
             label13.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label13.ForeColor = Color.FromArgb(251, 204, 60);
-            label13.Location = new Point(625, 733);
+            label13.Location = new Point(689, 735);
             label13.Name = "label13";
             label13.Size = new Size(47, 20);
             label13.TabIndex = 166;
@@ -235,7 +238,7 @@
             // 
             comboBox1.Enabled = false;
             comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(792, 730);
+            comboBox1.Location = new Point(856, 732);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(181, 28);
             comboBox1.TabIndex = 165;
@@ -246,7 +249,7 @@
             label11.BackColor = Color.Transparent;
             label11.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label11.ForeColor = Color.FromArgb(251, 204, 60);
-            label11.Location = new Point(624, 645);
+            label11.Location = new Point(688, 647);
             label11.Name = "label11";
             label11.Size = new Size(55, 20);
             label11.TabIndex = 164;
@@ -256,7 +259,7 @@
             // 
             comboBox3.Enabled = false;
             comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(792, 596);
+            comboBox3.Location = new Point(856, 598);
             comboBox3.Name = "comboBox3";
             comboBox3.Size = new Size(181, 28);
             comboBox3.TabIndex = 160;
@@ -266,7 +269,7 @@
             textBox7.BackColor = SystemColors.Window;
             textBox7.BorderStyle = BorderStyle.FixedSingle;
             textBox7.Enabled = false;
-            textBox7.Location = new Point(419, 765);
+            textBox7.Location = new Point(483, 767);
             textBox7.Name = "textBox7";
             textBox7.Size = new Size(181, 27);
             textBox7.TabIndex = 159;
@@ -277,7 +280,7 @@
             label10.BackColor = Color.Transparent;
             label10.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label10.ForeColor = Color.FromArgb(251, 204, 60);
-            label10.Location = new Point(624, 600);
+            label10.Location = new Point(688, 602);
             label10.Name = "label10";
             label10.Size = new Size(108, 20);
             label10.TabIndex = 157;
@@ -289,7 +292,7 @@
             label9.BackColor = Color.Transparent;
             label9.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label9.ForeColor = Color.FromArgb(251, 204, 60);
-            label9.Location = new Point(623, 561);
+            label9.Location = new Point(687, 563);
             label9.Name = "label9";
             label9.Size = new Size(168, 20);
             label9.TabIndex = 156;
@@ -301,7 +304,7 @@
             label8.BackColor = Color.Transparent;
             label8.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label8.ForeColor = Color.FromArgb(251, 204, 60);
-            label8.Location = new Point(623, 512);
+            label8.Location = new Point(687, 514);
             label8.Name = "label8";
             label8.Size = new Size(84, 20);
             label8.TabIndex = 155;
@@ -313,7 +316,7 @@
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.ForeColor = Color.FromArgb(251, 204, 60);
-            label7.Location = new Point(251, 768);
+            label7.Location = new Point(315, 770);
             label7.Name = "label7";
             label7.Size = new Size(98, 20);
             label7.TabIndex = 154;
@@ -324,7 +327,7 @@
             textBox6.BackColor = SystemColors.Window;
             textBox6.BorderStyle = BorderStyle.FixedSingle;
             textBox6.Enabled = false;
-            textBox6.Location = new Point(419, 726);
+            textBox6.Location = new Point(483, 728);
             textBox6.Name = "textBox6";
             textBox6.Size = new Size(181, 27);
             textBox6.TabIndex = 153;
@@ -335,7 +338,7 @@
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.FromArgb(251, 204, 60);
-            label6.Location = new Point(251, 726);
+            label6.Location = new Point(315, 728);
             label6.Name = "label6";
             label6.Size = new Size(153, 20);
             label6.TabIndex = 152;
@@ -346,7 +349,7 @@
             textBox5.BackColor = SystemColors.Window;
             textBox5.BorderStyle = BorderStyle.FixedSingle;
             textBox5.Enabled = false;
-            textBox5.Location = new Point(419, 682);
+            textBox5.Location = new Point(483, 684);
             textBox5.Name = "textBox5";
             textBox5.Size = new Size(181, 27);
             textBox5.TabIndex = 151;
@@ -357,7 +360,7 @@
             label5.BackColor = Color.Transparent;
             label5.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = Color.FromArgb(251, 204, 60);
-            label5.Location = new Point(251, 682);
+            label5.Location = new Point(315, 684);
             label5.Name = "label5";
             label5.Size = new Size(80, 20);
             label5.TabIndex = 150;
@@ -368,7 +371,7 @@
             textBox4.BackColor = SystemColors.Window;
             textBox4.BorderStyle = BorderStyle.FixedSingle;
             textBox4.Enabled = false;
-            textBox4.Location = new Point(419, 640);
+            textBox4.Location = new Point(483, 642);
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(181, 27);
             textBox4.TabIndex = 149;
@@ -379,7 +382,7 @@
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.FromArgb(251, 204, 60);
-            label4.Location = new Point(251, 640);
+            label4.Location = new Point(315, 642);
             label4.Name = "label4";
             label4.Size = new Size(147, 20);
             label4.TabIndex = 148;
@@ -390,7 +393,7 @@
             textBox3.BackColor = SystemColors.Window;
             textBox3.BorderStyle = BorderStyle.FixedSingle;
             textBox3.Enabled = false;
-            textBox3.Location = new Point(419, 595);
+            textBox3.Location = new Point(483, 597);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(181, 27);
             textBox3.TabIndex = 147;
@@ -401,7 +404,7 @@
             label3.BackColor = Color.Transparent;
             label3.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FromArgb(251, 204, 60);
-            label3.Location = new Point(251, 595);
+            label3.Location = new Point(315, 597);
             label3.Name = "label3";
             label3.Size = new Size(92, 20);
             label3.TabIndex = 146;
@@ -412,7 +415,7 @@
             textBox2.BackColor = SystemColors.Window;
             textBox2.BorderStyle = BorderStyle.FixedSingle;
             textBox2.Enabled = false;
-            textBox2.Location = new Point(419, 551);
+            textBox2.Location = new Point(483, 553);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(181, 27);
             textBox2.TabIndex = 145;
@@ -423,7 +426,7 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.FromArgb(251, 204, 60);
-            label2.Location = new Point(251, 551);
+            label2.Location = new Point(315, 553);
             label2.Name = "label2";
             label2.Size = new Size(71, 20);
             label2.TabIndex = 144;
@@ -434,7 +437,7 @@
             textBox1.BackColor = SystemColors.Window;
             textBox1.BorderStyle = BorderStyle.FixedSingle;
             textBox1.Enabled = false;
-            textBox1.Location = new Point(419, 506);
+            textBox1.Location = new Point(483, 508);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(181, 27);
             textBox1.TabIndex = 143;
@@ -445,7 +448,7 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe UI Symbol", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.FromArgb(251, 204, 60);
-            label1.Location = new Point(251, 504);
+            label1.Location = new Point(315, 506);
             label1.Name = "label1";
             label1.Size = new Size(74, 20);
             label1.TabIndex = 142;
@@ -460,7 +463,7 @@
             gbimage.ForeColor = Color.FromArgb(251, 204, 60);
             gbimage.Location = new Point(39, 517);
             gbimage.Name = "gbimage";
-            gbimage.Size = new Size(192, 304);
+            gbimage.Size = new Size(255, 252);
             gbimage.TabIndex = 141;
             gbimage.TabStop = false;
             gbimage.Text = "Imagen";
@@ -469,7 +472,7 @@
             // 
             Picture1.Location = new Point(19, 39);
             Picture1.Name = "Picture1";
-            Picture1.Size = new Size(153, 194);
+            Picture1.Size = new Size(214, 140);
             Picture1.SizeMode = PictureBoxSizeMode.StretchImage;
             Picture1.TabIndex = 0;
             Picture1.TabStop = false;
@@ -478,17 +481,18 @@
             // 
             btnimagen.Enabled = false;
             btnimagen.ImageAlign = ContentAlignment.MiddleLeft;
-            btnimagen.Location = new Point(32, 246);
+            btnimagen.Location = new Point(60, 192);
             btnimagen.Name = "btnimagen";
             btnimagen.Size = new Size(118, 39);
             btnimagen.TabIndex = 79;
             btnimagen.Text = "Subir Archivo";
             btnimagen.UseVisualStyleBackColor = true;
+            btnimagen.Click += btnimagen_Click;
             // 
             // textBox8
             // 
             textBox8.Enabled = false;
-            textBox8.Location = new Point(792, 512);
+            textBox8.Location = new Point(856, 514);
             textBox8.Name = "textBox8";
             textBox8.Size = new Size(181, 27);
             textBox8.TabIndex = 162;
@@ -496,7 +500,7 @@
             // textBox9
             // 
             textBox9.Enabled = false;
-            textBox9.Location = new Point(792, 554);
+            textBox9.Location = new Point(856, 556);
             textBox9.Name = "textBox9";
             textBox9.Size = new Size(181, 27);
             textBox9.TabIndex = 163;
@@ -519,6 +523,7 @@
             btnactualizar.Text = "ACTUALIZAR";
             btnactualizar.TextAlign = ContentAlignment.MiddleRight;
             btnactualizar.UseVisualStyleBackColor = false;
+            btnactualizar.Click += btnactualizar_Click;
             // 
             // btneliminar
             // 
@@ -537,6 +542,7 @@
             btneliminar.Text = "ELIMINAR";
             btneliminar.TextAlign = ContentAlignment.MiddleRight;
             btneliminar.UseVisualStyleBackColor = false;
+            btneliminar.Click += btneliminar_Click;
             // 
             // btncrear
             // 
@@ -556,6 +562,7 @@
             btncrear.Text = "CREAR";
             btncrear.TextAlign = ContentAlignment.MiddleRight;
             btncrear.UseVisualStyleBackColor = false;
+            btncrear.Click += btncrear_Click;
             // 
             // UcTransportes
             // 

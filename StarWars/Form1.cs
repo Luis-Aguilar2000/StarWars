@@ -142,7 +142,13 @@ namespace StarWars
 
         private void btnviajes_Click(object sender, EventArgs e)
         {
-            // Lógica para viajes
+            paneldata.Controls.Clear();
+
+            UcCalculadoraViajes uc = new UcCalculadoraViajes(_planetaService, _transporteService);
+            uc.Dock = DockStyle.Fill;
+
+            paneldata.Controls.Add(uc);
+            uc.BringToFront();
         }
     }
 }

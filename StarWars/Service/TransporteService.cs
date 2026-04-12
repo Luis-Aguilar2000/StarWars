@@ -28,6 +28,14 @@ namespace StarWars.Services
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<List<Transporte>> ObtenerNaves()
+        {
+            return await _context.Transportes
+                .Include(t => t.TipoTransporte)
+                .Where(t => t.TipoTransporte != null && t.TipoTransporte.Nombre == "Nave")
+                .OrderBy(t => t.Nombre)
+                .ToListAsync();
+        }
 
         public async Task<List<Transporte>> ObtenerTransportes()
         {

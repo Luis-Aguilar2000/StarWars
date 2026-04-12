@@ -314,6 +314,7 @@
             btnimagen.TabIndex = 79;
             btnimagen.Text = "Subir Archivo";
             btnimagen.UseVisualStyleBackColor = true;
+            btnimagen.Click += btnimagen_Click;
             // 
             // textBox6
             // 
